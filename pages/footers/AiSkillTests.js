@@ -11,7 +11,7 @@ function AiSkillTests() {
         <h1 className="text-2xl font-semibold my-2 mt-5 ">
           Elevate Your Hiring Process with AI Skill Tests
         </h1>
-        At Resume Intellect, we understand the importance of finding the right
+        At Genesis Tech , we understand the importance of finding the right
         talent for your organization. Our AI Skill Tests are designed to
         streamline the hiring process by accurately assessing candidates
         abilities and matching them with the job requirements. Leveraging
@@ -108,9 +108,9 @@ function AiSkillTests() {
         <h1 className="text-sm font-semibold my-2">
           Start Using AI Skill Tests Today
         </h1>
-        Transform your hiring process with Resume Intellect’s AI Skill Tests.
-        Sign up now to experience the benefits of accurate, efficient, and
-        unbiased candidate assessments.
+        Transform your hiring process with Genesis Tech ’s AI Skill Tests. Sign
+        up now to experience the benefits of accurate, efficient, and unbiased
+        candidate assessments.
         <h1 className="text-lg font-bold my-4">Get Started</h1>
         Ready to elevate your hiring process? Visit our AI Skill Tests page and
         start creating customized skill assessments today!
