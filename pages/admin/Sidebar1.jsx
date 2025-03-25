@@ -7,14 +7,14 @@ const Sidebar1 = ({ onClose }) => {
   const location = router.pathname;
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear the token
-    router.push('/login2'); // Redirect to login after logout
+    localStorage.removeItem("token"); // Clear the token
+    router.push("/adminlogin"); // Redirect to login after logout
   };
 
   const getLinkClassName = (path) => {
     return location === path
-      ? "flex items-center p-2 bg-blue-900 border-b-2 rounded font-semibold text-white"
-      : "flex items-center p-2 hover:bg-blue-900 border-b-2 rounded font-semibold";
+      ? "flex items-center p-2 bg-green-600 border-b-2 rounded font-semibold text-white"
+      : "flex items-center p-2 hover:bg-green-600 border-b-2 rounded font-semibold";
   };
   return (
     <div className="bg-white h-screen p-4 border-r border-gray-200 md:block">
@@ -24,7 +24,7 @@ const Sidebar1 = ({ onClose }) => {
           <Link
             href=""
             className={getLinkClassName("/")}
-            onClick={onClose} // Close sidebar on link click
+            onClick={onClose} 
           >
             <span className="mr-2">🏠</span>
             <span>Home</span>
@@ -92,7 +92,7 @@ const Sidebar1 = ({ onClose }) => {
             <span>Subscribers List</span>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link
             href="reffreraluser"
             className={getLinkClassName("/admin/reffreraluser")}
@@ -121,12 +121,12 @@ const Sidebar1 = ({ onClose }) => {
             <span className="mr-2">💷</span>
             <span>Referral </span>
           </Link>
-        </li>
+        </li> */}
 
         <li>
           <Link
             href="/"
-            className="flex items-center p-2 hover:bg-blue-900  border-b-2 rounded font-semibold"
+            className="flex items-center p-2 hover:bg-green-600  border-b-2 rounded font-semibold"
             onClick={() => {
               handleLogout();
             }}

@@ -1,14 +1,17 @@
-
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import logo from "../login2/logo.jpg";
+import logo from "../login2/logo.jpeg";
 import { useRouter } from "next/router";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../components/Constant/constant";
+import { useTranslation } from "react-i18next";
+import { ResumeContext } from "../../components/context/ResumeContext";
 
 function Signup() {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,15 +22,17 @@ function Signup() {
     password: "",
   });
   const router = useRouter();
+  const { selectedLang } = useContext(ResumeContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    
+  const handleSignup = async () => {
+    // e.preventDefault();
+    console.log("called");
+
     if (
       !formData.first_name ||
       !formData.last_name ||
@@ -35,12 +40,12 @@ function Signup() {
       !formData.phone ||
       !formData.password
     ) {
-      toast.error("All fields are required");
+      toast.error(t("loginpage.all_fields_required"));
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     const body = {
       first_name: formData.first_name,
       last_name: formData.last_name,
@@ -48,10 +53,10 @@ function Signup() {
       phone: formData.phone,
       password: formData.password,
     };
-  
+
     try {
       const response = await axios.post(
-        "https://api.resumeintellect.com/api/user/auth/signup",
+        `${BASE_URL}/api/user/auth/signup`,
         body,
         {
           headers: {
@@ -59,10 +64,10 @@ function Signup() {
           },
         }
       );
-     console.log(response,response.status,"userinfoooo");
+      console.log(response, response.status, "userinfoooo");
       if (response.status === 200) {
-        toast.success("Verification link sent on your email ID, please activate to login ");
-        
+        toast.success(t("signuppage.verification_sent"));
+
         setFormData({
           first_name: "",
           last_name: "",
@@ -70,13 +75,15 @@ function Signup() {
           phone: "",
           password: "",
         });
-  
+
         // router.push("/login2");
       } else {
-        toast.error("Failed to sign up");
+        toast.error(t("signuppage.signup_failed"));
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(
+        error.response?.data?.message || t("signuppage.error_occurred")
+      );
     } finally {
       setIsLoading(false);
     }
@@ -93,19 +100,21 @@ function Signup() {
           <Image src={logo} className="w-40 h-10" alt="Logo" />
         </div>
         <div className="text-2xl text-black text-center font-bold">
-          Create an Account
+          {t("signuppage.create_account")}
         </div>
         <form onSubmit={handleSignup}>
           <div className="flex gap-7 mt-2">
             <div className="mb-4">
-              <label className="block text-black">First Name*</label>
+              <label className="block text-black">
+                {t("signuppage.first_name")}*
+              </label>
               <input
                 type="text"
                 name="first_name"
                 value={formData.first_name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Enter your first name"
+                placeholder={t("signuppage.first_name_placeholder")}
                 required
                 minLength={2}
                 maxLength={40}
@@ -113,14 +122,16 @@ function Signup() {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-black">Last Name*</label>
+              <label className="block text-black">
+                {t("signuppage.last_name")}*
+              </label>
               <input
                 type="text"
                 name="last_name"
                 value={formData.last_name}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md"
-                placeholder="Enter your last name"
+                placeholder={t("signuppage.last_name_placeholder")}
                 required
                 minLength={2}
                 maxLength={40}
@@ -130,33 +141,35 @@ function Signup() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-black">Email*</label>
+            <label className="block text-black">{t("signuppage.email")}*</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded-md"
-              placeholder="Enter your email"
+              placeholder={t("signuppage.email_placeholder")}
               required
               disabled={isLoading}
             />
           </div>
           <div className="mb-4">
-            <label className="block text-black">Phone*</label>
+            <label className="block text-black">{t("signuppage.phone")}*</label>
             <input
               type="number"
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
               className="w-full px-3 py-2 border rounded-md"
-              placeholder="Enter your phone number"
+              placeholder={t("signuppage.phone_placeholder")}
               required
               disabled={isLoading}
             />
           </div>
           <div className="mb-4">
-            <label className="block text-black">Password*</label>
+            <label className="block text-black">
+              {t("signuppage.password")}*
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -164,7 +177,7 @@ function Signup() {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                placeholder="Enter your password"
+                placeholder={t("signuppage.password_placeholder")}
                 required
                 minLength={6}
                 maxLength={30}
@@ -176,7 +189,7 @@ function Signup() {
                 className="absolute inset-y-0 right-3 flex items-center text-gray-500"
                 disabled={isLoading}
               >
-                {showPassword ? "🕵🏻 Hide " : "👁 View"}
+                {showPassword ? t("loginpage.hide") : t("loginpage.view")}
               </button>
             </div>
           </div>
@@ -191,22 +204,23 @@ function Signup() {
               />
               <Link href={"/TermsandConditions"}>
                 {" "}
-                Agree to terms & conditions
+                {t("loginpage.agree_terms")}
+                {t("loginpage.terms_conditions")}
               </Link>
             </label>
           </div>
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-black px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#00b38d] text-black px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-[#00b38d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Signing up...
+                {t("signuppage.signing_up")}
               </>
             ) : (
-              "Signup"
+              t("signuppage.signup")
             )}
           </button>
         </form>

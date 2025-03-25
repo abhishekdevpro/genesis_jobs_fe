@@ -18,37 +18,37 @@ import ColorPickers from "./ColorPickers";
 import Preview from "../components/preview/Preview";
 import TemplateSelector from "../components/preview/TemplateSelector";
 
-
 import { useRouter } from "next/router";
 import Sidebar from "./dashboard/Sidebar";
 import { toast } from "react-toastify";
 import LoaderButton from "../components/utility/LoaderButton";
 import useLoader from "../hooks/useLoader";
 
-import { Menu, X } from 'lucide-react';
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import resumeImg from "./builderImages/GraphicDesignerResume.jpg";
 import poweredbypaypal from "./builderImages/poweredbypaypal.png";
 import paypal from "./builderImages/paypal.png";
-import logo from "./builderImages/logo.jpg";
+import logo from "./builderImages/logo.png";
 import applepay from "./builderImages/apple-pay.png";
 import { ResumeContext } from "../components/context/ResumeContext";
-
+import PayAndDownload from "../components/PayDownload";
+import { BASE_URL } from "../components/Constant/constant";
+import { useTranslation } from "react-i18next";
+import { SaveLoader } from "../components/ResumeLoader/SaveLoader";
 
 const Print = dynamic(() => import("../components/utility/WinPrint"), {
   ssr: false,
 });
 
 export default function MobileBuilder() {
-  
- 
   const [currentSection, setCurrentSection] = useState(0);
-  
+  const [selectedPdfType, setSelectedPdfType] = useState("1");
   const [selectedTemplate, setSelectedTemplate] = useState("template1");
   const [isFinished, setIsFinished] = useState(false);
 
   const [token, setToken] = useState(null);
-   const [resumeId, setResumeId] = useState(null);
+  const [resumeId, setResumeId] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const pdfExportComponent = useRef(null);
@@ -58,8 +58,21 @@ export default function MobileBuilder() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [userId, setUserId] = useState(0);
   const templateRef = useRef(null);
-  const {resumeData ,setResumeData, setHeaderColor,setBgColor,setSelectedFont,selectedFont,backgroundColorss,headerColor} = useContext(ResumeContext)
- const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(null);
+  const { i18n, t } = useTranslation();
+  const language = i18n.language;
+  const {
+    setResumeStrength,
+    resumeData,
+    setResumeData,
+    setHeaderColor,
+    setBgColor,
+    setSelectedFont,
+    selectedFont,
+    backgroundColorss,
+    headerColor,
+  } = useContext(ResumeContext);
+  const [showModal, setShowModal] = useState(false);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -74,33 +87,43 @@ export default function MobileBuilder() {
   useEffect(() => {
     const fetchResumeData = async () => {
       const { id } = router.query;
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       if (id && token) {
         try {
-          const response = await axios.get(`https://api.resumeintellect.com/api/user/resume-list/${id}`, {
-            headers: {
-              Authorization: token,
-            },
-          });
+          const response = await axios.get(
+            `${BASE_URL}/api/user/resume-list/${id}?lang=${language}`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          );
 
-          if (response.data.status === 'success') {
+          if (response.data.status === "success") {
             const { data } = response.data;
             const parsedData = JSON.parse(data.ai_resume_parse_data);
-            
+
             // Update state with fetched data
             setResumeData(parsedData.templateData);
-            
+            setResumeStrength(data.resume_strenght_details);
             // Set background color and template
             if (parsedData.templateData.templateDetails) {
-              setBgColor(parsedData.templateData.templateDetails.backgroundColor || '');
-              setHeaderColor(parsedData.templateData.templateDetails.backgroundColor );
-              setSelectedTemplate(parsedData.templateData.templateDetails.templateId || 'template1');
+              setBgColor(
+                parsedData.templateData.templateDetails.backgroundColor || ""
+              );
+              setHeaderColor(
+                parsedData.templateData.templateDetails.backgroundColor
+              );
+              setSelectedTemplate(
+                parsedData.templateData.templateDetails.templateId ||
+                  "template1"
+              );
             }
           }
         } catch (error) {
-          console.error('Error fetching resume data:', error);
-          toast.error('Failed to fetch resume data');
+          console.error("Error fetching resume data:", error);
+          toast.error("Failed to fetch resume data");
         }
       }
     };
@@ -121,7 +144,8 @@ export default function MobileBuilder() {
       // const storedResumeData = localStorage.getItem("resumeData");
 
       if (storedIsFinished) setIsFinished(JSON.parse(storedIsFinished));
-      if (storedTemplate && !selectedTemplate) setSelectedTemplate(storedTemplate);
+      if (storedTemplate && !selectedTemplate)
+        setSelectedTemplate(storedTemplate);
       if (storedFont) setSelectedFont(storedFont);
       if (storedBgColor && !backgroundColorss) setBgColor(storedBgColor);
       if (storedCurrentSection)
@@ -185,33 +209,64 @@ export default function MobileBuilder() {
     const id = path.split("/").pop();
     setResumeId(id);
   }, []);
-
   const sections = [
-    { label: "Personal Details", component: <PersonalInformation /> },
-    { label: "Social Links", component: <SocialMedia /> },
-    { label: "Summary", component: <Summary /> },
-    { label: "Education", component: <Education /> },
-    { label: "Experience", component: <WorkExperience /> },
-    { label: "Projects", component: <Projects /> },
     {
-      label: "Skills",
+      label: t("resumeStrength.sections.personalInformation"),
+      component: <PersonalInformation />,
+    },
+    {
+      label: t("resumeStrength.sections.socialLinks"),
+      component: <SocialMedia />,
+    },
+    {
+      label: t("resumeStrength.sections.personalSummary"),
+      component: <Summary />,
+    },
+    { label: t("resumeStrength.sections.education"), component: <Education /> },
+    {
+      label: t("resumeStrength.sections.workHistory"),
+      component: <WorkExperience />,
+    },
+    { label: t("resumeStrength.sections.projects"), component: <Projects /> },
+    {
+      label: t("resumeStrength.sections.skills"),
       component: Array.isArray(resumeData?.skills) ? (
         resumeData.skills.map((skill, index) => (
-          <Skill title={skill.title} key={index} />
+          <Skill title={skill.title} currentSkillIndex={index} key={index} />
         ))
       ) : (
         <p>No skills available</p>
       ),
     },
-    { label: "Languages", component: <Language /> },
-    { label: "Certifications", component: <Certification /> },
+    { label: t("resumeStrength.sections.languages"), component: <Language /> },
+    {
+      label: t("resumeStrength.sections.certification"),
+      component: <Certification />,
+    },
   ];
-
-  
-
-  
+  // const sections = [
+  //   { label: "Personal Details", component: <PersonalInformation /> },
+  //   { label: "Social Links", component: <SocialMedia /> },
+  //   { label: "Summary", component: <Summary /> },
+  //   { label: "Education", component: <Education /> },
+  //   { label: "Experience", component: <WorkExperience /> },
+  //   { label: "Projects", component: <Projects /> },
+  //   {
+  //     label: "Skills",
+  //     component: Array.isArray(resumeData?.skills) ? (
+  //       resumeData.skills.map((skill, index) => (
+  //         <Skill title={skill.title} currentSkillIndex={index} key={index} />
+  //       ))
+  //     ) : (
+  //       <p>No skills available</p>
+  //     ),
+  //   },
+  //   { label: "Languages", component: <Language /> },
+  //   { label: "Certifications", component: <Certification /> },
+  // ];
 
   const handleNext = () => {
+    handleFinish(false);
     if (currentSection === sections.length - 1) {
       localStorage.setItem("tempResumeData", JSON.stringify(resumeData));
       localStorage.setItem("tempHeaderColor", headerColor);
@@ -247,10 +302,12 @@ export default function MobileBuilder() {
   }, []);
 
   const handlePrevious = () => {
+    handleFinish(false);
     setCurrentSection((prev) => Math.max(prev - 1, 0));
   };
 
   const handleSectionClick = (index) => {
+    handleFinish(false);
     setCurrentSection(index);
     setIsMobileMenuOpen(false);
   };
@@ -259,99 +316,98 @@ export default function MobileBuilder() {
     setSelectedFont(e.target.value);
   };
 
- 
- 
   const downloadAsPDF = async () => {
-    const amount = 49; // Fixed price
-
+    handleFinish();
+    if (!templateRef.current) {
+      toast.error("Template reference not found");
+      return;
+    }
+    setLoading("download");
     try {
-      // Make the payment API call
-      const payload = {
-        amount,
-        ResumeId: resumeId, // Make sure resumeId is defined in your component
-        Token: token || '' // Make sure token is defined in your component
-      };
+      // Get the HTML content from the template
+      const htmlContent = templateRef.current.innerHTML;
 
+      // Generate the full HTML for the PDF
+      const fullContent = `
+        <style>
+          @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
+        </style>
+        ${htmlContent}
+      `;
+
+      // API call to generate the PDF
       const response = await axios.post(
-        'https://api.resumeintellect.com/api/user/paypal/create-payment',
-        payload,
+        `${BASE_URL}/api/user/generate-pdf-py?lang=${language}`,
+        // { html: fullContent },
+        { html: fullContent, pdf_type: selectedPdfType },
         {
           headers: {
-             Authorization:token,
-            'Content-Type': 'application/json' }
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
         }
       );
 
-      const data = response.data;
-      console.log(data,"data");
-      if (data && data.data) {
-        // Store the order ID for later verification if needed
-        const orderId = data.order_id;
-        localStorage.setItem("orderid", orderId);
+      // Check if the file path was returned
+      // const filePath = response.data.data?.file_path;
+      // if (!filePath) {
+      //   throw new Error('PDF file path not received');
+      // }
 
-        // Redirect the user to PayPal URL to complete payment
-        if (data.data) {
-          window.location.href = data.data; // Redirect to PayPal
-        } else {
-          console.error("Payment URL not found");
-        }
-      }
+      // Construct the URL
+      // const downloadUrl = `${BASE_URL}${filePath}`;
+
+      // Open the URL in a new tab
+      // createPayment();
+      // window.open(downloadUrl, '_blank');
+
+      // toast.success('PDF generated and opened in a new tab!');
+      downloadPDF();
+      // toast.success("PDF generation request sent successfully!");
     } catch (error) {
-      console.error('Payment Error:', error);
-      // Handle error (show error message to user)
+      console.error("PDF generation error:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to generate and open PDF"
+      );
+    } finally {
+      setLoading(null);
     }
   };
- 
-  // const downloadAsPDF = async () => {
-  //   if (!templateRef.current) {
-  //     toast.error("Template reference not found");
-  //     return;
-  //   }
-  
-  //   try {
-  //     // Get the HTML content from the template
-  //     const htmlContent = templateRef.current.innerHTML;
-  
-  //     // Generate the full HTML for the PDF
-  //     const fullContent = `
-  //       <style>
-  //         @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
-  //       </style>
-  //       ${htmlContent}
-  //     `;
-  
-  //     // API call to generate the PDF
-  //     const response = await axios.post(
-  //       'https://api.resumeintellect.com/api/user/generate-pdf1',
-  //       { html: fullContent },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: token,
-  //         },
-  //       }
-  //     );
-  
-  //     // Check if the file path was returned
-  //     const filePath = response.data.data?.file_path;
-  //     if (!filePath) {
-  //       throw new Error('PDF file path not received');
-  //     }
-  
-  //     // Construct the URL
-  //     const downloadUrl = `https://api.resumeintellect.com${filePath}`;
-  
-  //     // Open the URL in a new tab
-  //     window.open(downloadUrl, '_blank');
-  
-  //     toast.success('PDF generated and opened in a new tab!');
-  //   } catch (error) {
-  //     console.error('PDF generation error:', error);
-  //     toast.error(
-  //       error.response?.data?.message || 'Failed to generate and open PDF'
-  //     );
-  //   }
-  // };
+  const downloadPDF = async () => {
+    handleFinish();
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/user/download-file/11/${resumeId}?lang=${language}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+          responseType: "blob", // Important for file download
+        }
+      );
+
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Set the file name
+      link.setAttribute("download", `resume.pdf`);
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("PDF downloaded successfully!");
+    } catch (error) {
+      console.error("PDF Download Error:", error);
+      toast.error("Failed to download the PDF. Please try again.");
+    }
+  };
+
   useEffect(() => {
     if (PayerID) {
       verifyPayment();
@@ -365,7 +421,7 @@ export default function MobileBuilder() {
 
       if (orderId && token && PayerID) {
         const response = await axios.get(
-          `https://api.resumeintellect.com/api/user/paypal/verify-order?orderid=${orderId}`,
+          `${BASE_URL}/api/user/paypal/verify-order?orderid=${orderId}?lang=${language}`,
           {
             headers: {
               Authorization: token,
@@ -379,10 +435,7 @@ export default function MobileBuilder() {
           toast.success("Payment verified successfully!");
 
           localStorage.removeItem("orderid");
-
-          if (pdfExportComponent.current) {
-            pdfExportComponent.current.save();
-          }
+          await downloadPDF(orderId, resumeId, token);
         } else {
           toast.error("Payment verification failed. Please try again.");
           router.push("/payment-failed");
@@ -397,14 +450,14 @@ export default function MobileBuilder() {
     }
   };
 
-  const handleFinish = async () => {
+  const handleFinish = async (showToast = true) => {
     if (!resumeData) return;
 
     const templateData = {
       templateData: {
         name: resumeData.name || "",
         position: resumeData.position || "",
-        contactInformation: resumeData.contact || "",
+        contactInformation: resumeData.contactInformation || "",
         email: resumeData.email || "",
         address: resumeData.address || "",
         profilePicture: resumeData.profilePicture || "",
@@ -412,6 +465,7 @@ export default function MobileBuilder() {
           resumeData.socialMedia?.map((media) => ({
             socialMedia: media.platform || "",
             link: media.link || "",
+            socialMedia: media.socialMedia || "",
           })) || [],
         summary: resumeData.summary || "",
         education:
@@ -420,17 +474,19 @@ export default function MobileBuilder() {
             degree: edu.degree || "",
             startYear: edu.startYear || "",
             endYear: edu.endYear || "",
+            location: edu.location || "",
           })) || [],
         workExperience:
           resumeData.workExperience?.map((exp) => ({
             company: exp.company || "",
             position: exp.position || "",
             description: exp.description || "",
-            KeyAchievements: Array.isArray(exp.keyAchievements)
-              ? exp.keyAchievements
-              : [exp.keyAchievements || ""],
+            KeyAchievements: Array.isArray(exp.KeyAchievements)
+              ? exp.KeyAchievements
+              : [exp.KeyAchievements || ""],
             startYear: exp.startYear || "",
             endYear: exp.endYear || "",
+            location: exp.location || "",
           })) || [],
         projects:
           resumeData.projects?.map((project) => ({
@@ -468,7 +524,7 @@ export default function MobileBuilder() {
           return;
         }
 
-        const url = `https://api.resumeintellect.com/api/user/resume-update/${id}`;
+        const url = `${BASE_URL}/api/user/resume-update/${id}`;
         const response = await axios.put(url, templateData, {
           headers: {
             "Content-Type": "application/json",
@@ -478,8 +534,13 @@ export default function MobileBuilder() {
 
         if (response.data.code === 200 || response.data.status === "success") {
           setIsSaved(true);
-          localStorage.setItem("isSaved", "true");
-          toast.success(response.data.message || "Resume saved Successfully");
+          // localStorage.setItem("isSaved", "true");
+          // toast.success(response.data.message || "Resume saved Successfully");
+          if (showToast) {
+            toast.success(
+              response.data.message || "Resume saved successfully."
+            );
+          }
         } else {
           toast.error(response.data.error || "Error while saving the Resume");
         }
@@ -489,6 +550,14 @@ export default function MobileBuilder() {
       }
     });
   };
+  const handleClick = async () => {
+    setLoading("save");
+    try {
+      await handleFinish(); // Ensure handleFinish is an async function
+    } finally {
+      setLoading(null);
+    }
+  };
 
   const MobileNavigation = () => (
     <div className="fixed px-2 bottom-0 left-0 right-0 bg-white shadow-lg py-4 ">
@@ -496,9 +565,9 @@ export default function MobileBuilder() {
         <button
           onClick={handlePrevious}
           disabled={currentSection === 0}
-          className="px-4 py-2 bg-blue-950 text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50"
         >
-          Previous
+          {t("buttons.previous")}
         </button>
         <span className="text-sm font-medium">
           {sections[currentSection].label}
@@ -507,7 +576,9 @@ export default function MobileBuilder() {
           onClick={handleNext}
           className="px-4 py-2 bg-yellow-500 text-black rounded-lg"
         >
-          {currentSection === sections.length - 1 ? "Finish" : "Next"}
+          {currentSection === sections.length - 1
+            ? t("buttons.finish")
+            : t("buttons.next")}
         </button>
       </div>
     </div>
@@ -524,7 +595,7 @@ export default function MobileBuilder() {
                 onClick={() => handleSectionClick(index)}
                 className={`w-full p-3 mb-2 rounded-lg text-left ${
                   currentSection === index
-                    ? "bg-blue-950 text-white"
+                    ? "bg-green-500 text-white"
                     : "bg-gray-100 text-blue-950"
                 }`}
               >
@@ -559,7 +630,7 @@ export default function MobileBuilder() {
         const token = localStorage.getItem("token");
 
         const userProfileResponse = await axios.get(
-          "https://api.resumeintellect.com/api/user/user-profile",
+          `${BASE_URL}/api/user/user-profile?lang=${language}`,
           {
             headers: {
               Authorization: token,
@@ -589,22 +660,18 @@ export default function MobileBuilder() {
   return (
     <>
       <Meta
-        title="Resume Intellect - AI Resume Builder"
+        title="Genesis  - AI Resume Builder"
         description="ATSResume is a cutting-edge resume builder that helps job seekers create a professional, ATS-friendly resume in minutes..."
         keywords="ATS-friendly, Resume optimization..."
       />
 
       <div className=" w-full bg-gray-50">
-      
-
         {!isFinished ? (
           <div className=" bg-gray-50 flex flex-col">
-            
-
             <div className="flex flex-col md:flex-row flex-grow ">
               <button
                 onClick={toggleMobileSidebar}
-                className="fixed z-10 bottom-20 right-4  bg-blue-950 text-white p-3 rounded-full shadow-lg"
+                className="fixed z-10 bottom-20 right-4  bg-green-500 text-white p-3 rounded-full shadow-lg"
               >
                 {isMobileSidebarOpen ? (
                   <X className="h-6 w-6 stroke-2" />
@@ -614,10 +681,7 @@ export default function MobileBuilder() {
               </button>
 
               {isMobileSidebarOpen && (
-                <div
-                  className="fixed inset-0 bg-black bg-opacity-50 z-40 "
-                  onClick={toggleMobileSidebar}
-                />
+                <div className="fixed  z-50 " onClick={toggleMobileSidebar} />
               )}
 
               <aside
@@ -640,57 +704,79 @@ export default function MobileBuilder() {
               <main className="flex-1 max-w-2xl mx-auto md:p-4">
                 <form>{sections[currentSection].component}</form>
               </main>
-
             </div>
 
             <MobileNavigation />
           </div>
         ) : (
           <>
+            <div className="">
               <div className="flex items-center absolute justify-center gap-2 p-2  top-26 left-0 right-0 bg-white shadow-lg ">
-              <ColorPickers
-                      selectmultiplecolor={backgroundColorss}
-                      onChange={setBgColor}
-                    />
-          <select
-                    value={selectedFont}
-                    onChange={handleFontChange}
-                    className="rounded-lg border-2 border-blue-800 px-5 py-2 font-bold  bg-white text-blue-800"
-                  >
-                    <option value="Ubuntu">Ubuntu</option>
-                    <option value="Calibri">Calibri</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Roboto">Roboto</option>
-                    <option value="Poppins">Poppins</option>
-                  </select>
-         
-<TemplateSelector   selectedTemplate={selectedTemplate}
-                      setSelectedTemplate={setSelectedTemplate}/>
+                <ColorPickers
+                  selectmultiplecolor={backgroundColorss}
+                  onChange={setBgColor}
+                />
+                <select
+                  value={selectedFont}
+                  onChange={handleFontChange}
+                  className="rounded-lg border-2 border-green-500 px-5 py-2 font-bold  bg-white text-black"
+                >
+                  <option value="Ubuntu">Ubuntu</option>
+                  <option value="Calibri">Calibri</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Roboto">Roboto</option>
+                  <option value="Poppins">Poppins</option>
+                </select>
 
-          </div>
-           <div className=" ">
-          <Preview ref={templateRef} selectedTemplate={selectedTemplate} />
-          </div>
-         
-          <div className="flex items-center justify-center gap-4 p-2 fixed bottom-0 left-0 right-0 bg-white shadow-lg ">
-         
-          
-              <LoaderButton
-                isLoading={isLoading}
-                onClick={handleFinish}
-                className=" text-white px-4 py-2 rounded-lg bottom-btns"
-              >
-              
-              Save
-              </LoaderButton>
+                <TemplateSelector
+                  selectedTemplate={selectedTemplate}
+                  setSelectedTemplate={setSelectedTemplate}
+                  selectedPdfType={selectedPdfType}
+                  setSelectedPdfType={setSelectedPdfType}
+                />
+              </div>
+              <div className=" ">
+                <Preview
+                  ref={templateRef}
+                  selectedTemplate={selectedTemplate}
+                />
+              </div>
 
-              <button
-                onClick={downloadAsPDF}
-                className=" bg-yellow-500 text-black px-4 py-2 rounded-lg bottom-btns"
-              >
-             Pay & Download
-              </button>
-              {showModal && (
+              <div className="flex items-center justify-center gap-4 p-2 fixed bottom-0 left-0 right-0 bg-white shadow-lg ">
+                <LoaderButton
+                  isLoading={isLoading}
+                  onClick={handleClick}
+                  className=" text-white px-4 py-2 rounded-lg bottom-btns"
+                >
+                  {loading === "save" ? (
+                    <SaveLoader loadingText={t("buttons.saving")} />
+                  ) : (
+                    t("buttons.save")
+                  )}
+                </LoaderButton>
+
+                <button
+                  onClick={downloadAsPDF}
+                  className=" bg-yellow-500 text-black px-4 py-2 rounded-lg bottom-btns"
+                >
+                  {loading === "download" ? (
+                    <SaveLoader loadingText={t("buttons.downloading")} />
+                  ) : (
+                    t("buttons.download")
+                  )}
+                </button>
+                <button
+                  onClick={handleBackToEditor}
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors bottom-btns"
+                >
+                  {t("buttons.backToDashboard")}
+                </button>
+                {/* <PayAndDownload
+                  resumeId={resumeId}
+                  token={token}
+                  PayerID={PayerID}
+                /> */}
+                {/* {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                   <div className="w-full max-w-[90%] sm:max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden max-h-screen overflow-y-auto">
                     <div className="flex justify-between items-center p-4 border-b">
@@ -742,7 +828,7 @@ export default function MobileBuilder() {
                             </label>
                             <input
                               type="text"
-                              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                               value={`${formData.first_name} ${formData.last_name}`.trim()}
                               name="full name"
                               required
@@ -756,7 +842,7 @@ export default function MobileBuilder() {
                             </label>
                             <input
                               type="email"
-                              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                               value={formData.email}
                               name="email"
                               required
@@ -770,7 +856,7 @@ export default function MobileBuilder() {
                             </label>
                             <input
                               type="number"
-                              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                               name="phone"
                               value={formData.phone}
                               required
@@ -782,7 +868,7 @@ export default function MobileBuilder() {
                             <button
                               onClick={handleDownload}
                               type="submit"
-                              className="w-full bg-yellow-400 text-blue-800 font-bold  rounded-[50px] hover:bg-yellow-500 transition duration-200 flex items-center justify-center"
+                              className="w-full bg-yellow-400 text-black font-bold  rounded-[50px] hover:bg-yellow-500 transition duration-200 flex items-center justify-center"
                             >
                               <Image
                                 src={paypal}
@@ -812,22 +898,12 @@ export default function MobileBuilder() {
                     </div>
                   </div>
                 </div>
-              )}
-              <button
-                onClick={handleBackToEditor}
-                className="bg-blue-950 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors bottom-btns"
-              >
-             Back
-              </button>
+              )} */}
+              </div>
             </div>
           </>
-          
-          
         )}
       </div>
     </>
   );
 }
-
-
-

@@ -1,140 +1,135 @@
-
-// import React, { useState } from 'react';
-  
-// import Sidebar from './Sidebar';
-// import ProfilePage from './Profile';
-// import { FaBars } from 'react-icons/fa'; // Import hamburger icon
-
-// const DashboardLayout = () => {
-//   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-//   const toggleSidebar = () => {
-//     setIsSidebarOpen(!isSidebarOpen);
-//   };
-
-//   const closeSidebar = () => {
-//     setIsSidebarOpen(false);
-//   };
-
-//   return (
-//     <div className="min-h-screen flex flex-col items-center bg-gray-100">
-//       <div className="w-full shadow-md">
-//         <ProfilePage />
-//       </div>
-//       <div className="flex flex-1 w-full  mt-4 bg-white shadow-md rounded-lg overflow-hidden">
-//         {/* Hamburger icon for mobile view */}
-        
-
-//         {/* Content area */}
-//         <div className="flex-1 w-full max-w-8xl p-4 overflow-auto">
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default DashboardLayout;
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import Sidebar from './Sidebar';
-import ProfilePage from './Profile';
-import {
-  FileText,
-  PlusCircle,
-  BookOpen,
-  History
-} from 'lucide-react';
-import { FaBars } from 'react-icons/fa';
-
-const DashboardLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+import { useContext, useEffect, useState } from "react";
+import CoverLetterSection from "../../components/dashboard/CoverLetterSection";
+import InterviewSection from "../../components/dashboard/InterviewSection";
+import ResumeStrength from "../../components/dashboard/ResumeStrength";
+import Sidebar from "../../components/dashboard/Sidebar";
+import Navbar from "../Navbar/Navbar";
+import axios from "axios";
+import MyResume from "./MyResume";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
+import FullScreenLoader from "../../components/ResumeLoader/Loader";
+import { Download, Edit, Trash, Plus } from "lucide-react";
+import AbroadiumCommunity from "../../components/dashboard/AbroadiumCommunity";
+import { BASE_URL } from "../../components/Constant/constant";
+import JobSearch from "../JobSearch";
+import { ResumeContext } from "../../components/context/ResumeContext";
+import PricingSection from "../../components/Pricing/PricingPlan";
+export default function DashboardPage() {
+  const { t } = useTranslation();
+  const {selectedLang} = useContext(ResumeContext)
+  const [strength, setStrength] = useState(null);
+  const [resumeId, setResumeId] = useState(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [error, setError] = useState(null);
+  const resumeStrength = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${BASE_URL}/api/user/resume-list/0?resume_default=true?lang=${selectedLang}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
-  const handleNavigation = (path) => {
-    router.push(path);
-    closeSidebar(); // Close sidebar after navigation on mobile
-  };
-
-  const DashboardButton = ({ icon: Icon, text, path }) => (
-    <button
-      onClick={() => handleNavigation(path)}
-      className="flex items-center justify-center space-x-2 w-full md:w-64 p-4 bg-white hover:bg-gray-50 rounded-lg shadow-md transition-all duration-300 border border-gray-200 hover:border-blue-500"
-    >
-      <Icon className="w-6 h-6 text-blue-600" />
-      <span className="text-gray-700 font-medium">{text}</span>
-    </button>
-  );
-
-  const dashboardButtons = [
-    {
-      icon: PlusCircle,
-      text: "Build Your Resume",
-      path: "/dashboard/resume-builder"
-    },
-    {
-      icon: FileText,
-      text: "My Resume",
-      path: "/dashboard/resumelist"
-    },
-    {
-      icon: BookOpen,
-      text: "Skill Test",
-      path: "/dashboard/skilltest"
-    },
-    {
-      icon: History,
-      text: "Skill History",
-      path: "/dashboard/skillhistorylist"
+      if (response.data.code === 200 || response.data.status === "success") {
+        setStrength(response.data.data.resume_strenght_details || null);
+        setResumeId(response.data?.data?.id || null);
+      } else {
+        setStrength(null);
+        setResumeId(null);
+        router.push(`/dashboard/resume-builder`);
+      }
+    } catch (err) {
+      setError(err.message);
+      setStrength(null);
+      setResumeId(null);
+      router.push(`/dashboard/resume-builder`);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    resumeStrength();
+  }, [selectedLang]); // Empty dependency array means this effect runs once on mount
+
+  if (loading) {
+    return <FullScreenLoader />;
+  }
+
+  // if (error) {
+  //   return (
+  //     <div className="bg-red-50 p-6 rounded-lg mb-6">
+  //       <p className="text-red-600">Error loading resume strength: {error}</p>
+  //     </div>
+  //   );
+  // }
+  const handleCreateCoverLetter = () => {
+    setTimeout(() => {
+      router.push("/dashboard/cv-builder");
+    }, 2000);
+  };
+  const handleCreateResume = () => {
+    setTimeout(() => {
+      router.push("/dashboard/resume-builder");
+    }, 2000);
+  };
+  const handleMyDashboard = () => {
+    setTimeout(() => {
+      router.push("/dashboard/page");
+    }, 2000);
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-100">
-      <div className="w-full shadow-md">
-        <ProfilePage />
+    <>
+      <Navbar />
+      <div className="flex flex-col sm:flex-row justify-center items-center mb-8 gap-4 mt-4 p-4">
+        <button
+          onClick={handleCreateResume}
+          className="flex justify-center items-center px-4 py-2 w-full sm:w-auto bg-[#00b38d] text-white rounded-lg hover:bg-[#369984] transition-colors duration-200 font-medium shadow-sm"
+        >
+          <Plus className="w-5 h-5 mr-2" /> {t("dashboard_page.createResume")}
+        </button>
+        <button
+          onClick={handleCreateCoverLetter}
+          className="flex justify-center items-center px-4 py-2 w-full sm:w-auto bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors duration-200 font-medium shadow-sm"
+        >
+          <Plus className="w-5 h-5 mr-2" />{" "}
+          {t("dashboard_page.createCoverLetter")}
+        </button>
+        <button
+          onClick={handleMyDashboard}
+          className="flex justify-center items-center px-4 py-2 w-full sm:w-auto bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors duration-200 font-medium shadow-sm"
+        >
+          {t("dashboard_page.myProfileDashboard")}
+        </button>
       </div>
-      
-      <div className="flex flex-1 w-full mt-4 bg-white shadow-md rounded-lg overflow-hidden">
-        {/* Hamburger icon for mobile */}
-        <div className="md:hidden">
-          <button onClick={toggleSidebar} className="p-4 focus:outline-none">
-            <FaBars className="text-2xl" />
-          </button>
-        </div>
-
+      <div className="flex flex-col max-w-7xl mx-auto md:flex-row min-h-screen bg-white p-4">
         {/* Sidebar */}
-        <div className={`md:w-64 flex-shrink-0 md:block ${isSidebarOpen ? 'block' : 'hidden'}`}>
-          <Sidebar onClose={closeSidebar} />
-        </div>
+        <Sidebar score={strength.resume_strenght} resumeId={resumeId} />
 
-        {/* Content area */}
-        <div className="flex-1 w-full max-w-8xl p-4 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-2xl font-bold text-gray-800 mb-8">Dashboard</h1>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {dashboardButtons.map((button, index) => (
-                <DashboardButton
-                  key={index}
-                  icon={button.icon}
-                  text={button.text}
-                  path={button.path}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* Main Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          <h1 className="text-2xl font-bold mb-6">
+            {t("dashboard_page.recommendedSteps")}
+          </h1>
+
+          <ResumeStrength
+            score={strength.resume_strenght || 0}
+            strength={strength || {}}
+            resumeId={resumeId || null}
+          />
+          <InterviewSection />
+          <CoverLetterSection />
+        </main>
       </div>
-    </div>
+      <MyResume />
+      <JobSearch />
+    </>
   );
-};
-
-export default DashboardLayout;
+}

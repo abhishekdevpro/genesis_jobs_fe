@@ -1,154 +1,133 @@
-
-
-// import React, { useContext } from "react";
-// // import { ResumeContext } from "../../pages/builder";
-// import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-// import { ResumeContext } from "../context/ResumeContext";
-
-// const Education = () => {
-//   const { resumeData, setResumeData } = useContext(ResumeContext);
-
-//   const handleEducation = (e, index) => {
-//     const newEducation = [...resumeData.education];
-//     newEducation[index][e.target.name] = e.target.value;
-//     setResumeData({ ...resumeData, education: newEducation });
-//   };
-
-//   const addEducation = () => {
-//     setResumeData({
-//       ...resumeData,
-//       education: [
-//         ...resumeData.education,
-//         { school: "", degree: "", startYear: "", endYear: "" },
-//       ],
-//     });
-//   };
-
-//   const removeEducation = (index) => {
-//     const newEducation = resumeData.education.filter((_, i) => i !== index);
-//     setResumeData({ ...resumeData, education: newEducation });
-//   };
-
-//   return (
-//     <div className="flex flex-col gap-6 mt-10 px-4 sm:px-8 lg:px-10">
-//       <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">Education</h2>
-
-//       {resumeData.education.map((education, index) => (
-//         <div
-//           key={index}
-//           className="flex flex-col gap-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white"
-//         >
-//           <input
-//             type="text"
-//             placeholder="School"
-//             name="school"
-//             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             value={education.school}
-//             onChange={(e) => handleEducation(e, index)}
-//           />
-//           <input
-//             type="text"
-//             placeholder="Degree"
-//             name="degree"
-//             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//             value={education.degree}
-//             onChange={(e) => handleEducation(e, index)}
-//           />
-//           <div className="flex flex-wrap gap-4">
-//             <input
-//               type="date"
-//               placeholder="Start Year"
-//               name="startYear"
-//               className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               value={education.startYear}
-//               onChange={(e) => handleEducation(e, index)}
-//             />
-//             <input
-//               type="date"
-//               placeholder="End Year"
-//               name="endYear"
-//               className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               value={education.endYear}
-//               onChange={(e) => handleEducation(e, index)}
-//             />
-//           </div>
-
-//          <div className="flex justify-between items-center">
-//          <p
-//           className="self-end flex items-center gap-2 text-red-500 hover:text-red-700 "
-//          >
-//             {`${resumeData.education_suggestions.length} suggestions`}
-//           </p>
-//           <button
-//             type="button"
-//             className="self-end flex items-center gap-2 text-red-500 hover:text-red-700 "
-//             onClick={() => removeEducation(index)}
-//           >
-//             <AiOutlineMinus /> Remove
-//           </button>
-//          </div>
-
-//         </div>
-//       ))}
-
-//       <button
-//         type="button"
-//         className="flex items-center gap-2 px-4 py-2 bg-black text-black rounded-md hover:bg-black transition-all"
-//         onClick={addEducation}
-//       >
-//         <AiOutlinePlus /> Add Education
-//       </button>
-//     </div>
-//   );
-// };
-
-//          <div className="flex justify-between items-center">
-//          <p
-//           className="self-end flex items-center gap-2 text-red-500 hover:text-red-700 "
-//          >
-//             {`${resumeData.education_suggestions.length} suggestions`}
-//           </p>
-//           <button
-//             type="button"
-//             className="self-end flex items-center gap-2 text-red-500 hover:text-red-700 "
-//             onClick={() => removeEducation(index)}
-//           >
-//             <AiOutlineMinus /> Remove
-//           </button>
-//          </div>
-
-
-//         </div>
-//       ))}
-
-//       <button
-//         type="button"
-//         className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md hover:bg-black transition-all"
-//         onClick={addEducation}
-//       >
-//         <AiOutlinePlus /> Add Education
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default Education;
-import React, { useContext, useState } from "react";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { ResumeContext } from "../context/ResumeContext";
 import FormButton from "./FormButton";
+import React, { useContext, useState } from "react";
+import { AlertCircle, X, Loader2 } from "lucide-react";
+import { useRouter } from "next/router";
+import { MdRemoveCircle } from "react-icons/md";
+import { BASE_URL } from "../Constant/constant";
+import { useTranslation } from "react-i18next";
 const Education = () => {
-  const { resumeData, setResumeData } = useContext(ResumeContext);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const { i18n, t } = useTranslation();
+  const language = i18n.language;
+  const { resumeData, setResumeData, resumeStrength } =
+    useContext(ResumeContext);
+  const [activeTooltip, setActiveTooltip] = useState(null);
+  const [universitySuggestions, setUniversitySuggestions] = useState([]);
+  const [showUniversityDropdown, setShowUniversityDropdown] = useState(false);
+  const [degreeSuggestions, setDegreeSuggestions] = useState([]);
+  const [showDegreeDropdown, setShowDegreeDropdown] = useState(false);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState({
+    university: false,
+    location: false,
+  });
+  const router = useRouter();
+  const { improve } = router.query;
 
- 
   const handleEducation = (e, index) => {
     const { name, value } = e.target;
     const newEducation = [...resumeData.education];
     newEducation[index][name] = value;
     setResumeData({ ...resumeData, education: newEducation });
+
+    if (name === "school") {
+      fetchUniversities(value, index);
+    }
+    if (name == "degree") {
+      fetchDegrees(value, index);
+    }
+    if (name === "location") {
+      fetchLocations(value);
+    }
   };
-  
+
+  const fetchUniversities = async (keyword, index) => {
+    if (!keyword || keyword.length < 1) {
+      setUniversitySuggestions([]);
+      return;
+    }
+
+    setIsLoading((prev) => ({ ...prev, university: true }));
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/user/university-lists?university_keyword=${encodeURIComponent(
+          keyword
+        )}&lang=${language}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setUniversitySuggestions(data.data.map((item) => item.name));
+        setShowUniversityDropdown(true);
+      }
+    } catch (error) {
+      console.error("Error fetching universities:", error);
+    }
+    setIsLoading((prev) => ({ ...prev, university: false }));
+  };
+  const fetchDegrees = async (keyword, index) => {
+    if (!keyword || keyword.length < 1) {
+      setDegreeSuggestions([]);
+      return;
+    }
+
+    setIsLoading((prev) => ({ ...prev, degree: true }));
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/user/degree?degree_keyword=${encodeURIComponent(
+          keyword
+        )}&lang=${language}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setDegreeSuggestions(data.data.map((item) => item.name));
+        setShowDegreeDropdown(true);
+      }
+    } catch (error) {
+      console.error("Error fetching degrees:", error);
+    }
+    setIsLoading((prev) => ({ ...prev, degree: false }));
+  };
+
+  const fetchLocations = async (keyword) => {
+    if (!keyword || keyword.length < 1) {
+      setLocationSuggestions([]);
+      return;
+    }
+
+    setIsLoading((prev) => ({ ...prev, location: true }));
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/user/locations?locations=${encodeURIComponent(
+          keyword
+        )}&lang=${language}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        const locations = data.data.location_names.map((item) => item);
+        setLocationSuggestions(locations);
+        setShowLocationDropdown(true);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
+    setIsLoading((prev) => ({ ...prev, location: false }));
+  };
+
+  const selectUniversity = (value, index) => {
+    const newEducation = [...resumeData.education];
+    newEducation[index].school = value;
+    setResumeData({ ...resumeData, education: newEducation });
+    setShowUniversityDropdown(false);
+  };
+
+  const selectLocation = (value, index) => {
+    const newEducation = [...resumeData.education];
+    newEducation[index].location = value;
+    setResumeData({ ...resumeData, education: newEducation });
+    setShowLocationDropdown(false);
+  };
+
   const months = [
     "Jan",
     "Feb",
@@ -186,6 +165,12 @@ const Education = () => {
     newEducation[index][field] = `${month || ""},${newYear}`;
     setResumeData({ ...resumeData, education: newEducation });
   };
+  const handlePresentToggle = (index) => {
+    const newEducation = [...resumeData.education];
+    newEducation[index].endYear =
+      newEducation[index].endYear === "Present" ? "" : "Present";
+    setResumeData({ ...resumeData, education: newEducation });
+  };
 
   const addEducation = () => {
     setResumeData({
@@ -208,91 +193,228 @@ const Education = () => {
     newEducation.splice(index, 1);
     setResumeData({ ...resumeData, education: newEducation });
   };
-  const toggleSuggestions = () => {
-    setShowSuggestions((prev) => !prev);
+
+  const hasErrors = (index, field) => {
+    const educationStrength = resumeStrength?.education_strenght?.[index];
+    return educationStrength && educationStrength[field] !== null;
   };
 
-  
+  const getErrorMessage = (index, field) => {
+    const educationStrength = resumeStrength?.education_strenght?.[index];
+    if (educationStrength && Array.isArray(educationStrength[field])) {
+      return educationStrength[field];
+    }
+    return null;
+  };
+
+  // Close dropdowns when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      setShowUniversityDropdown(false);
+      setShowLocationDropdown(false);
+      setShowDegreeDropdown(false);
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const renderTooltip = (index, field, title) => {
+    if (activeTooltip === `${field}-${index}`) {
+      return (
+        <div className="absolute z-50 right-0 w-80 bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-in-out border border-gray-700">
+          <div className="p-4 border-b border-gray-700">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <AlertCircle className="w-5 h-5 text-red-400" />
+                <span className="font-medium text-black">
+                  {title || "Suggestions"}
+                </span>
+              </div>
+              <button
+                onClick={() => setActiveTooltip(null)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          <div className="p-4">
+            {getErrorMessage(index, field)?.map((msg, i) => (
+              <div
+                key={i}
+                className="flex items-start space-x-3 mb-3 last:mb-0"
+              >
+                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2"></div>
+                <p className="text-black text-sm">{msg}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
-    <div className="flex flex-col gap-6 mt-10 px-4 sm:px-8 lg:px-10">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black">
-          Education
-        </h2>
-        <div className="relative">
-          {resumeData.education_suggestions?.length > 0 && (
-            <div
-              className="text-red-500 font-medium cursor-pointer hover:text-red-600"
-              onClick={toggleSuggestions}
-            >
-              {`${resumeData.education_suggestions.length} suggestions`}
-              {showSuggestions && (
-                <div className="absolute top-12 right-0 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-20">
-                                        <div className="text-red-600 font-medium mb-2">Suggested Improvements</div>
-
-                  <ul className="text-sm text-gray-800 list-disc pl-5 py-2">
-                    {resumeData.education_suggestions.map(
-                      (suggestion, index) => (
-                        <li key={index} className="mb-1">
-                          {suggestion}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                  {/* Tooltip arrow */}
-                  <div className="absolute -top-2 right-4 w-4 h-4 bg-white border-l border-t border-gray-300 rotate-45 transform" />
+    <div className="flex-col gap-3 w-full mt-10 px-10">
+      <h2 className="input-title text-black text-3xl">{t("resumeStrength.sections.education")}</h2>
+      {resumeData.education.map((education, index) => (
+        <div key={index} className="f-col">
+          <div className="relative mb-4">
+            <div className="flex items-center justify-between mt-4">
+              <h3 className="text-black text-xl font-semibold">
+                {`${t("resumeStrength.sections.education")} ${index + 1}`}
+              </h3>
+              <button
+                type="button"
+                onClick={() => removeEducation(index)}
+                aria-label="Remove"
+                className="p-2 text-white bg-red-700 rounded-lg text-xl mb-2"
+              >
+                <MdRemoveCircle />
+              </button>
+            </div>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="School"
+                name="school"
+                maxLength={150}
+                className={`w-full other-input border ${
+                  hasErrors(index, "school") ? "border-red-500" : "border-black"
+                }`}
+                value={education.school}
+                onChange={(e) => handleEducation(e, index)}
+                onClick={(e) => e.stopPropagation()}
+              />
+              {isLoading.university && (
+                <div className="absolute right-8 top-1/2 -translate-y-1/2">
+                  <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
                 </div>
               )}
+              {improve && hasErrors(index, "school") && (
+                <button
+                  type="button"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                  onClick={() =>
+                    setActiveTooltip(
+                      activeTooltip === `school-${index}`
+                        ? null
+                        : `school-${index}`
+                    )
+                  }
+                >
+                  <AlertCircle className="w-5 h-5" />
+                </button>
+              )}
             </div>
-          )}
-        </div>
-      </div>
 
-      {resumeData.education.map((education, index) => (
-        <div
-          key={index}
-          className="flex flex-col gap-4 p-4 border border-gray-300 rounded-md shadow-sm bg-white"
-        >
-          <input
-            type="text"
-            placeholder="School"
-            name="school"
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={education.school}
-            onChange={(e) => handleEducation(e, index)}
-          />
-          <input
-            type="text"
-            placeholder="Degree"
-            name="degree"
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={education.degree}
-            onChange={(e) => handleEducation(e, index)}
-          />
-          {/* <div className="flex flex-wrap gap-4">
+            {showUniversityDropdown && universitySuggestions.length > 0 && (
+              <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                {universitySuggestions.map((university, i) => (
+                  <div
+                    key={i}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
+                    onClick={() => selectUniversity(university, index)}
+                  >
+                    {university}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {renderTooltip(index, "school", "School Suggestions")}
+          </div>
+
+          {/* <div className="relative mb-4">
             <input
-              type="date"
-              placeholder="Start Year"
-              name="startYear"
-              className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={education.startYear}
+              type="text"
+              placeholder="Degree"
+              name="degree"
+              className={`w-full other-input border ${
+                improve && hasErrors(index, 'degree') ? 'border-red-500' : 'border-black'
+              }`}
+              value={education.degree}
               onChange={(e) => handleEducation(e, index)}
             />
-            <input
-              type="date"
-              placeholder="End Year"
-              name="endYear"
-              className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={education.endYear}
-              onChange={(e) => handleEducation(e, index)}
-            />
+            {improve && hasErrors(index, 'degree') && (
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                onClick={() => setActiveTooltip(activeTooltip === `degree-${index}` ? null : `degree-${index}`)}
+              >
+                <AlertCircle className="w-5 h-5" />
+              </button>
+            )}
+            {renderTooltip(index, 'degree', 'Degree Suggestions')}
           </div> */}
-           <div className="">
-            <label className="text-black">Start Date</label>
+          <div className="relative mb-4">
+            <input
+              type="text"
+              placeholder="Degree"
+              name="degree"
+              maxLength={150}
+              className={`w-full other-input border ${
+                improve && hasErrors(index, "degree")
+                  ? "border-red-500"
+                  : "border-black"
+              }`}
+              value={education.degree}
+              onChange={(e) => {
+                handleEducation(e, index);
+                fetchDegrees(e.target.value, index);
+              }}
+              onFocus={() => setShowDegreeDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDegreeDropdown(false), 200)}
+            />
+            {improve && hasErrors(index, "degree") && (
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                onClick={() =>
+                  setActiveTooltip(
+                    activeTooltip === `degree-${index}`
+                      ? null
+                      : `degree-${index}`
+                  )
+                }
+              >
+                <AlertCircle className="w-5 h-5" />
+              </button>
+            )}
+            {renderTooltip(index, "degree", "Degree Suggestions")}
+
+            {showDegreeDropdown && degreeSuggestions.length > 0 && (
+              <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md  shadow-lg">
+                {degreeSuggestions.map((degree, i) => (
+                  <li
+                    key={i}
+                    className="px-3 py-2 cursor-pointer hover:bg-gray-200"
+                    onMouseDown={() => {
+                      handleEducation(
+                        { target: { name: "degree", value: degree } },
+                        index
+                      );
+                      setShowDegreeDropdown(false);
+                    }}
+                  >
+                    {degree}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="">
+            <label className="text-black">{t("builder_forms.work_experience.start_date")}</label>
             <div className="flex-wrap-gap-2">
               <select
-                className="border-black border other-input  flex-1"
+                className={`border other-input flex-1 ${
+                  improve && hasErrors(index, "startYear")
+                    ? "border-red-500"
+                    : "border-black"
+                }`}
                 value={(education.startYear || "Aug,2020").split(",")[0]}
                 onChange={(e) => handleMonthChange(e, index, "startYear")}
               >
@@ -304,7 +426,11 @@ const Education = () => {
                 ))}
               </select>
               <select
-                className="other-input border-black border flex-1"
+                className={`other-input border flex-1 ${
+                  improve && hasErrors(index, "startYear")
+                    ? "border-red-500"
+                    : "border-black"
+                }`}
                 value={(education.startYear || "Aug,2020").split(",")[1]}
                 onChange={(e) => handleYearChange(e, index, "startYear")}
               >
@@ -316,12 +442,18 @@ const Education = () => {
                 ))}
               </select>
             </div>
-            <label className="text-black">End Date</label>
+
+            <label className="text-black">{t("builder_forms.work_experience.end_date")}</label>
             <div className="flex-wrap-gap-2">
               <select
-                className="other-input border-black border flex-1"
+                className={`other-input border flex-1 ${
+                  improve && hasErrors(index, "endYear")
+                    ? "border-red-500"
+                    : "border-black"
+                }`}
                 value={(education.endYear || "Jul,2024").split(",")[0]}
                 onChange={(e) => handleMonthChange(e, index, "endYear")}
+                disabled={education.endYear === "Present"} // Disable the month select if "Present" is checked
               >
                 <option value="">Month</option>
                 {months.map((month, idx) => (
@@ -331,9 +463,14 @@ const Education = () => {
                 ))}
               </select>
               <select
-                className="other-input border-black border flex-1"
+                className={`other-input border flex-1 ${
+                  improve && hasErrors(index, "endYear")
+                    ? "border-red-500"
+                    : "border-black"
+                }`}
                 value={(education.endYear || "Jul,2024").split(",")[1]}
                 onChange={(e) => handleYearChange(e, index, "endYear")}
+                disabled={education.endYear === "Present"} // Disable the year select if "Present" is checked
               >
                 <option value="">Year</option>
                 {years.map((year, idx) => (
@@ -342,35 +479,81 @@ const Education = () => {
                   </option>
                 ))}
               </select>
+              <label className="flex flex-1 items-center gap-1 other-input text-xl">
+                <input
+                  type="checkbox"
+                  checked={education.endYear === "Present"}
+                  onChange={() => handlePresentToggle(index)}
+                  className="w-6 h-6"
+                />
+                Present
+              </label>
             </div>
           </div>
-          
-          <label className="mt-2 text-black">Location</label>
-          <input
-            type="text"
-            placeholder="Location"
-            name="location"
-            className="w-full other-input border-black border"
-            value={education.location}
-            onChange={(e) => handleEducation(e, index)}
-          />
-          
+
+          <div className="relative">
+            <label className="mt-2 text-black">{t("builder_forms.work_experience.location")}</label>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Location"
+                name="location"
+                className={`w-full other-input border ${
+                  improve && hasErrors(index, "location")
+                    ? "border-red-500"
+                    : "border-black"
+                }`}
+                value={education.location}
+                onChange={(e) => handleEducation(e, index)}
+                onClick={(e) => e.stopPropagation()}
+              />
+              {isLoading.location && (
+                <div className="absolute right-8 top-1/2 -translate-y-1/2">
+                  <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+                </div>
+              )}
+              {improve && hasErrors(index, "location") && (
+                <button
+                  type="button"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                  onClick={() =>
+                    setActiveTooltip(
+                      activeTooltip === `location-${index}`
+                        ? null
+                        : `location-${index}`
+                    )
+                  }
+                >
+                  <AlertCircle className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+
+            {showLocationDropdown && locationSuggestions.length > 0 && (
+              <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                {locationSuggestions.map((location, i) => (
+                  <div
+                    key={i}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
+                    onClick={() => selectLocation(location, index)}
+                  >
+                    {location}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {renderTooltip(index, "location", "Location Suggestions")}
+          </div>
         </div>
       ))}
-
-<FormButton
+      <FormButton
         size={resumeData.education.length}
         add={addEducation}
         remove={removeEducation}
       />
-
     </div>
   );
-}
+};
 
 export default Education;
-
-
-
-
-

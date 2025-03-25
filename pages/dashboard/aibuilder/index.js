@@ -2,6 +2,7 @@ import Navbar from "../../Navbar/Navbar";
 import ProfileForm from "../../profile";
 import ProfilePage from "../Profile";
 import Sidebar from "../Sidebar";
+
 import React, { useState } from "react";
 
 import { FaBars } from "react-icons/fa"; //
@@ -19,10 +20,7 @@ export default function DashboardPage() {
   };
   return (
     <div>
-      <div className="min-h-screen flex flex-col items-center bg-gray-100">
-        <div className="w-full shadow-md">
-          <ProfilePage />
-        </div>
+      <div className=" flex flex-col items-center bg-gray-100">
         <Builder />
       </div>
     </div>
