@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { BASE_URL } from "../../components/Constant/constant";
+import { useTranslation } from "react-i18next";
 
 function Addreferall() {
     const [name, setName] = useState("");
@@ -8,6 +11,8 @@ function Addreferall() {
     const [email, setEmail] = useState("");
     const [remark, setRemark] = useState("");
     const [loading, setLoading] = useState(false);
+    const { i18n, t } = useTranslation();
+    const language = i18n.language;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +22,7 @@ function Addreferall() {
         const referralData = { name, phone, email, remark };
 
         try {
-            const response = await axios.post("https://api.resumeintellect.com/api/user/add-referral", referralData, {
+            const response = await axios.post(`${BASE_URL}/api/user/add-referral?lang=${language}`, referralData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': token,
@@ -95,7 +100,7 @@ function Addreferall() {
                                             />
                                         </div>
                                         <div className="text-center">
-                                        <button type="submit" className="w-full bg-white text-black border-green-500 border-2 px-6 py-3 rounded-lg font-bold " disabled={loading}>
+                                        <button type="submit" className="w-full bg-white text-blue-800 border-blue-800 border-2 px-6 py-3 rounded-lg font-bold " disabled={loading}>
                                             {loading ? "Submitting..." : "Submit"}
                                         </button>
                                         </div>
@@ -106,6 +111,7 @@ function Addreferall() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 }

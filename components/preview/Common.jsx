@@ -48,24 +48,6 @@ ImageWrapper.defaultProps = {
   borderColor: "black",
 };
 
-// const TextWrapper = ({
-//   name,
-//   position,
-//   headerColor = "black",
-//   orientation = "column",
-//   className = "",
-// }) => {
-//   return (
-//     <div
-//       className={`flex ${orientation === "row" ? "flex-row items-center " : "flex-col justify-center items-center"} ${className}`}
-//     >
-//       <h1 className="text-2xl font-bold" style={{ color: headerColor }}>
-//         {name}
-//       </h1>
-//       <p className="text-lg text-gray-700">{position}</p>
-//     </div>
-//   );
-// };
 
 const TextWrapper = ({
   name,
@@ -80,10 +62,16 @@ const TextWrapper = ({
         orientation === "row" ? "flex-row " : "flex-col "
       }  ${className}`}
     >
-      <h1 className="text-2xl font-bold" style={{ color: headerColor }}>
+      <h1 
+      contentEditable
+      suppressContentEditableWarning
+      className="text-2xl font-bold" style={{ color: headerColor }}>
         {name}
       </h1>
-      <p className="text-lg font-semibold text-gray-700">{position}</p>
+      <p 
+       contentEditable
+       suppressContentEditableWarning
+      className="text-lg font-semibold text-gray-700">{position}</p>
     </div>
   );
 };
@@ -118,14 +106,22 @@ const SummaryWrapper = ({ summary, headerColor = "black", editable = true, class
         >
           Summary
         </h2>
-        <p
+        {/* <p
         style={{color:headerColor}}
           className="break-words hover:outline-dashed hover:scale-105 hover:outline-2 hover:outline-gray-400"
           contentEditable={editable}
           suppressContentEditableWarning={true}
         >
           {summary}
-        </p>
+        </p> */}
+        <p
+  style={{ color: headerColor }}
+  className="break-words hover:outline-dashed hover:scale-105 hover:outline-2 hover:outline-gray-400"
+  contentEditable={editable}
+  suppressContentEditableWarning={true}
+  dangerouslySetInnerHTML={{ __html: summary }}
+></p>
+
       </div>
     )
   );

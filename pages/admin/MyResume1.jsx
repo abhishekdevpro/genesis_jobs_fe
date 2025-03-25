@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../../components/Constant/constant";
 
 const MyResume1 = () => {
   const [users, setUsers] = useState([]);
@@ -8,22 +9,23 @@ const MyResume1 = () => {
   const recordsPerPage = 20; // Records to display per page
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     // Fetch all user data
-    axios.get('https://api.resumeintellect.com/api/admin/users', {
-      headers: {
-        Authorization: token,
-      },
-    })
-    .then(response => {
-      const data = response.data.data;
+    axios
+      .get(`${BASE_URL}/api/admin/users`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        const data = response.data.data;
 
-      // Set users and calculate total pages based on records
-      setUsers(data);
-      setTotalPages(Math.ceil(data.length / recordsPerPage));
-    })
-    .catch(error => console.error('Error fetching user data:', error));
+        // Set users and calculate total pages based on records
+        setUsers(data);
+        setTotalPages(Math.ceil(data.length / recordsPerPage));
+      })
+      .catch((error) => console.error("Error fetching user data:", error));
   }, []);
 
   // Calculate the current records to display based on current page
@@ -47,10 +49,14 @@ const MyResume1 = () => {
 
   return (
     <div className="container mx-auto p-4 text-center">
+      <div className="bg-gradient-to-r from-pink-500 to-pink-700 p-6 rounded-lg shadow-lg mb-8">
+        <h2 className="text-start text-3xl text-white font-bold">All Customers</h2>
+      </div>
+
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-dark text-black rounded-md text-center">
+        <table className="min-w-full  bg-dark text-black rounded-md text-center">
           <thead>
-            <tr className="bg-blue-300">
+            <tr className="bg-pink-500 text-white">
               <th className="py-2 px-4">First Name</th>
               <th className="py-2 px-4">Last Name</th>
               <th className="py-2 px-4">Email</th>
@@ -83,7 +89,7 @@ const MyResume1 = () => {
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-300 rounded-md mx-2"
+          className="px-4 py-2 bg-gray-300 rounded-md mx-2 hover:bg-pink-500 hover:text-white"
         >
           Previous
         </button>
@@ -93,7 +99,7 @@ const MyResume1 = () => {
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-gray-300 rounded-md mx-2"
+          className="px-4 py-2 bg-gray-300 rounded-md mx-2  hover:bg-pink-500 hover:text-white"
         >
           Next
         </button>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import logo from "./logo.jpeg";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../../components/Constant/constant";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +13,8 @@ const Navbar = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isApiSuccess, setIsApiSuccess] = useState(false);
+  const { i18n, t } = useTranslation();
+  const language = i18n.language;
 
   const router = useRouter();
 
@@ -24,7 +28,7 @@ const Navbar = () => {
       const checkApiSuccess = async () => {
         try {
           const response = await fetch(
-            "https://api.resumeintellect.com/api/user/user-profile",
+            `${BASE_URL}/api/user/user-profile?lang=${language}`,
             {
               headers: {
                 Authorization: token,
@@ -65,12 +69,14 @@ const Navbar = () => {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <nav className="bg-black border-b border-gray-200">
+    <nav className="bg-white border-b border-gray-200">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0 flex items-center">
-            <Image src={logo} alt="logo" className="h-10 w-40" />
-          </div>
+          <Link href="/">
+            <div className="flex-shrink-0 flex items-center">
+              <Image src={logo} alt="logo" className="h-10 w-40" />
+            </div>
+          </Link>
           <div className="hidden md:flex justify-center items-center space-x-4">
             {/* <Link href="/adminlogin" className="text-white px-3 py-2 rounded-md text-lg font-semibold">
               <span className="mr-2">🛡️</span>

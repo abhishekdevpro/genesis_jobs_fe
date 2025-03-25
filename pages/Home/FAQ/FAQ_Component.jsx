@@ -3,6 +3,7 @@ import FAQItem from './FAQ_Item';
 
 import { useState } from 'react';
 import ContactUs from './Contact';
+import { BASE_URL } from '../../../components/Constant/constant';
 const FAQ = () => {
   const faqs = [
     {
@@ -102,7 +103,7 @@ const FAQ = () => {
     setSuccessMessage('');
 
     try {
-      const response = await fetch('https://api.resumeintellect.com/api/user/contact-us', {
+      const response = await fetch(`${BASE_URL}/api/user/contact-us`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,8 +125,8 @@ const FAQ = () => {
   };
 
   return (
-    <div id='faq' className=' bg-green-100'>
-    <div className=" max-w-4xl  mx-auto p-4" >
+    <div id='faq' className=' bg-gray-100'>
+    {/* <div className=" max-w-4xl  mx-auto p-4" >
       <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
@@ -137,7 +138,7 @@ const FAQ = () => {
       
 
 
-    </div>
+    </div> */}
 
    
       

@@ -1,11 +1,14 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "../../../components/Constant/constant";
+import { ResumeContext } from "../../../components/context/ResumeContext";
 
 const VerificationPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const { selectedLang } = useContext(ResumeContext);
 
   useEffect(() => {
     const { id } = router.query;
@@ -16,7 +19,7 @@ const VerificationPage = () => {
     const verifyUser = async () => {
       try {
         const response = await fetch(
-          `https://api.resumeintellect.com/api/user/verify-account/${id}`
+          `${BASE_URL}/api/user/verify-account/${id}?lang=${selectedLang}`
         );
         console.log(response);
         if (response.ok) {
@@ -29,7 +32,7 @@ const VerificationPage = () => {
           toast.error(
             "Verification failed. Please try again or contact support."
           );
-          router.push("/signup");
+          router.push("/login2");
         }
       } catch (error) {
         toast.error("An error occurred during verification. Please try again.");
@@ -68,7 +71,7 @@ const VerificationPage = () => {
                 <p className="mt-4 text-sm text-gray-600">
                   If the problem persists, please{" "}
                   <a
-                    href="mailto:support@resumeintellect.com"
+                    href="mailto:support@genesistech.ca"
                     className="text-blue-500 hover:underline"
                   >
                     contact support

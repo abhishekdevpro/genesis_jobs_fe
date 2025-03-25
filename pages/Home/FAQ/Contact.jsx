@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from "react";
+import { BASE_URL } from "../../../components/Constant/constant";
+import { useTranslation } from "react-i18next";
+import { ResumeContext } from "../../../components/context/ResumeContext";
 const ContactUs = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    remark: '',
+    name: "",
+    phone: "",
+    email: "",
+    remark: "",
   });
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-
+  const {selectedLang} = useContext(ResumeContext)
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const { t } = useTranslation();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -18,40 +21,40 @@ const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccessMessage('');
+    setError("");
+    setSuccessMessage("");
 
     try {
-      const response = await fetch('https://api.resumeintellect.com/api/user/contact-us', {
-        method: 'POST',
+      const response = await fetch(`${BASE_URL}/api/user/contact-us?lang=${selectedLang}`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit the form');
+        throw new Error(t("form.error_message"));
       }
 
       const data = await response.json();
-      setSuccessMessage('Message sent successfully!');
-      setFormData({ name: '', phone: '', email: '', remark: '' });
+      setSuccessMessage(t("form.success_message"));
+      setFormData({ name: "", phone: "", email: "", remark: "" });
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div className="bg-green-50 py-12 lg:py-20">
+    <div className="bg-gray-100 py-12 lg:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <h1 className="text-3xl font-bold text-center mb-8 sm:mb-12" id="phone">
-          Get In Touch
+        <h1
+          className="text-3xl font-bold text-center mb-8 sm:mb-12 text-[#00b38d]"
+          id="phone"
+        >
+          {t("getintouch")}
         </h1>
-        <p className="text-center mb-8 sm:mb-12">
-          Build professional, job-winning resumes in minutes with our AI-powered
-          tools and expert suggestions!
-        </p>
+        <p className="text-center mb-8 sm:mb-12">{t("contact_paragraph")}</p>
         {/* <div className="flex flex-col md:flex-row items-center justify-center gap-8 border border-green-500 ">
           <div className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-6 ">
             <div className="flex items-center mb-4">
@@ -63,10 +66,10 @@ const ContactUs = () => {
             <div className="">
               <button className="border px-3 p-2 rounded-lg">
                 <a
-                  href="mailto:info@resumeintellect.com"
+                  href="mailto:info@ciblijob.fr"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  info@resumeintellect.com
+                  info@ciblijob.fr
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"
@@ -166,22 +169,22 @@ const ContactUs = () => {
             <div className="flex items-center mb-4">
               <div className="text-3xl"> 📞</div>
               <h5 className="ml-3 text-slate-800 text-xl font-semibold">
-                Contact us
+                {t("contact_us")}
               </h5>
             </div>
             <p className="text-slate-600 font-semibold mb-1">
-              We are here to help
+              {t("we_are_here")}
             </p>
             <p className="text-slate-600 font-light mb-4 text-sm">
-              Contact us anytime
+              {t("contact_anytime")}
             </p>
             <div>
               <button className="border px-3 py-2 rounded-lg">
                 <a
-                  href="tel:18882008168"
+                  href="tel:0625782947"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  18882008168
+                  0625782947
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"
@@ -204,22 +207,22 @@ const ContactUs = () => {
             <div className="flex items-center mb-4">
               <div className="text-3xl">✉</div>
               <h5 className="ml-3 text-slate-800 text-xl font-semibold">
-                Email Us
+                {t("email_us")}
               </h5>
             </div>
             <p className="text-slate-600 font-semibold mb-1">
-              We are here to help
+              {t("we_are_here")}
             </p>
             <p className="text-slate-600 font-light mb-4 text-sm">
-              Contact us anytime
+              {t("contact_anytime")}
             </p>
             <div>
               <button className="border px-3 py-2 rounded-lg">
                 <a
-                  href="mailto:info@resumeintellect.com"
+                  href="mailto:bonjour@cibli.fR"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  info@resumeintellect.com
+                  bonjour@cibli.fR
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"
@@ -243,21 +246,21 @@ const ContactUs = () => {
             <div className="flex items-center mb-4">
               <div className="text-3xl">🗨</div>
               <h5 className="ml-3 text-slate-800 text-xl font-semibold">
-                Message Us
+                {t("message_us")}
               </h5>
             </div>
             <p className="text-slate-600 font-semibold mb-1">
-              We are here to help
+              {t("we_are_here")}
             </p>
             <p className="text-slate-600 font-light mb-4 text-sm">
-              Reach out for any assistance
+              {t("reach_out")}
             </p>
             <button
               className="border px-3 py-2 rounded-lg"
               onClick={() => setIsFormVisible(!isFormVisible)}
             >
               <span className="text-slate-800 font-semibold text-sm hover:underline flex items-center">
-                Chat
+                {t("chat")}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="ml-2 h-4 w-4"
@@ -280,7 +283,7 @@ const ContactUs = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
-                      Name
+                      {t("form.name")}
                     </label>
                     <input
                       type="text"
@@ -293,7 +296,7 @@ const ContactUs = () => {
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
-                      Phone
+                      {t("form.phone")}
                     </label>
                     <input
                       type="text"
@@ -306,7 +309,7 @@ const ContactUs = () => {
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
-                      Email
+                      {t("form.email")}
                     </label>
                     <input
                       type="email"
@@ -319,7 +322,7 @@ const ContactUs = () => {
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
-                      Remark
+                      {t("form.remark")}
                     </label>
                     <textarea
                       name="remark"
@@ -337,7 +340,7 @@ const ContactUs = () => {
                     type="submit"
                     className="bg-green-400 text-white px-4 py-2 rounded-lg"
                   >
-                    Send
+                    {t("form.send")}
                   </button>
                 </form>
               </div>

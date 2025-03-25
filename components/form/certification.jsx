@@ -1,18 +1,20 @@
-
-
 import React, { useContext, useState } from "react";
-// import { ResumeContext } from "../../pages/builder";
-import { Plus, X, Award } from "lucide-react";
+import FormButton from "./FormButton";
 import { ResumeContext } from "../context/ResumeContext";
+import { useRouter } from "next/router";
+import { ChevronDown, ChevronUp, AlertCircle, X, Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Certification = () => {
-  const { resumeData, setResumeData } = useContext(ResumeContext);
+  const { resumeData, setResumeData, resumeStrength } =
+    useContext(ResumeContext);
   const skillType = "certifications";
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const toggleSuggestions = (e) => {
-    e.preventDefault()
-    setShowSuggestions((prev) => !prev);
-  };
+  const title = "Certifications";
+  const router = useRouter();
+  const { improve } = router.query;
+  const [activeTooltip, setActiveTooltip] = useState(null);
+  const { t } = useTranslation();
+
 
   const handleSkills = (e, index, skillType) => {
     const newSkills = [...resumeData[skillType]];
@@ -21,127 +23,130 @@ const Certification = () => {
   };
 
   const addSkill = () => {
-    setResumeData({ ...resumeData, [skillType]: [...resumeData[skillType], ""] });
+    setResumeData({
+      ...resumeData,
+      [skillType]: [...resumeData[skillType], ""],
+    });
   };
 
   const removeSkill = (index) => {
-    const newSkills = [...resumeData[skillType]];
-    newSkills.splice(index, 1);
-    setResumeData({ ...resumeData, [skillType]: newSkills });
+    if (resumeData[skillType].length > 1) {
+      const newSkills = [...resumeData[skillType]];
+      newSkills.splice(-1, 1);
+      setResumeData({ ...resumeData, [skillType]: newSkills });
+    } else {
+      alert("At least one certification is required.");
+    }
   };
 
-  const removeAllCertifications = () => {
-    setResumeData({ ...resumeData, [skillType]: [] });
+  const deleteCertification = (indexToDelete) => {
+    if (resumeData[skillType].length) {
+      const newCertifications = resumeData[skillType].filter(
+        (_, index) => index !== indexToDelete
+      );
+      setResumeData({
+        ...resumeData,
+        [skillType]: newCertifications,
+      });
+    }
   };
 
-  if (!resumeData[skillType] || resumeData[skillType].length === 0) {
+  const hasErrors = (index, field) => {
+    const workStrength = resumeStrength?.certifications_strenght?.[index];
     return (
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Certifications</h2>
-          <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-            <Award className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-600 mb-4">No certifications added yet</p>
-            <button
-              onClick={addSkill}
-              className="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Your First Certification
-            </button>
-          </div>
-        </div>
-      </div>
+      workStrength &&
+      Array.isArray(workStrength[field]) &&
+      workStrength[field].length > 0
     );
-  }
+  };
+
+  const getErrorMessages = (index, field) => {
+    const workStrength = resumeStrength?.certifications_strenght?.[index];
+    return workStrength && Array.isArray(workStrength[field])
+      ? workStrength[field]
+      : [];
+  };
 
   return (
-    <div className="">
-      <div className="bg-white rounded-lg shadow-md p-2 md:p-6 ">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <Award className="h-6 w-6 text-blue-500" />
-            Certifications
-          </h2>
-          <button
-            onClick={addSkill}
-            className="inline-flex items-center px-4 py-2 bg-black text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add 
-          </button>
-        </div>
-
-        <div className="space-y-3 ">
-          {resumeData[skillType].map((skill, index) => (
-            <div
-              key={index}
-              className="group flex items-center gap-2 transition-all duration-200"
+    <div className="flex-col flex gap-3 w-full  mt-10 px-10">
+      <h2 className="input-title text-black  text-3xl">{t("resumeStrength.sections.certification")}</h2>
+      {resumeData[skillType].map((skill, index) => (
+        <div key={index} className="f-col justify-center">
+          <div className="relative flex justify-center items-center gap-2">
+            <input
+              type="text"
+              placeholder={title}
+              name={title}
+              maxLength={150}
+              className={`w-full h-full px-4 py-2 rounded-md border  ${
+                improve && hasErrors(index, "certifications")
+                  ? "border-red-500"
+                  : "border-black"
+              }`}
+              value={skill}
+              onChange={(e) => handleSkills(e, index, skillType)}
+            />
+            <button
+              onClick={() => deleteCertification(index)}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+              type="button"
             >
-              <div className="relative flex-grow">
-                <input
-                  type="text"
-                  placeholder="Enter certification name"
-                  value={skill}
-                  onChange={(e) => handleSkills(e, index, skillType)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
-                />
-              </div>
+              <Trash />
+            </button>
+            {improve && hasErrors(index, "certifications") && (
               <button
-                onClick={() => removeSkill(index)}
-                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-200"
-                aria-label="Remove certification"
+                type="button"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                onClick={() =>
+                  setActiveTooltip(
+                    activeTooltip === `certifications-${index}`
+                      ? null
+                      : `certifications-${index}`
+                  )
+                }
               >
-                <X className="h-5 w-5" />
+                <AlertCircle className="w-5 h-5" />
               </button>
-            </div>
-          ))}
-        </div>
-
-        {resumeData[skillType].length > 0 && (
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <div className="flex justify-between items-center ">
-              <button
-                onClick={removeAllCertifications}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200"
-                aria-label="Remove all certifications"
-              >
-                <X className="h-4 w-4 mr-2" />
-                Remove All Certifications
-              </button>
-              {resumeData.education_suggestions?.length > 0 && (
-                <div className="relative">
-                  <button
-                    onClick={toggleSuggestions}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-red-600 rounded-full text-sm font-medium  transition-colors duration-200"
-                  >
-                    {resumeData.certifications_suggestions.length} Suggestions
-                   
-                  </button>
-
-                  {showSuggestions && (
-                    <div className="absolute right-0 bottom-full mb-2 w-72 bg-white border border-red-200 rounded-lg shadow-lg p-4 z-10">
-                      <div className="text-red-600 font-medium mb-2">Suggested Improvements</div>
-                      <ul className="space-y-2">
-                        {resumeData.certifications_suggestions.map((suggestion, index) => (
-                          <li
-                            key={index}
-                            className="flex items-start gap-2 text-sm text-gray-700"
-                          >
-                            <span className="inline-block w-1 h-1 rounded-full bg-red-400 mt-2"></span>
-                            {suggestion}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="absolute bottom-[-8px] right-4 w-4 h-4 bg-white border-b border-r border-red-200 transform rotate-45"></div>
+            )}
+            {activeTooltip === `certifications-${index}` && (
+              <div className="absolute z-50 right-0 mt-2 w-80 bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-in-out border border-gray-700">
+                <div className="p-4 border-b border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <AlertCircle className="w-5 h-5 text-red-400" />
+                      <span className="font-medium text-black">
+                        Certifications Suggestion
+                      </span>
                     </div>
-                  )}
+                    <button
+                      onClick={() => setActiveTooltip(null)}
+                      className="text-black transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
-              )}
-            </div>
+                <div className="p-4">
+                  {getErrorMessages(index, "certifications").map((msg, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start space-x-3 mb-3 last:mb-0"
+                    >
+                      <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2"></div>
+                      <p className="text-black text-sm">{msg}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ))}
+      <FormButton
+        size={resumeData[skillType].length}
+        add={addSkill}
+        remove={removeSkill}
+      />
     </div>
   );
 };
