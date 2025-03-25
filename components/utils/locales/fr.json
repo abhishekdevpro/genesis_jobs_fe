@@ -72,7 +72,7 @@
                 "resume_builder": "Générateur de CV",
   "resume_description": "Pertinent pour l'automatisation et le téléchargement unique.",
   "starting_price": "À partir de",
-  "price_currency": "£",
+  "price_currency": "$",
   "price_amount": "0",
   "feature1": "Créer des CV optimisés",
   "feature2": "Copier et coller du contenu depuis le site",
@@ -94,7 +94,7 @@
   "get_started_b": "Commencer",
   "combo_title": "Combo Français-Anglais",
   "combo_description": "Conçu par des rédacteurs de CV experts",
-  "combo_price_currency": "£",
+  "combo_price_currency": "$",
   "combo_price_amount": "29",
   "combo_price_per_resume": "/CV",
   "feature1_c": "Créer des CV optimisés",
@@ -205,7 +205,7 @@
         
         "how_to_apply": "Comment postuler",
         "how_to_apply_description": "Si vous êtes passionné par l’aide aux autres et souhaitez faire partie d’une équipe dynamique et en pleine croissance, nous aimerions vous entendre. Pour postuler à un poste chez Genesis, veuillez envoyer votre CV et une lettre de motivation à",
-        "apply_email": "career@Genesis.ca",
+        "apply_email": "career@Genesistech.ca",
         
         "join_us": "Rejoignez-nous et faites la différence",
         "join_us_description": "Chez Genesis, vous aurez l’opportunité d’avoir un impact significatif chaque jour. Rejoignez-nous et contribuez à façonner l’avenir des chercheurs d’emploi à travers le monde. Nous avons hâte de vous accueillir dans notre équipe !",
@@ -277,7 +277,7 @@
             "childrensPrivacy": "Nos services ne sont pas destinés aux personnes de moins de 18 ans. Si un enfant fournit des données personnelles, nous les supprimerons.",
             "changesPolicy": "Nous pouvons mettre à jour cette Politique de Confidentialité. La poursuite de l'utilisation de nos services après des modifications signifie l'acceptation de la politique révisée.",
             "contactUs": "Si vous avez des questions, contactez-nous à :",
-            "email_name": "bonjour@cibli.fR",
+            "email_name": "abc@genesistech.ca",
           
             
               "title": "Générateur de CV IA",
@@ -478,7 +478,7 @@
                           "title": "10. Contact",
                           "list": [
                             "Si vous avez des questions concernant ces conditions générales, veuillez nous contacter à :",
-                            "Email : bonjour@cibli.fR"
+                            "Email : abc@genesistech.ca"
                           ]
                         }
                       ],
@@ -567,8 +567,8 @@
                           "professional_title": "Titre professionnel",
                           "languages": "Langues",
                           "age": "Âge",
-                          "current_salary": "Salaire actuel (£)",
-                          "expected_salary": "Salaire attendu (£)",
+                          "current_salary": "Salaire actuel ($)",
+                          "expected_salary": "Salaire attendu ($)",
                           "description": "Description",
                           "phone_number": "Numéro de téléphone",
                           "email": "E-mail",
@@ -1337,7 +1337,7 @@
     "help_support": "Besoin d'aide ou envie de modifier votre abonnement?",
     "contact_us": "Contactez-nous à:",
     "phone": "📞 855-695-3235",
-    "email": "📧 customersupport@Genesis.fr",
+    "email": "📧 customersupport@Genesistech.ca",
     "availability": "Disponible 7 jours sur 7:",
     "monday_friday": "Lundi-Vendredi: 8h - 20h (CST)",
     "saturday": "Samedi: 8h - 17h (CST)",

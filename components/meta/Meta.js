@@ -14,7 +14,7 @@ export default function Meta({ title, keywords, description }) {
         url: homepage,
         potentialAction: {
           "@type": "SearchAction",
-          target: "https://blog.ciblijob.fr/{search_term_string}",
+          target: "{search_term_string}",
           "query-input": "required name=search_term_string",
         },
       }),

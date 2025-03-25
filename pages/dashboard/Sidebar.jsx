@@ -312,11 +312,31 @@ const Sidebar = ({ onClose }) => {
         <li>
           <Link
             href="/dashboard"
-            className="flex items-center p-2 bg-pink-600 border-b-2 border-black font-semibold text-white"
+            className="flex items-center p-2 bg-black border-b-2 border-black font-semibold text-white"
             onClick={onClose}
           >
             <span className="mr-10">🖥️</span>
             <span>{t("dashboard")}</span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/dashboard/started"
+            className={getLinkClassName("/dashboard/started")}
+            onClick={onClose}
+          >
+            <span className="mr-2">👤</span>
+            <span>Get Started</span>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/dashboard/resumefromstarted"
+            className={getLinkClassName("/dashboard/resumefromstarted")}
+            onClick={onClose}
+          >
+            <span className="mr-2">👤</span>
+            <span>Document Center</span>
           </Link>
         </li>
         <li>

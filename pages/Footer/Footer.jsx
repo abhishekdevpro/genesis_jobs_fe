@@ -105,7 +105,7 @@
 //                   </Link>
 //                 </li> */}
 //                 <li>
-//                   <Link href="https://blog.ciblijob.fr/">
+//                   <Link href="">
 //                     <span>Resources</span>
 //                   </Link>
 //                 </li>
@@ -297,7 +297,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link href="https://blog.ciblijob.fr/">
+                  <Link href="">
                     <span>{t("footer.resources")}</span>
                   </Link>
                 </li>

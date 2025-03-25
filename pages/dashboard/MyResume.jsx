@@ -7,11 +7,12 @@ import { Download, Edit, Trash, Plus } from "lucide-react";
 import Link from "next/link";
 import { BASE_URL } from "../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
+import UploadResumeBtn from "../../components/resume-builder-steps/uploadresumebtn";
 
 const MyResume = () => {
   const { t } = useTranslation();
 
-  const { setResumeData,selectedLang } = useContext(ResumeContext);
+  const { setResumeData, selectedLang } = useContext(ResumeContext);
   const [resumes, setResumes] = useState([]);
   const [deleteresumeid, setDeleteresumeid] = useState(null);
   const [isDeleteModalOpen, setisDeleteModalOpen] = useState(false);
@@ -180,6 +181,7 @@ const MyResume = () => {
             {t("myresume.create_new_resume")}
           </button>
         </Link>
+        <UploadResumeBtn />
       </div>
 
       {/* Resume Table */}

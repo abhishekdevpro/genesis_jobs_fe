@@ -31,7 +31,7 @@ const InterviewSection = () => {
             </p>
           </div>
         </div>
-        <Link href={`https://blog.ciblijob.fr/`}>
+        <Link href={``}>
           <button className="px-6 py-2 border border-[#00b38d] text-[#00b38d] rounded-lg hover:bg-blue-50">
             {t("dashboard_interview.visitResources")}
           </button>

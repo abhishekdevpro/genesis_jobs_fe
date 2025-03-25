@@ -7,26 +7,26 @@ const Home_fourth = () => {
   const { t } = useTranslation();
   const course = [
     {
-      img: "https://blog.ciblijob.fr/wp-content/uploads/2025/01/Ciblijob-blog-How-AI-is-Revolutionizing-Resume-Building-A-Beginners-Guide-1.png",
+      img: "wp-content/uploads/2025/01/Ciblijob-blog-How-AI-is-Revolutionizing-Resume-Building-A-Beginners-Guide-1.png",
       title: "card_title1",
-      link: "https://blog.ciblijob.fr/?p=1",
+      link: "?p=1",
     },
     {
-      img: "https://blog.ciblijob.fr/wp-content/uploads/2025/01/Blog-2-Genesis-AI-Powered-Resume-Builders-vs-Traditional-Methods-Whats-Better.png",
+      img: "wp-content/uploads/2025/01/Blog-2-Genesis-AI-Powered-Resume-Builders-vs-Traditional-Methods-Whats-Better.png",
       title: "card_title2",
-      link: "https://blog.ciblijob.fr/?p=23",
+      link: "?p=23",
     },
 
     {
-      img: "https://blog.ciblijob.fr/wp-content/uploads/2025/01/Blog-3-Genesis-Top-5-Benefits-of-Using-an-AI-Resume-Builder.png",
+      img: "wp-content/uploads/2025/01/Blog-3-Genesis-Top-5-Benefits-of-Using-an-AI-Resume-Builder.png",
       title: "card_title3",
-      link: "https://blog.ciblijob.fr/?p=27",
+      link: "?p=27",
     },
 
     {
-      img: "https://blog.ciblijob.fr/wp-content/uploads/2025/01/Blog-4-Step-by-Step-Guide-to-Creating-a-Job-Winning-Resume-with-AI-Tools.png",
+      img: "wp-content/uploads/2025/01/Blog-4-Step-by-Step-Guide-to-Creating-a-Job-Winning-Resume-with-AI-Tools.png",
       title: "card_title4",
-      link: "https://blog.ciblijob.fr/?p=30",
+      link: "?p=30",
     },
   ];
   return (
@@ -65,7 +65,7 @@ const Home_fourth = () => {
           </div>
 
           <div className="flex justify-center mt-10">
-            <Link href={"https://blog.ciblijob.fr/"}>
+            <Link href={""}>
               <button className="px-6 py-3 text-lg font-semibold text-white bg-[#00b38d] hover:bg-[#00b38d] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00b38d]">
                 {t("get_moreadvice")}
               </button>
