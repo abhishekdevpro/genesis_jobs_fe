@@ -10,7 +10,7 @@ const ContactUs = () => {
     email: "",
     remark: "",
   });
-  const {selectedLang} = useContext(ResumeContext)
+  const { selectedLang } = useContext(ResumeContext);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { t } = useTranslation();
@@ -25,13 +25,16 @@ const ContactUs = () => {
     setSuccessMessage("");
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user/contact-us?lang=${selectedLang}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${BASE_URL}/api/user/contact-us?lang=${selectedLang}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(t("form.error_message"));
@@ -181,10 +184,10 @@ const ContactUs = () => {
             <div>
               <button className="border px-3 py-2 rounded-lg">
                 <a
-                  href="tel:0625782947"
+                  href="tel:67879879809798"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  0625782947
+                  67879879809798
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"
@@ -219,10 +222,10 @@ const ContactUs = () => {
             <div>
               <button className="border px-3 py-2 rounded-lg">
                 <a
-                  href="mailto:bonjour@cibli.fR"
+                  href="mailto:abc@genesistech.ca"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  bonjour@cibli.fR
+                  abc@genesistech.ca
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"

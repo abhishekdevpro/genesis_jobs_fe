@@ -28,17 +28,17 @@
 //         <div className="flex flex-col justify-between gap-2">
 //           <div>
 //             {/* <PricingSection /> */}
-//             {/* Plan Selection */} 
+//             {/* Plan Selection */}
 //              <div className="flex flex-col md:flex-row justify-center mt-6 gap-4">
 //               <PlanCard
 //                 title="Trial access"
-//                 price="£ 0"
+//                 price="$ 0"
 //                 selected={selectedPlan === "trial"}
 //                 onClick={() => setSelectedPlan("trial")}
 //               />
 //               <PlanCard
 //                 title="Starting"
-//                 price="£ 29 /Summary"
+//                 price="$ 29 /Summary"
 //                 selected={selectedPlan === "annual"}
 //                 onClick={() => setSelectedPlan("annual")}
 //               />
@@ -175,80 +175,81 @@ import Navbar from "../Navbar/Navbar";
 
 // Pricing data from your JSON
 const pricingData = {
-  "title": "Pricing Plans",
-  "subtitle": "Choose the plan that works best for you",
-  "intro": "Our pricing plans are designed to accommodate all your resume building needs.",
-  "bestValueLabel": "Best Value",
-  "freeLabel": "Free",
-  "freePlan": {
-    "title": "Free Plan",
-    "billingCycle": "Free Plan",
-    "price": "0",
-    "bestValue": "false",
-    "buttonText": "Get Started",
-    "feature1": "Unlimited Resume Edits",
-    "feature2": "Download in PDF",
-    "feature3": "Interactive Dashboard",
-    "feature4": "2 Unique Resume Templates",
-    "feature5": "2 Color Options & 2 Fonts",
-    "feature6": "Resume Parsing (ATS-Friendly)",
-    "feature7": "French Language Support",
-    "feature8": "Job Search & Career Resources",
-    "feature9": "Cover Letter Builder",
-    "feature10": "Job Alerts & Tracking"
+  title: "Pricing Plans",
+  subtitle: "Choose the plan that works best for you",
+  intro:
+    "Our pricing plans are designed to accommodate all your resume building needs.",
+  bestValueLabel: "Best Value",
+  freeLabel: "Free",
+  freePlan: {
+    title: "Free Plan",
+    billingCycle: "Free Plan",
+    price: "0",
+    bestValue: "false",
+    buttonText: "Get Started",
+    feature1: "Unlimited Resume Edits",
+    feature2: "Download in PDF",
+    feature3: "Interactive Dashboard",
+    feature4: "2 Unique Resume Templates",
+    feature5: "2 Color Options & 2 Fonts",
+    feature6: "Resume Parsing (ATS-Friendly)",
+    feature7: "French Language Support",
+    feature8: "Job Search & Career Resources",
+    feature9: "Cover Letter Builder",
+    feature10: "Job Alerts & Tracking",
   },
-  "singlePass": {
-    "title": "Single Pass",
-    "price": "9.99",
-    "billingCycle": "single",
-    "bestValue": "false",
-    "buttonText": "Get Started",
-    "feature1": "Everything in Free +",
-    "feature2": "27 Unique Resume Templates",
-    "feature3": "5 Color Options & 6 Fonts",
-    "feature4": "Resume Parsing (ATS-Friendly)",
-    "feature5": "Free Cover Letter Builder",
-    "feature6": "AI Resume Score & Feedback",
-    "feature7": "Skill Tests & Analysis",
-    "feature8": "AI-Enabled Content",
-    "feature9": "Auto-Improvement",
-    "feature10": "ATS Optimization"
+  singlePass: {
+    title: "Single Pass",
+    price: "9.99",
+    billingCycle: "single",
+    bestValue: "false",
+    buttonText: "Get Started",
+    feature1: "Everything in Free +",
+    feature2: "27 Unique Resume Templates",
+    feature3: "5 Color Options & 6 Fonts",
+    feature4: "Resume Parsing (ATS-Friendly)",
+    feature5: "Free Cover Letter Builder",
+    feature6: "AI Resume Score & Feedback",
+    feature7: "Skill Tests & Analysis",
+    feature8: "AI-Enabled Content",
+    feature9: "Auto-Improvement",
+    feature10: "ATS Optimization",
   },
-  "aiProMonth": {
-    "title": "AI Pro Month",
-    "price": "19.99",
-    "billingCycle": "month",
-    "bestValue": "false",
-    "buttonText": "Get Started",
-    "feature1": "Everything in Free +",
-    "feature2": "37 Unique Resume Templates",
-    "feature3": "8 Color Options & 6 Fonts",
-    "feature4": "Resume Parsing (ATS-Friendly)",
-    "feature5": "Free Cover Letter Builder",
-    "feature6": "AI Resume Score & Feedback",
-    "feature7": "Skill Tests & Analysis",
-    "feature8": "AI-Enabled Content",
-    "feature9": "Auto-Improvement",
-    "feature10": "ATS Optimization"
+  aiProMonth: {
+    title: "AI Pro Month",
+    price: "19.99",
+    billingCycle: "month",
+    bestValue: "false",
+    buttonText: "Get Started",
+    feature1: "Everything in Free +",
+    feature2: "37 Unique Resume Templates",
+    feature3: "8 Color Options & 6 Fonts",
+    feature4: "Resume Parsing (ATS-Friendly)",
+    feature5: "Free Cover Letter Builder",
+    feature6: "AI Resume Score & Feedback",
+    feature7: "Skill Tests & Analysis",
+    feature8: "AI-Enabled Content",
+    feature9: "Auto-Improvement",
+    feature10: "ATS Optimization",
   },
-  "aiProYearly": {
-    "title": "AI Pro Yearly",
-    "price": "149.99",
-    "billingCycle": "year",
-    "bestValue": "true",
-    "buttonText": "Get Started",
-    "feature1": "Everything in Free +",
-    "feature2": "37 Unique Resume Templates",
-    "feature3": "8 Color Options & 6 Fonts",
-    "feature4": "Resume Parsing (ATS-Friendly)",
-    "feature5": "Free Cover Letter Builder",
-    "feature6": "AI Resume Score & Feedback",
-    "feature7": "Skill Tests & Analysis",
-    "feature8": "AI-Enabled Content",
-    "feature9": "Auto-Improvement",
-    "feature10": "ATS Optimization",
-    "feature11": "Most Affordable ATS Optimization"
-  }
+  aiProYearly: {
+    title: "AI Pro Yearly",
+    price: "149.99",
+    billingCycle: "year",
+    bestValue: "true",
+    buttonText: "Get Started",
+    feature1: "Everything in Free +",
+    feature2: "37 Unique Resume Templates",
+    feature3: "8 Color Options & 6 Fonts",
+    feature4: "Resume Parsing (ATS-Friendly)",
+    feature5: "Free Cover Letter Builder",
+    feature6: "AI Resume Score & Feedback",
+    feature7: "Skill Tests & Analysis",
+    feature8: "AI-Enabled Content",
+    feature9: "Auto-Improvement",
+    feature10: "ATS Optimization",
+    feature11: "Most Affordable ATS Optimization",
+  },
 };
 
 export default function Payment() {
@@ -264,7 +265,7 @@ export default function Payment() {
     // Pass the selected plan to the next page as a query parameter
     router.push({
       pathname: "/payment/plans",
-      query: { plan: selectedPlan }
+      query: { plan: selectedPlan },
     });
   };
 
@@ -275,14 +276,14 @@ export default function Payment() {
   const getPlanFeatures = (planId) => {
     const plan = pricingData[planId];
     const features = [];
-    
+
     for (let i = 1; i <= 11; i++) {
       const featureKey = `feature${i}`;
       if (plan[featureKey]) {
         features.push(plan[featureKey]);
       }
     }
-    
+
     return features;
   };
 
@@ -296,21 +297,23 @@ export default function Payment() {
             ✨ {t("Cast a wider net – 10x your job applications")}
           </h2>
           <p className="text-gray-600 text-sm md:text-base">
-            {t("Our AI-powered platform scours millions of jobs to continuously find and apply to relevant job openings until you're hired.")}
+            {t(
+              "Our AI-powered platform scours millions of jobs to continuously find and apply to relevant job openings until you're hired."
+            )}
           </p>
         </div>
 
         <h2 className="text-xl md:text-2xl font-bold mt-6 text-center">
           {t("Kudos! You're one step closer to success")} 🎉
         </h2>
-        
+
         {/* Pricing Section Title */}
         <div className="text-center my-8">
           <h2 className="text-2xl font-bold">{t(pricingData.title)}</h2>
           <p className="text-gray-600 mt-2">{t(pricingData.subtitle)}</p>
           <p className="text-gray-500 mt-1">{t(pricingData.intro)}</p>
         </div>
-        
+
         <div className="flex flex-col justify-between gap-2">
           <div>
             {/* Pricing Plans */}
@@ -318,10 +321,12 @@ export default function Payment() {
               {plans.map((planId) => {
                 const plan = pricingData[planId];
                 return (
-                  <div 
+                  <div
                     key={planId}
                     className={`border rounded-lg p-4 flex flex-col w-full md:w-64 relative ${
-                      selectedPlan === planId ? "border-[#00b38d] bg-green-50" : "bg-white"
+                      selectedPlan === planId
+                        ? "border-[#00b38d] bg-green-50"
+                        : "bg-white"
                     }`}
                     onClick={() => handlePlanSelection(planId)}
                   >
@@ -339,16 +344,25 @@ export default function Payment() {
                         className="h-5 w-5 text-[#00b38d]"
                       />
                     </div>
-                    
+
                     <div className="text-2xl font-bold mb-1">
-                      {plan.price === "0" 
-                        ? t(pricingData.freeLabel) 
-                        : `£${t(plan.price)}${plan.billingCycle !== "single" ? `/${plan.billingCycle === "month" ? t("mo") : t("yr")}` : ""}`
-                      }
+                      {plan.price === "0"
+                        ? t(pricingData.freeLabel)
+                        : `$${t(plan.price)}${
+                            plan.billingCycle !== "single"
+                              ? `/${
+                                  plan.billingCycle === "month"
+                                    ? t("mo")
+                                    : t("yr")
+                                }`
+                              : ""
+                          }`}
                     </div>
-                    
-                    <div className="text-sm text-gray-500 mb-4">{t(plan.billingCycle)}</div>
-                    
+
+                    <div className="text-sm text-gray-500 mb-4">
+                      {t(plan.billingCycle)}
+                    </div>
+
                     <div className="flex-grow">
                       <ul className="space-y-2 text-sm">
                         {getPlanFeatures(planId).map((feature, idx) => (
@@ -363,7 +377,7 @@ export default function Payment() {
                 );
               })}
             </div>
-            
+
             {/* Selected Plan Features */}
             {/* <div className="border p-6 mt-6 rounded-lg bg-gray-100">
               <h3 className="font-semibold mb-4">{t("Selected Plan Features")}</h3>
@@ -374,7 +388,7 @@ export default function Payment() {
               </ul>
             </div> */}
           </div>
-          
+
           {/* Features & Payment Section */}
           <div className="flex flex-col md:flex-row gap-6 mt-8">
             {/* Features List */}
@@ -386,46 +400,61 @@ export default function Payment() {
                 <Feature
                   icon={<CheckCircle className="text-green-500" />}
                   title={t("Automate your job search")}
-                  description={t("We continuously scan millions of openings to find your top matches.")}
+                  description={t(
+                    "We continuously scan millions of openings to find your top matches."
+                  )}
                 />
                 <Feature
                   icon={<RefreshCw className="text-green-500" />}
                   title={t("10x your job applications")}
-                  description={t("Submit 10x as many applications with less effort than one manual application.")}
+                  description={t(
+                    "Submit 10x as many applications with less effort than one manual application."
+                  )}
                 />
                 <Feature
                   icon={<Bell className="text-green-500" />}
                   title={t("Wake up to your best matches")}
-                  description={t("Start each day with a list of roles matched to your skills and preferences.")}
+                  description={t(
+                    "Start each day with a list of roles matched to your skills and preferences."
+                  )}
                 />
                 <Feature
                   icon={<Clock className="text-green-500" />}
                   title={t("Save valuable hours every week")}
-                  description={t("Reclaim your time by letting our AI handle the grunt work of job searching.")}
+                  description={t(
+                    "Reclaim your time by letting our AI handle the grunt work of job searching."
+                  )}
                 />
                 <Feature
                   icon={<DollarSign className="text-green-500" />}
                   title={t("Money-back guarantee")}
-                  description={t("If you are unhappy for any reason during the trial, just let us know - we'll refund your money.")}
+                  description={t(
+                    "If you are unhappy for any reason during the trial, just let us know - we'll refund your money."
+                  )}
                 />
                 <Feature
                   icon={<CheckCircle className="text-green-500" />}
                   title={t("24/7 customer support")}
-                  description={t("Get assistance anytime with our award-winning customer care service.")}
+                  description={t(
+                    "Get assistance anytime with our award-winning customer care service."
+                  )}
                 />
               </div>
               <div className="mt-6">
-                <button 
+                <button
                   onClick={goToNextPage}
                   className="w-full bg-[#00b38d] text-white text-lg font-semibold py-3 rounded-lg"
                 >
                   {t("Next")}
                 </button>
                 <p className="text-gray-600 text-center mt-4">
-                  <strong>{t("Got questions?")}</strong> {t("Contact our 24/7 customer support.")}
+                  <strong>{t("Got questions?")}</strong>{" "}
+                  {t("Contact our 24/7 customer support.")}
                 </p>
                 <p className="text-gray-600 text-center">
-                  {t("You may cancel by email, online, or by calling us toll-free at 855-695-3235.")}
+                  {t(
+                    "You may cancel by email, online, or by calling us toll-free at 855-695-3235."
+                  )}
                 </p>
               </div>
             </div>

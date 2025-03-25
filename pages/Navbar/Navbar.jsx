@@ -178,7 +178,7 @@
 //               Jobs
 //             </Link>
 //             <Link
-//               href="https://blog.ciblijob.fr/"
+//               href=""
 //               className="text-white hover:text-[#00b38d] px-3 py-2 rounded-md text-lg font-semibold"
 //             >
 //               Resources
@@ -337,7 +337,7 @@
 //                 AI Resume Builder
 //               </Link>
 //               <Link
-//                 href="https://blog.ciblijob.fr/"
+//                 href=""
 //                 className="text-white hover:text-[#00b38d] block  px-3 py-2 rounded-md text-base font-semibold"
 //               >
 //                 Resources
@@ -396,7 +396,7 @@
 //                 AI Resume Builder
 //               </Link>
 //               <Link
-//                 href="https://blog.ciblijob.fr/"
+//                 href=""
 //                 className="text-white hover:text-[#00b38d] block px-3 py-2 rounded-md text-base font-semibold"
 //               >
 //                 Resources
@@ -689,7 +689,7 @@ const Navbar = () => {
               {t("jobs")}
             </Link>
             <Link
-              href="https://blog.ciblijob.fr/"
+              href=""
               className="text-white hover:text-[#00b38d] px-3 py-2 rounded-md text-lg font-semibold"
             >
               {t("resources")}
@@ -837,7 +837,7 @@ const Navbar = () => {
                 {t("ai_resume_builder")}
               </Link>
               <Link
-                href="https://blog.ciblijob.fr/"
+                href=""
                 className="text-white hover:text-[#00b38d] block px-3 py-2 rounded-md text-base font-semibold"
               >
                 {t("resources")}
