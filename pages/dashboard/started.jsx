@@ -16,6 +16,10 @@ export default function Started() {
   const handlePosition = () => {
     router.push("/dashboard/interviewhub");
   };
+  const handleInterview = () => {
+    router.push("/dashboard/liveinterview");
+  };
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -58,8 +62,8 @@ export default function Started() {
               {[
                 { label: "Add your resume", action: handleAddResumeClick },
                 { label: "Add your position", action: handlePosition },
-                { label: "Launch an interview", action: () => {} },
-                { label: "View interview report", action: () => {} },
+                { label: "Launch an interview", action: handleInterview },
+                { label: "View interview report", action: handleInterview },
               ].map((step, index) => (
                 <div
                   key={index}
