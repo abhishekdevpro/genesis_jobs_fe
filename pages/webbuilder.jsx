@@ -38,6 +38,7 @@ import PayAndDownload from "../components/PayDownload";
 import { BASE_URL } from "../components/Constant/constant";
 import { useTranslation } from "react-i18next";
 import { SaveLoader } from "../components/ResumeLoader/SaveLoader";
+import FontSelector from "./FontSelector";
 
 const Print = dynamic(() => import("../components/utility/WinPrint"), {
   ssr: false,
@@ -365,62 +366,117 @@ export default function WebBuilder() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
+  // const downloadAsPDF = async () => {
+  //   handleFinish();
+  //   if (!templateRef.current) {
+  //     toast.error("Template reference not found");
+  //     return;
+  //   }
+  //   setLoading("download");
+  //   try {
+  //     // Get the HTML content from the template
+  //     const htmlContent = templateRef.current.innerHTML;
+
+  //     // Generate the full HTML for the PDF
+  //     const fullContent = `
+  //       <style>
+  //         @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
+  //       </style>
+  //       ${htmlContent}
+  //     `;
+
+  //     // API call to generate the PDF
+  //     const response = await axios.post(
+  //       `${BASE_URL}/api/user/generate-pdf-py`,
+  //       // { html: fullContent },
+  //       { html: fullContent, pdf_type: selectedPdfType },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: token,
+  //         },
+  //       }
+  //     );
+
+  //     // Check if the file path was returned
+  //     // const filePath = response.data.data?.file_path;
+  //     // if (!filePath) {
+  //     //   throw new Error('PDF file path not received');
+  //     // }
+
+  //     // Construct the URL
+  //     // const downloadUrl = `${BASE_URL}${filePath}`;
+
+  //     // Open the URL in a new tab
+  //     // createPayment();
+  //     // window.open(downloadUrl, '_blank');
+
+  //     // toast.success('PDF generated and opened in a new tab!');
+  //     // initiateCheckout();
+  //     downloadPDF();
+  //     // toast.success("PDF generation request sent successfully!");
+  //   } catch (error) {
+  //     console.error("PDF generation error:", error);
+  //     toast.error(
+  //       error.response?.data?.message || "Failed to generate and open PDF"
+  //     );
+  //   } finally {
+  //     setLoading(null);
+  //   }
+  // };
   const downloadAsPDF = async () => {
     handleFinish();
     if (!templateRef.current) {
       toast.error("Template reference not found");
       return;
     }
-    setLoading("download");
+
+    setisDownloading(true); // Start loading before the async operation
+
     try {
-      // Get the HTML content from the template
+      const token = localStorage.getItem("token");
       const htmlContent = templateRef.current.innerHTML;
 
-      // Generate the full HTML for the PDF
       const fullContent = `
-        <style>
-          @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
-        </style>
-        ${htmlContent}
-      `;
+            <style>
+                @import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
+            </style>
+            ${htmlContent}
+        `;
 
-      // API call to generate the PDF
-      const response = await axios.post(
-        `${BASE_URL}/api/user/generate-pdf-py`,
-        // { html: fullContent },
-        { html: fullContent, pdf_type: selectedPdfType },
+      const response = await axios.get(
+        `${BASE_URL}/api/user/download-resume/${resumeId}?pdf_type=${selectedPdfType}`,
+
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: token,
+            "Content-Type": "application/pdf",
           },
+          responseType: "blob",
         }
       );
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
 
-      // Check if the file path was returned
-      // const filePath = response.data.data?.file_path;
-      // if (!filePath) {
-      //   throw new Error('PDF file path not received');
-      // }
+      link.setAttribute("download", `resume.pdf`);
+      document.body.appendChild(link);
+      link.click();
 
-      // Construct the URL
-      // const downloadUrl = `${BASE_URL}${filePath}`;
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
 
-      // Open the URL in a new tab
-      // createPayment();
-      // window.open(downloadUrl, '_blank');
-
-      // toast.success('PDF generated and opened in a new tab!');
-      // initiateCheckout();
-      downloadPDF();
-      // toast.success("PDF generation request sent successfully!");
+      // downloadPDF();
+      // initiateCheckout(); // Call this only if the request is successful
     } catch (error) {
       console.error("PDF generation error:", error);
       toast.error(
         error.response?.data?.message || "Failed to generate and open PDF"
       );
     } finally {
-      setLoading(null);
+      setisDownloading(false); // Ensure loading is stopped after success or failure
     }
   };
   const initiateCheckout = async () => {
@@ -743,7 +799,7 @@ export default function WebBuilder() {
                 </div>
 
                 <div className="hidden lg:flex items-center gap-4">
-                  <select
+                  {/* <select
                     value={selectedFont}
                     onChange={handleFontChange}
                     className="w-40 h-10 rounded-lg border border-green-500 px-4 font-bold text-black bg-white focus:ring-2 focus:ring-green-600"
@@ -753,8 +809,8 @@ export default function WebBuilder() {
                     <option value="Georgia">Georgia</option>
                     <option value="Roboto">Roboto</option>
                     <option value="Poppins">Poppins</option>
-                  </select>
-
+                  </select> */}
+                  <FontSelector />
                   <div className="flex items-center gap-4">
                     {/* <ColorPicker
                       selectedColor={headerColor}
@@ -864,7 +920,7 @@ export default function WebBuilder() {
           <div className=" flex flex-col">
             <div className="hidden md:flex w-screen px-8 py-4 justify-between items-center bg-white shadow">
               <div className="flex gap-4 ">
-                <select
+                {/* <select
                   value={selectedFont}
                   onChange={handleFontChange}
                   className="w-40 h-10 rounded-lg border-2 border-green-500 px-8 p-1 font-bold  bg-white text-black mt-2"
@@ -874,7 +930,10 @@ export default function WebBuilder() {
                   <option value="Georgia">Georgia</option>
                   <option value="Roboto">Roboto</option>
                   <option value="Poppins">Poppins</option>
-                </select>
+                </select> */}
+                <div className="mt-3">
+                  <FontSelector />
+                </div>
                 {/* <ColorPicker
                   selectedColor={headerColor}
                   onChange={setHeaderColor}
@@ -964,7 +1023,7 @@ export default function WebBuilder() {
                         <div className="md:w-1/2 w-full p-4 ">
                           <div className="text-center mb-6">
                             <h2 className="text-2xl font-bold text-gray-900">
-                              $49
+                              £49
                             </h2>
                             <p className="text-sm text-gray-500">
                               Total Amount
