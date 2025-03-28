@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import logo from "../login2/logo.png";
+import logo from "../login2/logo.jpeg";
 import { useRouter } from "next/router";
 import { BASE_URL } from "../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
