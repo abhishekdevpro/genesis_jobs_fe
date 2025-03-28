@@ -14,7 +14,7 @@
 
 //         <p className="text-base sm:text-lg">
 //           Welcome to Genesis. These terms and conditions outline the rules and
-//           regulations for the use of Cibli Jobs website and services. By
+//           regulations for the use of Genesiss website and services. By
 //           accessing this website and using our services, you accept these terms
 //           and conditions in full. If you disagree with any part of these terms
 //           and conditions, please do not use our website or services.
