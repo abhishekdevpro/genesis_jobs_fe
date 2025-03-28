@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import logo from "./Navbar/logo.png";
+import logo from "./Navbar/logo.jpeg";
 import Image from "next/image";
 import Link from "next/link";
 const Custom404 = () => {

@@ -113,7 +113,7 @@
 
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import logo from "../../forgotpassword/logo.png";
+import logo from "../../forgotpassword/logo.jpeg";
 import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -228,7 +228,7 @@ function ResetPassword() {
     newPassword: "",
     confirmPassword: "",
   });
-  const {selectedLang} = useContext(ResumeContext)
+  const { selectedLang } = useContext(ResumeContext);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -258,7 +258,10 @@ function ResetPassword() {
       formDataToSend.append("new_password", formData.newPassword);
       // formDataToSend.append("email", email);
 
-      const response = await axios.post(`${BASE_URL}/api/user/reset-password?lang=${selectedLang}`, formDataToSend);
+      const response = await axios.post(
+        `${BASE_URL}/api/user/reset-password?lang=${selectedLang}`,
+        formDataToSend
+      );
 
       if (response.status === 200) {
         toast.success("Password reset successfully");
@@ -267,7 +270,9 @@ function ResetPassword() {
         toast.error("Failed to reset password");
       }
     } catch (error) {
-      console.error(error.response?.data || error.message || "An error occurred");
+      console.error(
+        error.response?.data || error.message || "An error occurred"
+      );
       toast.error(error.response?.data?.message || "An error occurred");
     }
   };
@@ -296,7 +301,9 @@ function ResetPassword() {
               placeholder="Enter your new password"
               required
             />
-            <label className="block text-black mb-2 mt-4">Confirm Password</label>
+            <label className="block text-black mb-2 mt-4">
+              Confirm Password
+            </label>
             <input
               type="password"
               name="confirmPassword"
