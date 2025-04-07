@@ -756,7 +756,7 @@ export default function MobileBuilder() {
                 </div>
               </aside>
 
-              <main className="flex-1 max-w-2xl mx-auto md:p-4">
+              <main className="flex-1 max-w-2xl mx-auto md:p-4 overflow-y-auto max-h-[600px]">
                 <form>{sections[currentSection].component}</form>
               </main>
             </div>
