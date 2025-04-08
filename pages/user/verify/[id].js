@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BASE_URL } from "../../../components/Constant/constant";
 import { ResumeContext } from "../../../components/context/ResumeContext";
+import axiosInstance from "../../../components/utils/axiosInstance";
 
 const VerificationPage = () => {
   const router = useRouter();
@@ -18,8 +19,8 @@ const VerificationPage = () => {
 
     const verifyUser = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/api/user/verify-account/${id}?lang=${selectedLang}`
+        const response = await axiosInstance.get(
+          `/api/user/verify-account/${id}?lang=${selectedLang}`
         );
         console.log(response);
         if (response.ok) {

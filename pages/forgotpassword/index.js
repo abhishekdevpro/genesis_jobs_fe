@@ -98,13 +98,14 @@
 // export default Index;
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import logo from "../forgotpassword/logo.jpeg";
+import logo from "../forgotpassword/logo.png";
 import Image from "next/image";
 import axios from "axios";
 import { BASE_URL } from "../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import Navbar from "../Navbar/Navbar";
+import axiosInstance from "../../components/utils/axiosInstance";
 
 function Index() {
   const { t } = useTranslation(); // Initialize i18n hook
@@ -130,8 +131,8 @@ function Index() {
     formDataToSend.append("email", formData.email);
 
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/user/forget-password`,
+      const response = await axiosInstance.post(
+        `/api/user/forget-password`,
         formDataToSend,
         {
           headers: {
