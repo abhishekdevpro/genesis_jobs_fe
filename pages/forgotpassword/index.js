@@ -98,7 +98,7 @@
 // export default Index;
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import logo from "../forgotpassword/logo.png";
+import logo from "./logo.jpeg";
 import Image from "next/image";
 import axios from "axios";
 import { BASE_URL } from "../../components/Constant/constant";
