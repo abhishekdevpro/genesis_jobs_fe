@@ -120,6 +120,7 @@ import { toast } from "react-toastify";
 import { BASE_URL } from "../../../components/Constant/constant";
 import Navbar from "../../Navbar/Navbar";
 import { ResumeContext } from "../../../components/context/ResumeContext";
+import axiosInstance from "../../../components/utils/axiosInstance";
 
 // function ResetPassword() {
 //   const router = useRouter();
@@ -258,8 +259,8 @@ function ResetPassword() {
       formDataToSend.append("new_password", formData.newPassword);
       // formDataToSend.append("email", email);
 
-      const response = await axios.post(
-        `${BASE_URL}/api/user/reset-password?lang=${selectedLang}`,
+      const response = await axiosInstance.post(
+        `/api/user/reset-password?lang=${selectedLang}`,
         formDataToSend
       );
 

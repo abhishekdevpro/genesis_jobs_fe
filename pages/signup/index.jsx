@@ -11,6 +11,7 @@ import logo from "./logo.jpeg";
 import { BASE_URL } from "../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
 import { ResumeContext } from "../../components/context/ResumeContext";
+import axiosInstance from "../../components/utils/axiosInstance";
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -56,8 +57,8 @@ const Signup = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/user/auth/signup?lang=${selectedLang}`,
+      const response = await axiosInstance.post(
+        `/api/user/auth/signup?lang=${selectedLang}`,
         body,
         {
           headers: {

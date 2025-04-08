@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { BASE_URL } from "../../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
 import { ResumeContext } from "../../../components/context/ResumeContext";
+import axiosInstance from "../../../components/utils/axiosInstance";
 const ContactUs = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,8 +26,8 @@ const ContactUs = () => {
     setSuccessMessage("");
 
     try {
-      const response = await fetch(
-        `${BASE_URL}/api/user/contact-us?lang=${selectedLang}`,
+      const response = await axiosInstance.post(
+        `/api/user/contact-us?lang=${selectedLang}`,
         {
           method: "POST",
           headers: {
