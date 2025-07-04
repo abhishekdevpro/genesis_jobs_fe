@@ -37,7 +37,7 @@
 //               <Image src={logo} alt="logo" className="h-10  w-[140px]" />
 //             </Link>
 //           </div>
-//           <h1>Genesis ID</h1>
+//           <h1>GENESIS ID</h1>
 //           <p>Your One-Stop Access to Career Solutions</p>
 //           <p>
 //             <em>Coming Soon!</em>
@@ -51,11 +51,11 @@
 //           <p>90% Complete</p>
 //         </div>
 //         <p>
-//           Genesis ID will allow you to seamlessly connect to all our services
+//           GENESIS ID will allow you to seamlessly connect to all our services
 //           with a single account. Stay tuned for the launch!
 //         </p>
 //         <div className="">
-//           <p>Want to know when Genesis ID is live? Sign up for updates!</p>
+//           <p>Want to know when GENESIS ID is live? Sign up for updates!</p>
 //           <form>
 //             <input
 //               type="email"
@@ -92,7 +92,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import logo from "../Navbar/logo.jpeg"; // Update path to your logo
+import logo from "../Navbar/logo.png"; // Update path to your logo
 
 function CibliJobId({ isOpen, onClose }) {
   const { t } = useTranslation();
@@ -114,8 +114,9 @@ function CibliJobId({ isOpen, onClose }) {
       }}
     >
       <div
+        className=" bg-gradient-to-b from-white to-teal-200"
         style={{
-          backgroundColor: "white",
+          // backgroundColor: "white",
           padding: "20px",
           borderRadius: "8px",
           maxWidth: "600px",
@@ -126,7 +127,12 @@ function CibliJobId({ isOpen, onClose }) {
         <div className="hero">
           <div className="flex justify-center items-center mb-2">
             <Link href="/">
-              <Image src={logo} alt="logo" className="h-10 w-[140px]" />
+              {/* <Image src={logo} alt="logo" className="h-10 w-[140px]" /> */}
+              <Link href="/">
+                <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+                  GENESIS
+                </h1>
+              </Link>
             </Link>
           </div>
           <h1>{t("modal.title")}</h1>

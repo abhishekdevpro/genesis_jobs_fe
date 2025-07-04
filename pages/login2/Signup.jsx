@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import logo from "../login2/logo.jpeg";
+import logo from "../login2/logo.png";
 import { useRouter } from "next/router";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
@@ -94,7 +94,12 @@ function Signup() {
     <div className="flex justify-center items-center">
       <div className="p-8 rounded-xl shadow-lg shadow-slate-700 w-full max-w-lg m-5">
         <div className="flex justify-center mb-4">
-          <Image src={logo} className="w-40 h-10" alt="Logo" />
+          {/* <Image src={logo} className="w-40 h-10" alt="Logo" /> */}
+          <Link href="/">
+            <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+              GENESIS
+            </h1>
+          </Link>
         </div>
         <div className="text-2xl text-black text-center font-bold">
           {t("signuppage.create_account")}
@@ -199,7 +204,10 @@ function Signup() {
                 className="mr-2"
                 disabled={isLoading}
               />
-              <Link href={"/TermsandConditions"}>
+              <Link
+                className="text-[#00b38d] underline"
+                href={"/terms&conditions"}
+              >
                 {" "}
                 {t("loginpage.agree_terms")}
                 {t("loginpage.terms_conditions")}
@@ -208,7 +216,7 @@ function Signup() {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#00b38d] text-black px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-[#00b38d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#00b38d] text-white px-4 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-[#00b38d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? (

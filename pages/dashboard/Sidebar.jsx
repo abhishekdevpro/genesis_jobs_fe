@@ -11,8 +11,8 @@
 //   };
 //   const getLinkClassName = (path) => {
 //     return router.pathname === path
-//       ? "flex items-center p-2 bg-[#00b38d] border-b-2 rounded font-semibold text-white"
-//       : "flex items-center p-2 hover:bg-[#00b38d]  border-b-2 rounded font-semibold  ";
+//       ? "flex items-center p-2 bg-teal-700 border-b-2 rounded font-semibold text-white"
+//       : "flex items-center p-2 hover:bg-teal-700  border-b-2 rounded font-semibold  ";
 //   };
 
 //   return (
@@ -22,7 +22,7 @@
 //         <li>
 //           <Link
 //             href="/dashboard"
-//             className="flex items-center p-2 bg-pink-600 border-b-2 border-black font-semibold text-white"
+//             className="flex items-center p-2 bg-black border-b-2 border-black font-semibold text-white"
 //             onClick={onClose} // Close sidebar on link click
 //           >
 //             <span className="mr-10 ">🖥️</span>
@@ -152,7 +152,7 @@
 //         <li>
 //           <Link
 //             href="/"
-//             className="flex items-center p-2 hover:bg-[#00b38d]  border-b-2 rounded font-semibold"
+//             className="flex items-center p-2 hover:bg-teal-700  border-b-2 rounded font-semibold"
 //             onClick={() => {
 //               handleLogout();
 //             }}
@@ -182,8 +182,8 @@ const Sidebar = ({ onClose }) => {
   };
   const getLinkClassName = (path) => {
     return router.pathname === path
-      ? "flex items-center p-2 bg-[#00b38d] border-b-2 rounded font-semibold text-white"
-      : "flex items-center p-2 hover:bg-[#00b38d]  border-b-2 rounded font-semibold  ";
+      ? "flex items-center p-2 bg-teal-700 border-b-2 rounded font-semibold text-white"
+      : "flex items-center p-2 hover:bg-teal-700  border-b-2 rounded font-semibold  ";
   };
 
   return (
@@ -193,7 +193,7 @@ const Sidebar = ({ onClose }) => {
     //     <li>
     //       <Link
     //         href="/dashboard"
-    //         className="flex items-center p-2 bg-pink-600 border-b-2 border-black font-semibold text-white"
+    //         className="flex items-center p-2 bg-black border-b-2 border-black font-semibold text-white"
     //         onClick={onClose} // Close sidebar on link click
     //       >
     //         <span className="mr-10 ">🖥️</span>
@@ -296,7 +296,7 @@ const Sidebar = ({ onClose }) => {
     //     <li>
     //       <Link
     //         href="/"
-    //         className="flex items-center p-2 hover:bg-[#00b38d]  border-b-2 rounded font-semibold"
+    //         className="flex items-center p-2 hover:bg-teal-700  border-b-2 rounded font-semibold"
     //         onClick={() => {
     //           handleLogout();
     //         }}
@@ -419,7 +419,7 @@ const Sidebar = ({ onClose }) => {
             <span>{t("skill_history")}</span>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link
             href="/dashboard/paymentpage"
             className={getLinkClassName("/dashboard/paymentpage")}
@@ -428,11 +428,11 @@ const Sidebar = ({ onClose }) => {
             <span className="mr-2">💳</span>
             <span>{t("payment")}</span>
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link
             href="/"
-            className="flex items-center p-2 hover:bg-[#00b38d] border-b-2 rounded font-semibold"
+            className="flex items-center p-2 hover:bg-teal-700 border-b-2 rounded font-semibold"
             onClick={() => {
               handleLogout();
             }}

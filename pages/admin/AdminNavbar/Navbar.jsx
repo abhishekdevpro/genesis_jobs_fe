@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import logo from "./logo.jpeg";
+import logo from "./logo.png";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../../components/Constant/constant";
@@ -72,10 +72,15 @@ const Navbar = () => {
     <nav className="bg-white border-b border-gray-200">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/">
+          {/* <Link href="/">
             <div className="flex-shrink-0 flex items-center">
               <Image src={logo} alt="logo" className="h-10 w-40" />
             </div>
+          </Link> */}
+          <Link href="/">
+            <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+              GENESIS
+            </h1>
           </Link>
           <div className="hidden md:flex justify-center items-center space-x-4">
             {/* <Link href="/adminlogin" className="text-white px-3 py-2 rounded-md text-lg font-semibold">

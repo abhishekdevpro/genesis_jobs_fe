@@ -35,7 +35,7 @@
 //           </button>
 //           <Link
 //             href="/login"
-//             className="px-4 py-2 bg-[#00b38d] text-white rounded hover:bg-[#00b38d] transition-colors"
+//             className="px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-700 transition-colors"
 //           >
 //             Login
 //           </Link>
@@ -66,7 +66,7 @@
 //             <Link
 //               href={`${item.redirect_url}`}
 //               // href={""}
-//               className="text-lg font-semibold text-gray-900 hover:text-[#00b38d] transition-colors"
+//               className="text-lg font-semibold text-gray-900 hover:text-teal-700 transition-colors"
 //             >
 //               {item.job_title}
 //             </Link>
@@ -98,7 +98,7 @@
 
 //         {item.job_type && (
 //           <div className="flex items-center">
-//             <span className="px-3 py-1 text-sm text-[#00b38d] bg-blue-50 rounded-full">
+//             <span className="px-3 py-1 text-sm text-teal-700 bg-blue-50 rounded-full">
 //               {item.job_type}
 //             </span>
 //           </div>
@@ -113,7 +113,7 @@
 //           </button>
 //           <button
 //             onClick={() => onApplyNow(item.id)}
-//             className="p-2 text-gray-600 hover:text-[#00b38d] transition-colors"
+//             className="p-2 text-gray-600 hover:text-teal-700 transition-colors"
 //           >
 //             <Bookmark className="w-5 h-5" />
 //           </button>
@@ -296,7 +296,7 @@
 //           </div>
 //           {/* <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
 //           <div
-//             className="bg-[#00b38d] h-2 rounded-full transition-all duration-300"
+//             className="bg-teal-700 h-2 rounded-full transition-all duration-300"
 //             style={{ width: `${(displayedJobs.length / jobs.length) * 100}%` }}
 //           ></div>
 //         </div> */}
@@ -304,7 +304,7 @@
 //          <Link href={'https://abroadium-arbuild-fe.vercel.app/job-list'}>
 //             <button
 //             // onClick={() => setPerPage({ start: 0, end: 0 })}
-//             className="px-6 py-2 bg-[#00b38d] text-white rounded-md hover:bg-[#00b38d] transition-colors"
+//             className="px-6 py-2 bg-teal-700 text-white rounded-md hover:bg-teal-700 transition-colors"
 //           >
 //             Show More
 //           </button>
@@ -344,7 +344,7 @@ export default function MyJobs() {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen flex flex-col items-center bg-gray-100">
+      <div className="min-h-screen flex flex-col items-center bg-gradient-to-b from-white to-teal-200">
         <div className="w-full shadow-md">{/* <ProfilePage /> */}</div>
 
         <div className="flex flex-1 w-full  mt-4 bg-white shadow-md rounded-lg overflow-hidden">
@@ -365,7 +365,7 @@ export default function MyJobs() {
           </div>
 
           {/* Content area */}
-          <div className="flex-1 w-full max-w-8xl p-4 overflow-auto">
+          <div className="flex-1 w-full max-w-8xl p-4 overflow-auto bg-gradient-to-b from-white to-teal-200">
             <JobSearch />
           </div>
           {/* Content area */}

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "./logo.jpeg";
+import logo from "./logo.png";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 // import ReCAPTCHA from 'react-google-recaptcha';
@@ -22,9 +22,6 @@ const LoginCode = () => {
     setOtp(e.target.value);
   };
 
-  const handleCaptchaChange = (value) => {
-    setCaptchaVerified(value ? true : false);
-  };
   useEffect(() => {
     // Get email from localStorage
     const storedEmail = localStorage.getItem("userEmail");
@@ -56,8 +53,8 @@ const LoginCode = () => {
       console.error(
         error.response?.data?.message || "Invalid OTP. Please try again."
       );
-
-      router.push("/login2"); // Redirect to the login page on error
+      toast.error(error.response?.data?.message || "Invalid Otp");
+      // router.push("/login2"); // Redirect to the login page on error
     } finally {
       setLoading(false); // Stop the loader
     }
@@ -76,13 +73,18 @@ const LoginCode = () => {
 
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <Image
+          {/* <Image
             src={logo}
             alt="Logo"
             width={200}
             height={100}
             className="h-auto"
-          />
+          /> */}
+          <Link href="/">
+            <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+              GENESIS
+            </h1>
+          </Link>
         </div>
 
         {/* Title */}
@@ -109,20 +111,6 @@ const LoginCode = () => {
           />
         </div>
 
-        {/* CAPTCHA */}
-        {/* <div className="mb-6">
-          <ReCAPTCHA
-            sitekey="your-recaptcha-site-key-here"
-            onChange={handleCaptchaChange}
-          />
-        </div> */}
-
-        {/* Success Message */}
-        {/* <div className="flex items-center bg-green-100 border border-green-500 text-green-700 p-3 rounded-md mb-6">
-          <span className="mr-2">✅</span> Success!
-        </div> */}
-
-        {/* Resend Code */}
         <p className="text-center text-sm mb-6">
           Didn&apos;t receive your code?{" "}
           <Link href="/login2">

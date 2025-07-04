@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import MobileCoverLetterBuilder from "./mobile-cv-builder";
 import { BASE_URL } from "../components/Constant/constant";
 import { useTranslation } from "react-i18next";
+import FontSelector from "./FontSelector";
+import CoverLetterFontSelector from "./CoverLetterFontSelector";
 function CoverLetterBuilder() {
   const {
     coverLetterData,
@@ -29,6 +31,7 @@ function CoverLetterBuilder() {
   const [coverletterId, setCoverLetterId] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState("template1");
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedPdfType, setSelectedPdfType] = useState("1");
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -126,10 +129,13 @@ function CoverLetterBuilder() {
       },
       personalDetails: {
         name: data.personalDetails?.name || "",
+        position: data.personalDetails?.position || "",
         address: data.personalDetails?.address || "",
         email: data.personalDetails?.email || "",
         contact: data.personalDetails?.contact || "",
+        photo: data.photo || "",
       },
+      photo: data.photo || "",
     };
   };
 
@@ -221,7 +227,7 @@ function CoverLetterBuilder() {
   const downloadPDF = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/api/user/download-coverletter/${coverletterId}?lang=${language}`,
+        `${BASE_URL}/api/user/download-coverletter/${coverletterId}?lang=${language}&pdf_type=${selectedPdfType}`,
 
         {
           headers: {
@@ -269,7 +275,7 @@ function CoverLetterBuilder() {
       ) : (
         <div className="flex flex-col min-h-screen">
           {/* Sticky Navbar */}
-          <div className="sticky top-0 z-50 bg-white shadow-md">
+          <div className="sticky top-0 z-40 bg-white shadow-md">
             <Navbar />
           </div>
 
@@ -280,18 +286,7 @@ function CoverLetterBuilder() {
               <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
                 {/* Font Selector and Options */}
                 <div className="flex items-center gap-4">
-                  <select
-                    value={selectedFont}
-                    onChange={handleFontChange}
-                    className="w-40 h-10 rounded-lg border border-green-500 px-4 font-bold text-black bg-white focus:ring-2 focus:ring-green-500"
-                  >
-                    <option value="Ubuntu">Ubuntu</option>
-                    <option value="Calibri">Calibri</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Roboto">Roboto</option>
-                    <option value="Poppins">Poppins</option>
-                  </select>
-
+                  <CoverLetterFontSelector />
                   <ColorPickers
                     selectmultiplecolor={backgroundColorss}
                     onChange={setBgColor}
@@ -299,6 +294,8 @@ function CoverLetterBuilder() {
                   <TemplateSelector
                     selectedTemplate={selectedTemplate}
                     setSelectedTemplate={setSelectedTemplate}
+                    selectedPdfType={selectedPdfType}
+                    setSelectedPdfType={setSelectedPdfType}
                   />
                 </div>
 

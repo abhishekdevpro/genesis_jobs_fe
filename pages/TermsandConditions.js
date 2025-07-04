@@ -13,8 +13,8 @@
 //         </h1>
 
 //         <p className="text-base sm:text-lg">
-//           Welcome to Genesis. These terms and conditions outline the rules and
-//           regulations for the use of Genesiss website and services. By
+//           Welcome to GENESIS. These terms and conditions outline the rules and
+//           regulations for the use of Cibli Jobs website and services. By
 //           accessing this website and using our services, you accept these terms
 //           and conditions in full. If you disagree with any part of these terms
 //           and conditions, please do not use our website or services.
@@ -25,9 +25,9 @@
 //         </h2>
 //         <ul className="list-inside list-disc pl-4 text-base sm:text-lg">
 //           <li>
-//             Client: Any individual or entity using the services of Genesis.
+//             Client: Any individual or entity using the services of GENESIS.
 //           </li>
-//           <li>Company: Genesis.</li>
+//           <li>Company: GENESIS.</li>
 //           <li>
 //             Services: Resume writing, career coaching, LinkedIn profile
 //             optimization, and other career-related services provided by Cibli
@@ -77,7 +77,7 @@
 //         </h2>
 //         <ul className="list-inside list-disc pl-4 text-base sm:text-lg">
 //           <li>
-//             All content, materials, and services provided by Genesis are
+//             All content, materials, and services provided by GENESIS are
 //             protected by intellectual property laws.
 //           </li>
 //           <li>
@@ -95,7 +95,7 @@
 //         </h2>
 //         <ul className="list-inside list-disc pl-4 text-base sm:text-lg">
 //           <li>
-//             Genesis respects the privacy and confidentiality of its clients.
+//             GENESIS respects the privacy and confidentiality of its clients.
 //           </li>
 //           <li>
 //             Any personal information provided by clients will be used solely for
@@ -113,7 +113,7 @@
 //         </h2>
 //         <ul className="list-inside list-disc pl-4 text-base sm:text-lg">
 //           <li>
-//             Genesis will not be liable for any direct, indirect, incidental,
+//             GENESIS will not be liable for any direct, indirect, incidental,
 //             or consequential damages arising out of or in connection with the
 //             use of our services.
 //           </li>
@@ -143,7 +143,7 @@
 //         </h2>
 //         <ul className="list-inside list-disc pl-4 text-base sm:text-lg">
 //           <li>
-//             Genesis reserves the right to modify or update these terms and
+//             GENESIS reserves the right to modify or update these terms and
 //             conditions at any time without prior notice.
 //           </li>
 //           <li>
@@ -158,7 +158,7 @@
 //         <ul className="list-inside list-disc pl-4 text-base sm:text-lg">
 //           <li>
 //             These terms and conditions are governed by and construed in
-//             accordance with the laws of the jurisdiction in which Genesis
+//             accordance with the laws of the jurisdiction in which GENESIS
 //             operates.
 //           </li>
 //           <li>
@@ -176,8 +176,8 @@
 //           conditions, please contact us at:
 //           <br />
 //           Email:{" "}
-//           <a href="mailto:bonjour@cibli.fR" className="text-blue-500">
-//             bonjour@cibli.fR
+//           <a href="mailto:Email@Genesis.com" className="text-blue-500">
+//             bonjour@createmyresume.ca
 //           </a>
 //         </p>
 
@@ -219,8 +219,8 @@
 //           {t.contact}:
 //           <br />
 //           Email:{" "}
-//           <a href="mailto:bonjour@cibli.fR" className="text-blue-500">
-//             bonjour@cibli.fR
+//           <a href="mailto:Email@Genesis.com" className="text-blue-500">
+//             Email@Genesis.com
 //           </a>
 //         </p>
 //       </div>
@@ -264,11 +264,10 @@ function TermsandConditions() {
 
         <p className="text-base sm:text-lg mt-5">{termsData.closing}</p>
         <p className="text-base sm:text-lg">
-          {termsData.contact}:
-          <br />
+          {/* {termsData.contact}: */}
           Email:{" "}
-          <a href="mailto:abc@genesistech.ca" className="text-blue-500">
-            abc@genesistech.ca
+          <a href="Email@Genesis.com" className="text-blue-500">
+            Email@Genesis.com
           </a>
         </p>
       </div>

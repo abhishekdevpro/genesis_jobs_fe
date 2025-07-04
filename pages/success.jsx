@@ -10,10 +10,10 @@ export default function SuccessPage() {
       <h1 className="text-2xl font-bold text-green-700">Payment Successful!</h1>
       <p className="text-gray-700 mt-2">Thank you for your purchase.</p>
       <button
-        className="mt-5 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-        onClick={() => router.push("/")}
+        className="mt-5 px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition"
+        onClick={() => router.push("/dashboard")}
       >
-        Go to Homepage
+        Go to Dashboard
       </button>
     </div>
   );
@@ -49,7 +49,7 @@ export default function SuccessPage() {
 //       <h1 className="text-2xl font-bold text-green-700">Payment Successful!</h1>
 //       <p className="text-gray-700 mt-2">Thank you for your purchase.</p>
 //       <button
-//         className="mt-5 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+//         className="mt-5 px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition"
 //         onClick={() => router.push("/")}
 //       >
 //         Go to Homepage

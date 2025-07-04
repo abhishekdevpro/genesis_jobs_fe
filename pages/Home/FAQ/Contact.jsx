@@ -14,50 +14,99 @@ const ContactUs = () => {
   const { selectedLang } = useContext(ResumeContext);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+
   const { t } = useTranslation();
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   // setFormData({ ...formData, [name]: value });
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (name === "phone") {
+      // Allow only digits
+      const numericValue = value.replace(/\D/g, "");
+      setFormData((prev) => ({ ...prev, [name]: numericValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone is required";
+    } else if (!/^[0-9]{7,15}$/.test(formData.phone)) {
+      newErrors.phone = "Enter a valid phone number (7–15 digits)";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+    ) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (!formData.remark.trim()) {
+      newErrors.remark = "Remark is required";
+    }
+
+    return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      setApiError("");
+      setSuccessMessage("");
+      return;
+    }
     setError("");
     setSuccessMessage("");
 
     try {
       const response = await axiosInstance.post(
         `/api/user/contact-us?lang=${selectedLang}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+        formData
       );
 
-      if (!response.ok) {
+      const data = response.data;
+
+      if (data.status !== "success") {
         throw new Error(t("form.error_message"));
       }
 
-      const data = await response.json();
       setSuccessMessage(t("form.success_message"));
       setFormData({ name: "", phone: "", email: "", remark: "" });
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || error.message);
     }
   };
 
   return (
     <div className="bg-gray-100 py-12 lg:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <h1
-          className="text-3xl font-bold text-center mb-8 sm:mb-12 text-[#00b38d]"
+        <h2
+          className="text-3xl font-bold text-center mb-8 sm:mb-12 text-teal-600"
           id="phone"
         >
           {t("getintouch")}
-        </h1>
+        </h2>
         <p className="text-center mb-8 sm:mb-12">{t("contact_paragraph")}</p>
         {/* <div className="flex flex-col md:flex-row items-center justify-center gap-8 border border-green-500 ">
           <div className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-6 ">
@@ -169,7 +218,7 @@ const ContactUs = () => {
           </div>
         </div> */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 max-w-4xl mx-auto">
-          <div className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-6 flex-grow max-w-md">
+          {/* <div className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-6 flex-grow max-w-md">
             <div className="flex items-center mb-4">
               <div className="text-3xl"> 📞</div>
               <h5 className="ml-3 text-slate-800 text-xl font-semibold">
@@ -185,10 +234,10 @@ const ContactUs = () => {
             <div>
               <button className="border px-3 py-2 rounded-lg">
                 <a
-                  href="tel:67879879809798"
+                  href="tel:0625782947"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  67879879809798
+                  0625782947
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"
@@ -206,7 +255,7 @@ const ContactUs = () => {
                 </a>
               </button>
             </div>
-          </div>
+          </div> */}
           <div className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-6 flex-grow max-w-md">
             <div className="flex items-center mb-4">
               <div className="text-3xl">✉</div>
@@ -223,10 +272,10 @@ const ContactUs = () => {
             <div>
               <button className="border px-3 py-2 rounded-lg">
                 <a
-                  href="mailto:abc@genesistech.ca"
+                  href="mailto:Email@Genesis.com"
                   className="text-slate-800 font-semibold text-sm hover:underline flex items-center"
                 >
-                  abc@genesistech.ca
+                  Email@Genesis.com
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="ml-2 h-4 w-4"
@@ -297,19 +346,28 @@ const ContactUs = () => {
                       className="w-full border px-2 py-1 rounded-lg"
                       required
                     />
+                    {fieldErrors.name && (
+                      <p className="text-red-500 text-sm">{fieldErrors.name}</p>
+                    )}
                   </div>
+
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
                       {t("form.phone")}
                     </label>
                     <input
-                      type="text"
+                      type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="w-full border px-2 py-1 rounded-lg"
                       required
                     />
+                    {fieldErrors.phone && (
+                      <p className="text-red-500 text-sm">
+                        {fieldErrors.phone}
+                      </p>
+                    )}
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
@@ -323,6 +381,11 @@ const ContactUs = () => {
                       className="w-full border px-2 py-1 rounded-lg"
                       required
                     />
+                    {fieldErrors.email && (
+                      <p className="text-red-500 text-sm">
+                        {fieldErrors.email}
+                      </p>
+                    )}
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-semibold mb-1">
@@ -335,6 +398,11 @@ const ContactUs = () => {
                       className="w-full border px-2 py-1 rounded-lg"
                       required
                     />
+                    {fieldErrors.remark && (
+                      <p className="text-red-500 text-sm">
+                        {fieldErrors.remark}
+                      </p>
+                    )}
                   </div>
                   {error && <p className="text-red-500 mb-2">{error}</p>}
                   {successMessage && (

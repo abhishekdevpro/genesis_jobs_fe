@@ -84,13 +84,13 @@
 //     </h1>
 //     <div className=' flex gap-2  '>
 //     <div className=' text-md text-left flex flex-col gap-4 '>
-//       <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-green-500 "></i>Chosen & Crafted by Our Experts</div>
-//       <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-green-500 "></i>Backed by our Technology</div>
+//       <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-teal-500 "></i>Chosen & Crafted by Our Experts</div>
+//       <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-teal-500 "></i>Backed by our Technology</div>
 //     </div>
 
 //     <div className=' text-lg text-left flex flex-col gap-4 '>
-//       <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-green-500 "></i> Powered by our Robust AI </div>
-//        <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-green-500 "></i> Get it ready in less than 15 minutes</div>
+//       <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-teal-500 "></i> Powered by our Robust AI </div>
+//        <div><i className="fa-solid fa-check border-2 px-3 py-1 rounded-full text-white bg-teal-500 "></i> Get it ready in less than 15 minutes</div>
 //     </div>
 //     </div>
 //   </div>
@@ -113,7 +113,7 @@
 // <div className='flex flex-col gap-5 px-9 py-7 shadow-xl shadow-gray-600 bg-white rounded-xl md:mx-auto md:w-[79%]'>
 //   <div className='flex flex-col items-center'>
 //     <h1 className='text-5xl font-bold text-center py-6'>Make Your Resume Using Real-World Examples</h1>
-//     <p className=' text-xl'>Browse <span className=' font-semibold text-green-500'>350+ popular resume</span> examples covering all types of jobs, industries and levels of experience. Every example has been reviewed and approved by a Certified Professional Resume Writer (CPRW).
+//     <p className=' text-xl'>Browse <span className=' font-semibold text-teal-500'>350+ popular resume</span> examples covering all types of jobs, industries and levels of experience. Every example has been reviewed and approved by a Certified Professional Resume Writer (CPRW).
 //     </p>
 //   </div>
 //   <div className='flex flex-col justify-center gap-5 items-center md:flex-row'>
@@ -133,7 +133,7 @@
 //                     />
 //                     <h1 className='font-bold text-xl text-center mt-2' id='homecard'>{template.title}</h1>
 //                     <Link href="/dashboard/profile">
-//                         <button className='absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-green-500 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300' id='home_third'>
+//                         <button className='absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-teal-500 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300' id='home_third'>
 //                             Create Your Resume
 //                         </button>
 //                     </Link>
@@ -160,7 +160,7 @@
 //         <Image src={template.src} alt={template.alt} className=' h-[400px] w-full border-2 rounded-lg shadow-xl shadow-gray-500' />
 //         <h1 className='font-bold  text-xl text-center mt-2' id='homecard'>{template.title}</h1>
 //         <Link href="/dashboard/profile">
-//         <button className='absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-green-500 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300' id='home_third'>Create Your CV </button>
+//         <button className='absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-teal-500 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300' id='home_third'>Create Your CV </button>
 //         </Link> </div>
 //     ))}
 //   </div>
@@ -199,7 +199,7 @@
 //     <>
 //       <div className='bg-gray-100 py-10'>
 //         <div className='flex justify-center'>
-//           <div className='md:w-[78%] rounded-xl py-5 px-4 bg-[#00b38d]' id='home_third' >
+//           <div className='md:w-[78%] rounded-xl py-5 px-4 bg-teal-700' id='home_third' >
 //             <div className='flex flex-col gap-2 justify-evenly md:flex-row rounded-xl px-5 text-black'>
 //               <div>
 //                 <Image src={image} alt="logo" className='h-[400px] w-[400px] rounded-xl shadow-lg shadow-gray-600' />
@@ -227,28 +227,28 @@
 //         </div>
 //         <div className='flex flex-col gap-5  my-8 rounded-xl items-center justify-center px-5 py-10  md:mx-auto md:w-full'>
 //   <div className='flex flex-col items-center justify-center max-w-6xl'>
-//     <h1 className=' text-3xl md:text-5xl font-bold text-[#00b38d] text-center py-6'>Explore Our Wide Range Of Trending Templates That Recruiters Loves To See
+//     <h1 className=' text-3xl md:text-5xl font-bold text-teal-700 text-center py-6'>Explore Our Wide Range Of Trending Templates That Recruiters Loves To See
 //     </h1>
 
 //      <div className="flex flex-col md:flex-row gap-4 ">
 //       <div className="text-lg text-left flex flex-col gap-1">
 //         <div className="flex gap-2">
-//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
 //           Chosen & Crafted by Our Experts
 //         </div>
 //         <div className="flex gap-2">
-//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
 //           Backed by our Technology
 //         </div>
 //       </div>
 
 //       <div className="text-lg text-left flex flex-col gap-1">
 //         <div className="flex gap-2">
-//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
 //           Powered by our Robust AI
 //         </div>
 //         <div className="flex gap-2">
-//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+//           <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
 //           Get it ready in less than 15 minutes
 //         </div>
 //       </div>
@@ -301,7 +301,7 @@
 //         <div className='flex flex-col gap-5 px-9 py-7 rounded-xl md:mx-auto'>
 //           <div className='flex flex-col items-center max-w-7xl mx-auto text-center'>
 //             <h1 className='text-3xl font-bold text-center py-6'>Make Your Resume Using Real-World Examples</h1>
-//             <p className='text-xl'>Browse <span className='font-semibold text-green-500'>350+ popular resume</span> examples covering all types of jobs, industries, and levels of experience. Every example has been reviewed and approved by a Certified Professional Resume Writer (CPRW).</p>
+//             <p className='text-xl'>Browse <span className='font-semibold text-teal-500'>350+ popular resume</span> examples covering all types of jobs, industries, and levels of experience. Every example has been reviewed and approved by a Certified Professional Resume Writer (CPRW).</p>
 //           </div>
 //           <div className='flex flex-col justify-center gap-5 items-center md:flex-row'>
 //             {[
@@ -340,7 +340,7 @@
 //         </div> */}
 //       </div>
 //       <div className='py-6 border-2 mb-3 bg-gray-100'>
-//     <div className='flex gap-2 justify-center bg-[#00b38d] text-white py-4 text-lg md:text-4xl align-middle items-center font-bold px-2'>
+//     <div className='flex gap-2 justify-center bg-teal-700 text-white py-4 text-lg md:text-4xl align-middle items-center font-bold px-2'>
 //         Certified By Recruiters & Admired By Job Seekers
 //     </div>
 //     <div className='flex justify-center items-center px-2 py-3'>
@@ -360,7 +360,7 @@
 // </div>
 // <div className='flex flex-col gap-5 px-5 py-10 md:mx-auto md:w-[70%]'>
 //   <div className='flex flex-col items-center'>
-//     <h1 className='text-5xl font-bold text-[#00b38d] rounded-xl text-center py-6'>Looking For Impressive Cover Letters?</h1>
+//     <h1 className='text-5xl font-bold text-teal-700 rounded-xl text-center py-6'>Looking For Impressive Cover Letters?</h1>
 //     <p className=' text-lg'>Explore from our 25+ premium Cover Letters, Which are exclusively crafted by our Experts.
 //     </p>
 //   </div>
@@ -374,7 +374,7 @@
 //       <div key={index} className='relative group'>
 //         <Image src={template.src} alt={template.alt} className=' h-[400px] w-full border-2 rounded-lg shadow-xl shadow-gray-500' />
 //         <h1 className='font-bold  text-xl text-center mt-2' id='homecard'>{template.title}</h1>
-//         <button className='absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-[#00b38d] text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300' >Create Your CV </button>
+//         <button className='absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-teal-700 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300' >Create Your CV </button>
 //       </div>
 //     ))}
 //   </div>
@@ -407,12 +407,6 @@ import image1 from "./Images/homeimage1.jpg";
 import image2 from "./Images/homeimage2.jpg";
 import image3 from "./Images/homeimage3.jpg";
 import image4 from "./Images/homeimage4.jpg";
-import CV1 from "./Images/FrenchCV1.jpg"
-import CV2 from "./Images/FrenchCV2.jpg"
-import CV3 from "./Images/FrenchCV3.png"
-import frenchimage1 from "./Images/frenchresume1.jpg";
-import frenchimage2 from "./Images/frenchresume2.jpg";
-// import frenchimage3 from "./Images/frenchresume3.png";
 import cvimage1 from "./Images/cv4.jpg";
 import cvimage2 from "./Images/homeimage3.jpg";
 import cvimage3 from "./Images/cv3.jpg";
@@ -423,10 +417,10 @@ function Home_third() {
   const { t } = useTranslation();
   return (
     <>
-      <div className="bg-gray-100 py-10">
-        <div className="flex justify-center">
+      <div className="bg-gray-100">
+        {/* <div className="flex justify-center">
           <div
-            className="md:w-[78%] rounded-xl py-5 px-4 bg-[#00b38d]"
+            className="md:w-[78%] rounded-xl py-5 px-4 bg-teal-700"
             id="home_third"
           >
             <div className="flex flex-col gap-2 justify-evenly md:flex-row rounded-xl px-5 text-black">
@@ -480,32 +474,32 @@ function Home_third() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-5  my-8 rounded-xl items-center justify-center px-5 py-10  md:mx-auto md:w-full">
+        </div> */}
+        <div className="flex flex-col gap-5 rounded-xl items-center justify-center px-5 py-5  md:mx-auto md:w-full">
           <div className="flex flex-col items-center justify-center max-w-6xl">
-            <h1 className=" text-3xl md:text-5xl font-bold text-[#00b38d] text-center py-6">
+            <h1 className=" text-3xl md:text-5xl font-bold text-teal-700 text-center py-6">
               {t("explore_templates")}
             </h1>
 
             <div className="flex flex-col md:flex-row gap-4 ">
               <div className="text-lg text-left flex flex-col gap-1">
                 <div className="flex gap-2">
-                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
                   {t("chosen_by_experts")}
                 </div>
                 <div className="flex gap-2">
-                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
                   {t("backed_by_technology")}
                 </div>
               </div>
 
               <div className="text-lg text-left flex flex-col gap-1">
                 <div className="flex gap-2">
-                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
                   {t("powered_by_ai")}
                 </div>
                 <div className="flex gap-2">
-                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-[#00b38d]" />
+                  <AiOutlineCheck className="border-2 px-2 py-2 rounded-full text-white bg-teal-700" />
                   {t("ready_in_15_minutes")}
                 </div>
               </div>
@@ -514,55 +508,40 @@ function Home_third() {
           <div className=" flex flex-col justify-center gap-5 items-center md:flex-row md:gap-10">
             {[
               {
-                src: frenchimage1,
-                alt: "alt1_h3",
-                title: "title1_h3",
+                src: image1,
+                alt: "Assistant Editor Resume Example",
+                title: "Create Resume Template",
               },
               {
-                src: frenchimage2,
-                alt: "alt2_h3",
-                title: "title2_h3",
+                src: image2,
+                alt: "Farmer Resume Template",
+                title: "Simple Resume Template",
               },
               {
                 src: image3,
-                alt: "alt3_h3",
-                title: "title1_h3",
+                alt: "Doctor Resume Template",
+                title: "Modern Resume Template",
               },
-              {
-                src: image4,
-                alt: "alt1_h3",
-                title: "title2_h3",
-              },
-              // {
-              //   src: image2,
-              //   alt: "alt2_h3",
-              //   title: "title2_h3",
-              // },
-              // {
-              //   src: image3,
-              //   alt: "alt3_h3",
-              //   title: "title3_h3",
-              // },
             ].map((template, index) => (
               <div key={index} className="relative group">
                 <Image
                   src={template.src}
-                  alt={t(template.alt)}
+                  alt={template.alt}
                   className="h-96 w-full rounded-xl"
                 />
                 <h1
                   className="font-bold text-xl text-center mt-2"
                   id="homecard"
                 >
-                  {t(template.title)}
+                  {template.title}
                 </h1>
               </div>
             ))}
           </div>
         </div>
       </div>
-      <div className="py-6 border-2 mb-3 bg-gray-100">
-        <div className="flex gap-2 justify-center bg-[#00b38d] text-white py-4 text-lg md:text-4xl align-middle items-center font-bold px-2">
+      {/* <div className="py-6 border-2 mb-3 bg-gray-100">
+        <div className="flex gap-2 justify-center bg-teal-700 text-white py-4 text-lg md:text-4xl align-middle items-center font-bold px-2">
           {t("certified_by_recruiters")}
         </div>
         <div className="flex justify-center items-center px-2 py-3">
@@ -579,10 +558,10 @@ function Home_third() {
             ></video>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="flex flex-col gap-5 px-5 py-10 md:mx-auto md:w-[70%]">
         <div className="flex flex-col items-center">
-          <h1 className="text-5xl font-bold text-[#00b38d] rounded-xl text-center py-6">
+          <h1 className="text-5xl font-bold text-teal-700 rounded-xl text-center py-6">
             {t("looking_cover_letter")}
           </h1>
           <p className=" text-lg">{t("explore_cover_letters")}</p>
@@ -590,38 +569,40 @@ function Home_third() {
         <div className="flex flex-col justify-center gap-5 items-center md:flex-row">
           {[
             {
-              src: CV1,
+              src: image1,
               alt: "Assistant Editor Resume Example",
-              title: "title_h4",
+              title: "Cover Letter Example",
             },
             {
-              src: CV2,
+              src: image2,
               alt: "Farmer Resume Template",
-              title: "title_h4",
+              title: "Cover Letter Example",
             },
             {
-              src: CV3,
+              src: image3,
               alt: "Farmer Resume Template",
-              title: "title_h4",
+              title: "Cover Letter Example",
             },
             {
               src: image4,
               alt: "Farmer Resume Template",
-              title: "title_h4",
+              title: "Cover Letter Example",
             },
           ].map((template, index) => (
             <div key={index} className="relative group">
               <Image
                 src={template.src}
                 alt={template.alt}
-                className=" h-[340px] w-full border-2 rounded-lg shadow-xl shadow-gray-500"
+                className=" h-[400px] w-full border-2 rounded-lg shadow-xl shadow-gray-500"
               />
               <h1 className="font-bold  text-xl text-center mt-2" id="homecard">
-                {t(template.title)}
+                {template.title}
               </h1>
-              <button className="absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-[#00b38d] text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {t("create_cv")}
-              </button>
+              <Link href="/dashboard/cv-builder">
+                <button className="absolute top-0 left-0 right-0 bottom-0 m-auto w-fit h-fit bg-teal-700 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {t("create_cv")}
+                </button>
+              </Link>
             </div>
           ))}
         </div>

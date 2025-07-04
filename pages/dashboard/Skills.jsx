@@ -17,7 +17,7 @@ const Skills = () => {
   const [showPopup, setShowPopup] = useState(true);
   const router = useRouter();
   const { result } = router.query; // Accessing result from query parameters
- const {selectedLang} = useContext(ResumeContext)
+  const { selectedLang } = useContext(ResumeContext);
   // Function to fetch skills data
   const fetchSkills = async () => {
     const token = localStorage.getItem("token");
@@ -28,11 +28,14 @@ const Skills = () => {
     }
 
     try {
-      const response = await axios.get(`${BASE_URL}/api/user/user-skills?lang=${selectedLang}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axios.get(
+        `${BASE_URL}/api/user/user-skills?lang=${selectedLang}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       if (Array.isArray(response.data.data)) {
         const formattedSkills = response.data.data.map((skill) => ({
@@ -118,13 +121,13 @@ const Skills = () => {
 
     return (
       <div className="py-16 px-5 text-center text-3xl">
-        <h1>{t("create_or_upload")}</h1>
+        <h1>{t("skill.create_or_upload")}</h1>
         <div className="flex justify-center mt-5">
           <button
             onClick={handleCreateResume}
-            className="flex justify-center items-center px-4 py-2 w-full sm:w-auto bg-[#00b38d] text-white rounded-lg hover:bg-[#369984] transition-colors duration-200 font-medium shadow-sm"
+            className="flex justify-center items-center px-4 py-2 w-full sm:w-auto bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors duration-200 font-medium shadow-sm"
           >
-            <Plus className="w-5 h-5 mr-2" /> {t("create_new_resume")}
+            <Plus className="w-5 h-5 mr-2" /> {t("skill.create_new_resume")}
           </button>
         </div>
       </div>
@@ -162,7 +165,7 @@ const Skills = () => {
               skills.map((skill, index) => (
                 <div
                   key={index}
-                  className="bg-[#00b38d] rounded-xl shadow-2xl border-2 border-slate-600 px-5 py-4 text-center"
+                  className="bg-teal-700 rounded-xl shadow-2xl border-2 border-slate-600 px-5 py-4 text-center"
                 >
                   <h3 className="text-2xl sm:text-3xl text-white font-semibold py-3">
                     {skill.name || "Add skill from CV"}
@@ -210,7 +213,7 @@ const Skills = () => {
               {t("skill.close")}
             </button>
             <h2 className="text-2xl font-bold mb-3">
-              {t("instructions_title")}
+              {t("skill.instructions_title")}
             </h2>
             <p className="text-lg mb-3 text-start">
               <strong>{t("skill.common_instructions")}</strong>

@@ -10,7 +10,7 @@ export default function Meta({ title, keywords, description }) {
       __html: JSON.stringify({
         "@context": "https://schema.org/",
         "@type": "WebSite",
-        name: "Genesis",
+        name: "GENESIS",
         url: homepage,
         potentialAction: {
           "@type": "SearchAction",
@@ -26,8 +26,8 @@ export default function Meta({ title, keywords, description }) {
       __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "Genesis",
-        alternateName: "Genesis",
+        name: "GENESIS",
+        alternateName: "GENESIS",
         url: homepage,
         logo: logo,
         contactPoint: {
@@ -39,7 +39,7 @@ export default function Meta({ title, keywords, description }) {
         },
         sameAs: [
           "https://ciblijob.fr//",
-          "https://www.facebook.com/people/Genesis/61564845718534/",
+          "https://www.facebook.com/people/GENESIS/61564845718534/",
         ],
       }),
     };
@@ -49,7 +49,7 @@ export default function Meta({ title, keywords, description }) {
       __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        name: "Genesis",
+        name: "GENESIS",
         image:
           "https://ciblijob.fr//_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.2cfd75d8.jpg&w=640&q=75",
         url: "https://ciblijob.fr//",
@@ -87,11 +87,11 @@ export default function Meta({ title, keywords, description }) {
       <meta name="bingbot" content="index, follow" />
 
       {/* Open Graph (OG) Tags */}
-      <meta property="og:site_name" content="Genesis" />
+      <meta property="og:site_name" content="GENESIS" />
       <meta property="og:url" content={homepage} />
       <meta
         property="og:title"
-        content="Best AI Resume Builder Online | Genesis"
+        content="Best AI Resume Builder Online | GENESIS"
       />
       <meta property="og:type" content="website" />
       <meta
@@ -105,7 +105,7 @@ export default function Meta({ title, keywords, description }) {
       <meta property="twitter:url" content={homepage} />
       <meta
         property="twitter:title"
-        content="Best AI Resume Builder Online | Genesis"
+        content="Best AI Resume Builder Online | GENESIS"
       />
       <meta
         property="twitter:description"

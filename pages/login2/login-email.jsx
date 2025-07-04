@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
-import logo from "./logo.jpeg";
+import logo from "./logo.png";
 
 const LoginEmail = () => {
   const handleGoogleSignin = async () => {
@@ -42,13 +42,18 @@ const LoginEmail = () => {
           <span className="mr-2">←</span> Back
         </Link>
         <div className="flex justify-center mb-6">
-          <Image
+          {/* <Image
             src={logo}
             alt="Logo"
             width={200}
             height={100}
             className="h-auto"
-          />
+          /> */}
+          <Link href="/">
+            <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+              GENESIS
+            </h1>
+          </Link>
         </div>
 
         {/* Welcome Text */}
@@ -58,7 +63,7 @@ const LoginEmail = () => {
         {/* User Email */}
         {/* <p className="mb-6">
           Continue as <strong>abc@gmail.com</strong>{' '}
-          <a href="#" className="text-[#00b38d] hover:text-[#009977]">
+          <a href="#" className="text-teal-700 hover:text-[#009977]">
             (not you?)
           </a>
         </p> */}
@@ -80,7 +85,7 @@ const LoginEmail = () => {
           UltraAura will only use your information as described in our{" "}
           <Link
             href="/privacy-policy"
-            className="text-[#00b38d] hover:text-[#009977]"
+            className="text-teal-700 hover:text-[#009977]"
           >
             Privacy Policy
           </Link>
@@ -91,7 +96,7 @@ const LoginEmail = () => {
         {/* Alternative Sign-In */}
         <Link
           href="/login2/login-code"
-          className="text-[#00b38d] hover:text-[#009977] inline-block"
+          className="text-teal-700 hover:text-[#009977] inline-block"
         >
           Sign in with login code instead
         </Link>

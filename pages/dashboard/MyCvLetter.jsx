@@ -144,7 +144,7 @@ const MyCvLetter = () => {
     //     <h1 className="text-2xl font-bold text-gray-800">My Cover Letters</h1>
     //     <button
     //       onClick={handleCreate}
-    //       className="flex items-center px-4 py-2 bg-[#00b38d] text-white rounded-lg hover:bg-[#00b38d] transition-colors duration-200 font-medium shadow-sm"
+    //       className="flex items-center px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-700 transition-colors duration-200 font-medium shadow-sm"
     //     >
     //       <Plus className="w-5 h-5 mr-2" /> Create New Cover Letters
     //     </button>
@@ -186,7 +186,7 @@ const MyCvLetter = () => {
     //                     </span>
     //                     <button
     //                       onClick={() => handleOpenEditModal(coverletter)}
-    //                       className="text-[#00b38d] hover:text-blue-800"
+    //                       className="text-teal-700 hover:text-blue-800"
     //                     >
     //                       🖍
     //                     </button>
@@ -204,7 +204,7 @@ const MyCvLetter = () => {
     //                   <div className="flex items-center space-x-3">
     //                     <button
     //                       onClick={() => handleEdit(coverletter.id)}
-    //                       className="text-[#00b38d] hover:text-[#369984] transition-colors duration-200"
+    //                       className="text-teal-700 hover:text-teal-800 transition-colors duration-200"
     //                     >
     //                       <Edit className="w-5 h-5" />
     //                     </button>
@@ -219,7 +219,7 @@ const MyCvLetter = () => {
     //                     </button>
     //                     <button
     //                       onClick={() => handleDownload(coverletter.id)}
-    //                       className="text-[#00b38d] hover:text-[#369984]  transition-colors duration-200"
+    //                       className="text-teal-700 hover:text-teal-800  transition-colors duration-200"
     //                     >
     //                       <Download className="w-5 h-5" />
     //                     </button>
@@ -289,7 +289,7 @@ const MyCvLetter = () => {
     //           </button>
     //           <button
     //             onClick={handleUpdateCvLetterTitle}
-    //             className="px-4 py-2 text-sm font-medium text-white bg-[#00b38d] rounded-md hover:bg-[#00b38d]"
+    //             className="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-700"
     //           >
     //             Save
     //           </button>
@@ -306,7 +306,7 @@ const MyCvLetter = () => {
         </h1>
         <button
           onClick={handleCreate}
-          className="flex items-center px-4 py-2 bg-[#00b38d] text-white rounded-lg hover:bg-[#00b38d] transition-colors duration-200 font-medium shadow-sm"
+          className="flex items-center px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-700 transition-colors duration-200 font-medium shadow-sm"
         >
           <Plus className="w-5 h-5 mr-2" />{" "}
           {t("mycvletter.create_new_coverletter")}
@@ -349,7 +349,7 @@ const MyCvLetter = () => {
                         </span>
                         <button
                           onClick={() => handleOpenEditModal(coverletter)}
-                          className="text-[#00b38d] hover:text-blue-800"
+                          className="text-teal-700 hover:text-blue-800"
                         >
                           🖍
                         </button>
@@ -365,7 +365,7 @@ const MyCvLetter = () => {
                       <div className="flex items-center space-x-3">
                         <button
                           onClick={() => handleEdit(coverletter.id)}
-                          className="text-[#00b38d] hover:text-[#369984] transition-colors duration-200"
+                          className="text-teal-700 hover:text-teal-800 transition-colors duration-200"
                         >
                           <Edit className="w-5 h-5" />
                         </button>
@@ -380,7 +380,7 @@ const MyCvLetter = () => {
                         </button>
                         <button
                           onClick={() => handleDownload(coverletter.id)}
-                          className="text-[#00b38d] hover:text-[#369984] transition-colors duration-200"
+                          className="text-teal-700 hover:text-teal-800 transition-colors duration-200"
                         >
                           <Download className="w-5 h-5" />
                         </button>
@@ -394,7 +394,7 @@ const MyCvLetter = () => {
                     colSpan="7"
                     className="px-6 py-4 text-center text-sm text-gray-500"
                   >
-                    {t("mycvletter.upload_prompt")}
+                    {t("mycvletter.please_upload_coverletter")}
                   </td>
                 </tr>
               )}
@@ -451,7 +451,7 @@ const MyCvLetter = () => {
               </button>
               <button
                 onClick={handleUpdateCvLetterTitle}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#00b38d] rounded-md hover:bg-[#00b38d]"
+                className="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-700"
               >
                 {t("mycvletter.save")}
               </button>

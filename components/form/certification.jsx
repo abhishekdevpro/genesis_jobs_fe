@@ -4,6 +4,7 @@ import { ResumeContext } from "../context/ResumeContext";
 import { useRouter } from "next/router";
 import { ChevronDown, ChevronUp, AlertCircle, X, Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 const Certification = () => {
   const { resumeData, setResumeData, resumeStrength } =
@@ -14,7 +15,6 @@ const Certification = () => {
   const { improve } = router.query;
   const [activeTooltip, setActiveTooltip] = useState(null);
   const { t } = useTranslation();
-
 
   const handleSkills = (e, index, skillType) => {
     const newSkills = [...resumeData[skillType]];
@@ -35,20 +35,26 @@ const Certification = () => {
       newSkills.splice(-1, 1);
       setResumeData({ ...resumeData, [skillType]: newSkills });
     } else {
-      alert("At least one certification is required.");
+      toast.error("At least one certification is required.");
     }
   };
 
+  //
   const deleteCertification = (indexToDelete) => {
-    if (resumeData[skillType].length) {
-      const newCertifications = resumeData[skillType].filter(
-        (_, index) => index !== indexToDelete
-      );
-      setResumeData({
-        ...resumeData,
-        [skillType]: newCertifications,
-      });
+    const currentLength = resumeData[skillType].length;
+
+    if (currentLength <= 1) {
+      toast.error("At least one certification is required.");
+      return;
     }
+
+    const newCertifications = resumeData[skillType].filter(
+      (_, index) => index !== indexToDelete
+    );
+    setResumeData({
+      ...resumeData,
+      [skillType]: newCertifications,
+    });
   };
 
   const hasErrors = (index, field) => {
@@ -68,14 +74,17 @@ const Certification = () => {
   };
 
   return (
-    <div className="flex-col flex gap-3 w-full  mt-10 px-10">
-      <h2 className="input-title text-black  text-3xl">{t("resumeStrength.sections.certification")}</h2>
+    <div className="flex-col flex gap-3 w-full  mt-10 px-10 max-h-[400px] overflow-y-auto ">
+      <h2 className="input-title text-black  text-3xl">
+        {t("resumeStrength.sections.certification")}
+      </h2>
+
       {resumeData[skillType].map((skill, index) => (
         <div key={index} className="f-col justify-center">
           <div className="relative flex justify-center items-center gap-2">
             <input
               type="text"
-              placeholder={title}
+              placeholder={t("builder_forms.certification.placeholderTitle")}
               name={title}
               maxLength={150}
               className={`w-full h-full px-4 py-2 rounded-md border  ${
@@ -96,7 +105,7 @@ const Certification = () => {
             {improve && hasErrors(index, "certifications") && (
               <button
                 type="button"
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                className="absolute right-20 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
                 onClick={() =>
                   setActiveTooltip(
                     activeTooltip === `certifications-${index}`
@@ -108,6 +117,7 @@ const Certification = () => {
                 <AlertCircle className="w-5 h-5" />
               </button>
             )}
+
             {activeTooltip === `certifications-${index}` && (
               <div className="absolute z-50 right-0 mt-2 w-80 bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-in-out border border-gray-700">
                 <div className="p-4 border-b border-gray-700">
@@ -115,7 +125,9 @@ const Certification = () => {
                     <div className="flex items-center space-x-2">
                       <AlertCircle className="w-5 h-5 text-red-400" />
                       <span className="font-medium text-black">
-                        Certifications Suggestion
+                        {t(
+                          "builder_forms.certification.certificationSuggestion"
+                        )}
                       </span>
                     </div>
                     <button

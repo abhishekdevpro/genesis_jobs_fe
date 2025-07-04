@@ -33,7 +33,7 @@
 //                   <ul className="list-disc ml-5 text-gray-700">
 //                     <li>📞 855-695-3235</li>
 //                     <li className="text-[15px]">
-//                       📧 customersupport@Genesis.fr
+//                       📧 customersupport@CibliJob.fr
 //                     </li>
 //                   </ul>
 //                 </div>
@@ -86,7 +86,7 @@
 //                   us at
 //                   <span className="text-[#00b38d] cursor-pointer">
 //                     {" "}
-//                     customersupport@Genesis.fr
+//                     customersupport@CibliJob.fr
 //                   </span>
 //                   .
 //                 </p>
@@ -115,6 +115,8 @@ export default function Subscription() {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const { selectedLang } = useContext(ResumeContext);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+
   const handleCancelSubscription = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -197,7 +199,7 @@ export default function Subscription() {
   return (
     <>
       <Navbar />
-      <div className="p-4 md:p-10 max-w-5xl mx-auto">
+      <div className="p-4 md:p-10 max-w-5xl mx-auto  bg-gradient-to-b from-white to-teal-200">
         <h2 className="text-2xl font-semibold mb-6">
           {t("subscription.title")}
         </h2>
@@ -225,7 +227,7 @@ export default function Subscription() {
                     {t("subscription.contact_us")}
                   </p>
                   <ul className="list-disc ml-5 text-gray-700">
-                    <li>{t("subscription.phone")}</li>
+                    {/* <li>{t("subscription.phone")}</li> */}
                     <li className="text-[15px]">{t("subscription.email")}</li>
                   </ul>
                 </div>
@@ -239,8 +241,8 @@ export default function Subscription() {
                   </p>
                   <ul className="list-disc ml-5 text-gray-700">
                     <li>{t("subscription.monday_friday")}</li>
-                    <li>{t("subscription.saturday")}</li>
-                    <li>{t("subscription.sunday")}</li>
+                    {/* <li>{t("subscription.saturday")}</li>
+                    <li>{t("subscription.sunday")}</li> */}
                   </ul>
                 </div>
               </div>
@@ -282,7 +284,7 @@ export default function Subscription() {
                         {t("subscription.upgrade")}
                       </button>
                     </Link>
-                    <button
+                    {/* <button
                       onClick={handleCancelSubscription}
                       disabled={
                         userData?.plan_id === 1 || !userData?.is_active_plan
@@ -294,7 +296,50 @@ export default function Subscription() {
                       }`}
                     >
                       {t("subscription.cancel_subscription")}
+                    </button> */}
+                    <button
+                      onClick={() => setShowCancelConfirm(true)}
+                      disabled={
+                        userData?.plan_id === 1 || !userData?.is_active_plan
+                      }
+                      className={`mt-3 md:mt-0 px-4 py-2 rounded-md ${
+                        userData?.plan_id === 1 || !userData?.is_active_plan
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-red-600 text-white hover:bg-red-700"
+                      }`}
+                    >
+                      {t("subscription.cancel_subscription")}
                     </button>
+                    {showCancelConfirm && (
+                      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-sm text-center">
+                          <h2 className="text-lg font-semibold mb-4">
+                            {t("subscription.confirm_title") || "Are you sure?"}
+                          </h2>
+                          <p className="mb-6">
+                            {t("subscription.confirm_message") ||
+                              "Do you really want to cancel your subscription?"}
+                          </p>
+                          <div className="flex justify-center gap-4">
+                            <button
+                              onClick={() => {
+                                handleCancelSubscription();
+                                setShowCancelConfirm(false);
+                              }}
+                              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                            >
+                              {t("subscription.confirm_yes") || "Yes, Cancel"}
+                            </button>
+                            <button
+                              onClick={() => setShowCancelConfirm(false)}
+                              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+                            >
+                              {t("subscription.confirm_no") || "No, Go Back"}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <p className="text-gray-700">
@@ -302,9 +347,9 @@ export default function Subscription() {
                   {userData?.plan_id ? (
                     <span className="font-medium">
                       {userData.plan_id === 1 && "Free Plan"}
-                      {userData.plan_id === 2 && "Single Pass"}
-                      {userData.plan_id === 3 && "AI Pro Month"}
-                      {userData.plan_id === 4 && "AI Pro Yearly"}
+                      {userData.plan_id === 2 && "3 Days"}
+                      {userData.plan_id === 3 && "7 Days"}
+                      {userData.plan_id === 4 && "1 Month"}
                     </span>
                   ) : (
                     "N/A"
@@ -312,7 +357,7 @@ export default function Subscription() {
                 </p>
                 <p className="mt-4 text-gray-700">
                   {t("subscription.more_info")}{" "}
-                  <a href="mailto:customersupport@GenesisTech.ca">
+                  <a href="mailto:customerEmail@Genesis.com">
                     <span className="text-[#00b38d] cursor-pointer">
                       {t("subscription.email")}
                     </span>

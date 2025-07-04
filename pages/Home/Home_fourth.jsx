@@ -1,43 +1,48 @@
 import Link from "next/link";
 import blog3 from "./Images/blog3.jpg";
 import Home_five from "./Home_five";
-import { useTranslation } from "react-i18next";
-import Home_six from "./Home_six";
+
 const Home_fourth = () => {
-  const { t } = useTranslation();
   const course = [
     {
-      img: "wp-content/uploads/2025/01/Ciblijob-blog-How-AI-is-Revolutionizing-Resume-Building-A-Beginners-Guide-1.png",
-      title: "card_title1",
-      link: "?p=1",
+      img: "wp-content/uploads/2025/06/Let-AI-Identify-and-Highlight-Your-Strengths-in-Your-Resume-Blog-9.png",
+      title:
+        "Unlock Hidden Skills: Let AI Identify and Highlight Your Strengths in Your Resume",
+      link: "2025/06/10/unlock-hidden-skills-let-ai-identify-and-highlight-your-strengths-in-your-resume/",
     },
     {
-      img: "wp-content/uploads/2025/01/Blog-2-Genesis-AI-Powered-Resume-Builders-vs-Traditional-Methods-Whats-Better.png",
-      title: "card_title2",
-      link: "?p=23",
-    },
-
-    {
-      img: "wp-content/uploads/2025/01/Blog-3-Genesis-Top-5-Benefits-of-Using-an-AI-Resume-Builder.png",
-      title: "card_title3",
-      link: "?p=27",
+      img: "wp-content/uploads/2025/06/How-AI-Optimizes-Your-Resume-for-Success-Blog-3.jpeg",
+      title:
+        "Beat the Applicant Tracking System (ATS): How AI Optimizes Your Resume for Success",
+      link: "2025/06/10/beat-the-applicant-tracking-system-ats-how-ai-optimizes-your-resume-for-success/",
     },
 
     {
-      img: "wp-content/uploads/2025/01/Blog-4-Step-by-Step-Guide-to-Creating-a-Job-Winning-Resume-with-AI-Tools.png",
-      title: "card_title4",
-      link: "?p=30",
+      img: "wp-content/uploads/2025/06/AI-Driven-Insights-for-a-Winning-Resume-Strategy-Blog-5.png",
+      title:
+        "Stop Guessing, Start Landing: AI-Driven Insights for a Winning Resume Strategy",
+      link: "2025/06/10/stop-guessing-start-landing-ai-driven-insights-for-a-winning-resume-strategy/",
+    },
+
+    {
+      img: "wp-content/uploads/2025/06/The-Power-of-AI-in-Crafting-Your-Perfect-Resume-2-1-1536x864.png",
+      title:
+        "From Blank Page to Hired: The Power of AI in Crafting Your Perfect Resume",
+      link: "2025/06/10/from-blank-page-to-hired-the-power-of-ai-in-crafting-your-perfect-resume/",
     },
   ];
   return (
     <>
       <div id="course" className="bg-gray-100 py-10 ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl lg:text-5xl font-bold px-4 lg:px-0 py-5 text-center text-[#00b38d]">
-            {t("neweststratigies")}
+          <h1 className="text-4xl lg:text-5xl font-bold px-4 lg:px-0 py-5 text-center text-teal-700">
+            Newest Strategies From Our Career Search Advisors
           </h1>
           <p className="mx-auto px-4 lg:px-0 text-lg lg:text-base text-gray-700 max-w-4xl text-center mb-8">
-            {t("paragraphhome_fourth")}
+            You’re never alone in your job search. Whether you’re writing a
+            cover letter, preparing for the interview, or negotiating your
+            salary, our resource center has articles that will help you take the
+            next step in your career.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -56,7 +61,7 @@ const Home_fourth = () => {
                 />
                 <div className="p-4">
                   <h2 className="text-lg lg:text-lg font-bold mb-2">
-                    {t(card.title)}
+                    {card.title}
                   </h2>
                   {/* <p className="text-sm text-gray-600">{card.name}</p> */}
                 </div>
@@ -66,15 +71,15 @@ const Home_fourth = () => {
 
           <div className="flex justify-center mt-10">
             <Link href={""}>
-              <button className="px-6 py-3 text-lg font-semibold text-white bg-[#00b38d] hover:bg-[#00b38d] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00b38d]">
-                {t("get_moreadvice")}
+              <button className="px-6 py-3 text-lg font-semibold text-white bg-teal-700 hover:bg-teal-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-700">
+                Get More Career Advice
               </button>
             </Link>
           </div>
         </div>
       </div>
-      <Home_six />
-      {/* <Home_five /> */}
+
+      <Home_five />
     </>
   );
 };
