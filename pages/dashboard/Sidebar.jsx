@@ -319,7 +319,7 @@ const Sidebar = ({ onClose }) => {
             <span>{t("dashboard")}</span>
           </Link>
         </li>
-        {/* <li>
+        <li>
           <Link
             href="/dashboard/started"
             className={getLinkClassName("/dashboard/started")}
@@ -328,8 +328,8 @@ const Sidebar = ({ onClose }) => {
             <span className="mr-2">👤</span>
             <span>Get Started</span>
           </Link>
-        </li> */}
-        {/* <li>
+        </li>
+        <li>
           <Link
             href="/dashboard/resumefromstarted"
             className={getLinkClassName("/dashboard/resumefromstarted")}
@@ -338,7 +338,7 @@ const Sidebar = ({ onClose }) => {
             <span className="mr-2">👤</span>
             <span>Document Center</span>
           </Link>
-        </li> */}
+        </li>
         <li>
           <Link
             href="/dashboard/page"
