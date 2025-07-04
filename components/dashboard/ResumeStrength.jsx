@@ -193,6 +193,7 @@ const TooltipContent = ({ improvements, resumeId, onClose }) => {
 };
 
 const ResumeStrength = ({ score, strength, resumeId }) => {
+  const { selectedLang } = useContext(ResumeContext);
   const [showLoader, setShowLoader] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
@@ -329,7 +330,6 @@ const ResumeStrength = ({ score, strength, resumeId }) => {
     if (percentage >= 70) return "bg-green-500";
     return "bg-red-600";
   };
-
   return (
     <>
       {showLoader && <FullScreenLoader />}
@@ -370,21 +370,23 @@ const ResumeStrength = ({ score, strength, resumeId }) => {
               <button
                 onClick={handleImproveResume}
                 disabled={!resumeId}
-                className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${
+                className={`px-6 py-2 bg-black text-white rounded-lg hover:bg-black transition-colors ${
                   !resumeId ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
                 {t("resumeStrength.improveResume")}
               </button>
-              <button
-                disabled={!resumeId}
+              {/* <button
+                disabled={strength.ats_score === 10 || !resumeId}
                 onClick={() => setIsModalOpen(true)}
-                className={`px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors ${
-                  !resumeId ? "opacity-50 cursor-not-allowed" : ""
+                className={`px-6 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors ${
+                  strength.ats_score === 10 || !resumeId
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                 }`}
               >
                 {t("resumeStrength.improveATS")}
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

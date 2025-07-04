@@ -1,4 +1,3 @@
-
 import React from "react";
 import dynamic from "next/dynamic";
 import DateRange from "../utility/DateRange";
@@ -28,12 +27,12 @@ const ProjectsSection = ({ resumeData, headerColor }) => {
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
           <h2
-            className="text-lg font-bold mb-1 border-b-2 border-gray-300 editable"
+            className="text-xl font-semibold mb-1 border-b-2 border-gray-300 editable"
             contentEditable
             suppressContentEditableWarning
             style={{
               color: headerColor,
-              borderBottom: `2px solid ${headerColor}`,
+              borderBottom: `1px solid ${headerColor}`,
             }}
           >
             Projects
@@ -49,16 +48,19 @@ const ProjectsSection = ({ resumeData, headerColor }) => {
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
-                  className={`hover:scale-105 transition-transform duration-300 mb-1 ${
+                  className={`hover:scale-105 transition-transform duration-300 mb-3 pr-2 pb-2 pt-2 rounded-md ${
                     snapshot.isDragging &&
                     "outline-dashed outline-2 outline-gray-400 bg-white"
                   }`}
                 >
                   <div className="flex flex-row justify-between space-y-1">
-                    <p className="content i-bold"
+                    <p
+                      className=" text-base font-normal"
                       contentEditable
                       suppressContentEditableWarning
-                    >{item.name}</p>
+                    >
+                      {item.name}
+                    </p>
                     <DateRangeExperience
                       startYear={item.startYear}
                       endYear={item.endYear}
@@ -69,20 +71,20 @@ const ProjectsSection = ({ resumeData, headerColor }) => {
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="content"
+                    className=" text-base font-normal"
                     contentEditable
-                     suppressContentEditableWarning
+                    suppressContentEditableWarning
                   >
                     {item.link}
                   </Link>
-                  <p
-                    className="content"
+                  <div
+                    className="text-sm font-light"
                     contentEditable
-                     suppressContentEditableWarning
+                    suppressContentEditableWarning
                     dangerouslySetInnerHTML={{
                       __html: item.description,
                     }}
-                  ></p>
+                  ></div>
 
                   <Droppable
                     droppableId={`PROJECTS_KEY_ACHIEVEMENT-${index}`}
@@ -90,7 +92,7 @@ const ProjectsSection = ({ resumeData, headerColor }) => {
                   >
                     {(provided) => (
                       <ul
-                        className="list-disc ul-padding content"
+                        className="list-disc pl-4 mt-2 font-light text-sm"
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >

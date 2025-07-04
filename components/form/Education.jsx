@@ -1,12 +1,13 @@
 import { ResumeContext } from "../context/ResumeContext";
 import FormButton from "./FormButton";
 import React, { useContext, useState } from "react";
-import { AlertCircle, X, Loader2 } from "lucide-react";
+import { AlertCircle, X, Loader2, Trash } from "lucide-react";
 import { useRouter } from "next/router";
 import { MdRemoveCircle } from "react-icons/md";
 import { BASE_URL } from "../Constant/constant";
 import { useTranslation } from "react-i18next";
 import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 const Education = () => {
   const { i18n, t } = useTranslation();
   const language = i18n.language;
@@ -50,22 +51,29 @@ const Education = () => {
     }
 
     setIsLoading((prev) => ({ ...prev, university: true }));
+
     try {
       const response = await axiosInstance.get(
         `/api/user/university-lists?university_keyword=${encodeURIComponent(
           keyword
         )}&lang=${language}`
       );
-      if (response.ok) {
-        const data = await response.json();
-        setUniversitySuggestions(data.data.map((item) => item.name));
-        setShowUniversityDropdown(true);
-      }
+
+      // ✅ Axios returns parsed data directly
+      const data = response.data;
+      const universityList = data?.data || [];
+
+      setUniversitySuggestions(universityList.map((item) => item.name));
+      setShowUniversityDropdown(true);
+      // setUniversitySuggestions(data.data.map((item) => item.name));
+      // setShowUniversityDropdown(true);
     } catch (error) {
       console.error("Error fetching universities:", error);
     }
+
     setIsLoading((prev) => ({ ...prev, university: false }));
   };
+
   const fetchDegrees = async (keyword, index) => {
     if (!keyword || keyword.length < 1) {
       setDegreeSuggestions([]);
@@ -75,7 +83,7 @@ const Education = () => {
     setIsLoading((prev) => ({ ...prev, degree: true }));
     try {
       const response = await axiosInstance.get(
-        `/api/user/degree?degree_keyword=${encodeURIComponent(
+        `api/user/degree?degree_keyword=${encodeURIComponent(
           keyword
         )}&lang=${language}`
       );
@@ -103,12 +111,11 @@ const Education = () => {
           keyword
         )}&lang=${language}`
       );
-      if (response.ok) {
-        const data = await response.json();
-        const locations = data.data.location_names.map((item) => item);
-        setLocationSuggestions(locations);
-        setShowLocationDropdown(true);
-      }
+
+      const data = response.data;
+      const locations = data.data.location_names.map((item) => item);
+      setLocationSuggestions(locations);
+      setShowLocationDropdown(true);
     } catch (error) {
       console.error("Error fetching locations:", error);
     }
@@ -148,22 +155,55 @@ const Education = () => {
     { length: 50 },
     (_, i) => new Date().getFullYear() - i
   );
-
+  const formatDateValue = (month, year) => {
+    if (month && year) {
+      return `${month},${year}`;
+    } else if (month) {
+      return month;
+    } else if (year) {
+      return year;
+    } else {
+      return "";
+    }
+  };
   const handleMonthChange = (e, index, field) => {
     const newEducation = [...resumeData.education];
-    const currentDate = newEducation[index][field] || "Aug,2020";
-    const [_, year] = currentDate.split(",");
     const newMonth = e.target.value;
-    newEducation[index][field] = `${newMonth},${year || ""}`;
+
+    // Get the current year value
+    let year = "";
+    if (newEducation[index][field]) {
+      const parts = newEducation[index][field].split(",");
+      if (parts.length > 1) {
+        year = parts[1];
+      } else if (parts.length === 1 && !months.includes(parts[0])) {
+        // If there's only one part and it's not a month, it must be a year
+        year = parts[0];
+      }
+    }
+
+    // Format the new value
+    newEducation[index][field] = formatDateValue(newMonth, year);
+
     setResumeData({ ...resumeData, education: newEducation });
   };
 
   const handleYearChange = (e, index, field) => {
     const newEducation = [...resumeData.education];
-    const currentDate = newEducation[index][field] || "Aug,2020";
-    const [month, _] = currentDate.split(",");
     const newYear = e.target.value;
-    newEducation[index][field] = `${month || ""},${newYear}`;
+
+    // Get the current month value
+    let month = "";
+    if (newEducation[index][field]) {
+      const parts = newEducation[index][field].split(",");
+      if (parts.length > 0 && months.includes(parts[0])) {
+        month = parts[0];
+      }
+    }
+
+    // Format the new value
+    newEducation[index][field] = formatDateValue(month, newYear);
+
     setResumeData({ ...resumeData, education: newEducation });
   };
   const handlePresentToggle = (index) => {
@@ -181,8 +221,8 @@ const Education = () => {
         {
           school: "",
           degree: "",
-          startYear: "Aug,2020",
-          endYear: "Jul,2024",
+          startYear: "",
+          endYear: "",
           location: "",
         },
       ],
@@ -190,6 +230,17 @@ const Education = () => {
   };
 
   const removeEducation = (index) => {
+    if (resumeData.education.length <= 1) {
+      toast.warn("At least one Education is required");
+
+      // Clear the error message after 3 seconds
+      // setTimeout(() => {
+      //   // const updatedErrors = {...validationErrors};
+      //   delete updatedErrors.general;
+      //   setValidationErrors(updatedErrors);
+      // }, 3000);
+      return; // Don't remove if it's the last one
+    }
     const newEducation = [...resumeData.education];
     newEducation.splice(index, 1);
     setResumeData({ ...resumeData, education: newEducation });
@@ -208,6 +259,31 @@ const Education = () => {
     return null;
   };
 
+  const getDatePart = (dateStr, part) => {
+    if (!dateStr) return "";
+    if (dateStr === "Present") return part === "month" ? "" : dateStr;
+
+    const parts = dateStr.split(",");
+
+    // If there's only one part, determine if it's a month or year
+    if (parts.length === 1) {
+      if (months.includes(parts[0]) && part === "month") {
+        return parts[0];
+      } else if (!isNaN(parts[0]) && part === "year") {
+        return parts[0];
+      } else {
+        return "";
+      }
+    }
+
+    // If there are two parts, return the appropriate one
+    if (part === "month") {
+      return parts[0] || "";
+    } else {
+      return parts[1] || "";
+    }
+  };
+
   // Close dropdowns when clicking outside
   React.useEffect(() => {
     const handleClickOutside = () => {
@@ -220,10 +296,30 @@ const Education = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  // Clean up any existing data that might have just commas
+  React.useEffect(() => {
+    const needsCleanup = resumeData.education?.some(
+      (edu) => edu.startYear === "," || edu.endYear === ","
+    );
+
+    if (needsCleanup) {
+      const cleanedEducation = resumeData.education.map((edu) => ({
+        ...edu,
+        startYear: edu.startYear === "," ? "" : edu.startYear,
+        endYear: edu.endYear === "," ? "" : edu.endYear,
+      }));
+
+      setResumeData({
+        ...resumeData,
+        education: cleanedEducation,
+      });
+    }
+  }, []);
+
   const renderTooltip = (index, field, title) => {
     if (activeTooltip === `${field}-${index}`) {
       return (
-        <div className="absolute z-50 right-0 w-80 bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-in-out border border-gray-700">
+        <div className="absolute z-50 right-0 w-80 bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-in-out border border-gray-700 ">
           <div className="p-4 border-b border-gray-700">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -258,7 +354,7 @@ const Education = () => {
   };
 
   return (
-    <div className="flex-col gap-3 w-full mt-10 px-10">
+    <div className="flex-col gap-3 w-full mt-10 px-10 max-h-[400px] overflow-y-auto">
       <h2 className="input-title text-black text-3xl">
         {t("resumeStrength.sections.education")}
       </h2>
@@ -281,7 +377,7 @@ const Education = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="School"
+                placeholder={t("builder_forms.education.placeholders.school")}
                 name="school"
                 maxLength={150}
                 className={`w-full other-input border ${
@@ -290,6 +386,12 @@ const Education = () => {
                 value={education.school}
                 onChange={(e) => handleEducation(e, index)}
                 onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // prevent form submission if needed
+                    setShowUniversityDropdown(false); // ✅ hide suggestions
+                  }
+                }}
               />
               {isLoading.university && (
                 <div className="absolute right-8 top-1/2 -translate-y-1/2">
@@ -327,7 +429,11 @@ const Education = () => {
               </div>
             )}
 
-            {renderTooltip(index, "school", "School Suggestions")}
+            {renderTooltip(
+              index,
+              "school",
+              t(" builder_forms.education.tooltips.school")
+            )}
           </div>
 
           {/* <div className="relative mb-4">
@@ -355,7 +461,7 @@ const Education = () => {
           <div className="relative mb-4">
             <input
               type="text"
-              placeholder="Degree"
+              placeholder={t("builder_forms.education.placeholders.degree")}
               name="degree"
               maxLength={150}
               className={`w-full other-input border ${
@@ -386,7 +492,11 @@ const Education = () => {
                 <AlertCircle className="w-5 h-5" />
               </button>
             )}
-            {renderTooltip(index, "degree", "Degree Suggestions")}
+            {renderTooltip(
+              index,
+              "degree",
+              t(" builder_forms.education.tooltips.degree")
+            )}
 
             {showDegreeDropdown && degreeSuggestions.length > 0 && (
               <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md  shadow-lg">
@@ -409,21 +519,23 @@ const Education = () => {
             )}
           </div>
 
-          <div className="">
+          <div className="relative">
             <label className="text-black">
               {t("builder_forms.work_experience.start_date")}
             </label>
-            <div className="flex-wrap-gap-2">
+            <div className="flex-wrap-gap-2 relative">
               <select
                 className={`border other-input flex-1 ${
                   improve && hasErrors(index, "startYear")
                     ? "border-red-500"
                     : "border-black"
                 }`}
-                value={(education.startYear || "Aug,2020").split(",")[0]}
+                value={getDatePart(education.startYear, "month")}
                 onChange={(e) => handleMonthChange(e, index, "startYear")}
               >
-                <option value="">Month</option>
+                <option value="">
+                  {t("builder_forms.education.dropdown.month")}
+                </option>
                 {months.map((month, idx) => (
                   <option key={idx} value={month}>
                     {month}
@@ -436,33 +548,88 @@ const Education = () => {
                     ? "border-red-500"
                     : "border-black"
                 }`}
-                value={(education.startYear || "Aug,2020").split(",")[1]}
+                value={getDatePart(education.startYear, "year")}
                 onChange={(e) => handleYearChange(e, index, "startYear")}
               >
-                <option value="">Year</option>
+                <option value="">
+                  {" "}
+                  {t("builder_forms.education.dropdown.year")}
+                </option>
                 {years.map((year, idx) => (
                   <option key={idx} value={year}>
                     {year}
                   </option>
                 ))}
               </select>
+              {improve && hasErrors(index, "startYear") && (
+                <>
+                  <button
+                    type="button"
+                    className="absolute right-[2px] top-[-1.5rem] text-red-500"
+                    onClick={() =>
+                      setActiveTooltip(
+                        activeTooltip === `startYear-${index}`
+                          ? null
+                          : `startYear-${index}`
+                      )
+                    }
+                  >
+                    <AlertCircle className="w-5 h-5" />
+                  </button>
+
+                  {activeTooltip === `startYear-${index}` && (
+                    <div className="absolute right-0 top-14 w-80 bg-white rounded-lg shadow-xl border border-gray-700 z-50">
+                      <div className="p-4 border-b border-gray-700">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <AlertCircle className="w-5 h-5 text-red-400" />
+                            <span className="font-medium text-black">
+                              {t("builder_forms.education.tooltips.start_date")}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => setActiveTooltip(null)}
+                            className="text-black transition-colors"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        {getErrorMessage(index, "startYear").map((msg, i) => (
+                          <div
+                            key={i}
+                            className="flex items-start space-x-3 mb-3 last:mb-0"
+                          >
+                            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2" />
+                            <p className="text-black text-sm">{msg}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
 
             <label className="text-black">
               {t("builder_forms.work_experience.end_date")}
             </label>
-            <div className="flex-wrap-gap-2">
+            <div className="flex-wrap-gap-2 relative">
               <select
                 className={`other-input border flex-1 ${
                   improve && hasErrors(index, "endYear")
                     ? "border-red-500"
                     : "border-black"
                 }`}
-                value={(education.endYear || "Jul,2024").split(",")[0]}
+                value={getDatePart(education.endYear, "month")}
                 onChange={(e) => handleMonthChange(e, index, "endYear")}
                 disabled={education.endYear === "Present"} // Disable the month select if "Present" is checked
               >
-                <option value="">Month</option>
+                <option value="">
+                  {" "}
+                  {t("builder_forms.education.dropdown.month")}
+                </option>
                 {months.map((month, idx) => (
                   <option key={idx} value={month}>
                     {month}
@@ -475,11 +642,14 @@ const Education = () => {
                     ? "border-red-500"
                     : "border-black"
                 }`}
-                value={(education.endYear || "Jul,2024").split(",")[1]}
+                value={getDatePart(education.endYear, "year")}
                 onChange={(e) => handleYearChange(e, index, "endYear")}
                 disabled={education.endYear === "Present"} // Disable the year select if "Present" is checked
               >
-                <option value="">Year</option>
+                <option value="">
+                  {" "}
+                  {t("builder_forms.education.dropdown.year")}
+                </option>
                 {years.map((year, idx) => (
                   <option key={idx} value={year}>
                     {year}
@@ -493,8 +663,57 @@ const Education = () => {
                   onChange={() => handlePresentToggle(index)}
                   className="w-6 h-6"
                 />
-                Present
+                {t("builder_forms.education.dropdown.present")}
               </label>
+              {improve && hasErrors(index, "endYear") && (
+                <>
+                  <button
+                    type="button"
+                    className="absolute right-[2px] top-[-1.5rem] text-red-500"
+                    onClick={() =>
+                      setActiveTooltip(
+                        activeTooltip === `endYear-${index}`
+                          ? null
+                          : `endYear-${index}`
+                      )
+                    }
+                  >
+                    <AlertCircle className="w-5 h-5" />
+                  </button>
+
+                  {activeTooltip === `endYear-${index}` && (
+                    <div className="absolute right-0 top-14 w-80 bg-white rounded-lg shadow-xl border border-gray-700 z-50">
+                      <div className="p-4 border-b border-gray-700">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <AlertCircle className="w-5 h-5 text-red-400" />
+                            <span className="font-medium text-black">
+                              {t("builder_forms.education.tooltips.end_date")}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => setActiveTooltip(null)}
+                            className="text-black transition-colors"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        {getErrorMessage(index, "endYear")?.map((msg, i) => (
+                          <div
+                            key={i}
+                            className="flex items-start space-x-3 mb-3 last:mb-0"
+                          >
+                            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2" />
+                            <p className="text-black text-sm">{msg}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
 
@@ -505,7 +724,7 @@ const Education = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Location"
+                placeholder={t("builder_forms.education.placeholders.location")}
                 name="location"
                 className={`w-full other-input border ${
                   improve && hasErrors(index, "location")
@@ -515,6 +734,12 @@ const Education = () => {
                 value={education.location}
                 onChange={(e) => handleEducation(e, index)}
                 onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // prevent form submission if needed
+                    setShowLocationDropdown(false); // ✅ hide suggestions
+                  }
+                }}
               />
               {isLoading.location && (
                 <div className="absolute right-8 top-1/2 -translate-y-1/2">

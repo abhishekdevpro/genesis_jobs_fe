@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&family=Inter&family=Poppins&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -71,7 +73,7 @@
   }
 
   .editable {
-    @apply  hover:cursor-text outline-none;
+    @apply hover:cursor-text outline-none;
   }
 }
 
@@ -298,12 +300,12 @@ body {
   height: 100%;
   max-height: 100vh;
 }
-@media (max-width:480px){
-  .preview-dashboard{
+@media (max-width: 480px) {
+  .preview-dashboard {
     transform: scale(0.5);
   }
-  .a4-wrapper-dashboard{
-    transform: scale(0.9)
+  .a4-wrapper-dashboard {
+    transform: scale(0.9);
   }
 }
 .ql-container {

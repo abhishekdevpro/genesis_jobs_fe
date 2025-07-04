@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import logo from "./logo.png";
+import logo from "../login2/logo.png";
 import { useRouter } from "next/router";
 import { BASE_URL } from "../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
@@ -93,7 +93,12 @@ function Signup() {
     <div className="flex justify-center items-center">
       <div className="p-8 rounded-xl shadow-lg shadow-slate-700 w-full max-w-lg m-5">
         <div className="flex justify-center mb-4">
-          <Image src={logo} className="w-40 h-10" alt="Logo" />
+          {/* <Image src={logo} className="w-40 h-10" alt="Logo" /> */}
+          <Link href="/">
+            <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+              GENESIS
+            </h1>
+          </Link>
         </div>
         <div className="text-2xl text-black text-center font-bold">
           Create an Account

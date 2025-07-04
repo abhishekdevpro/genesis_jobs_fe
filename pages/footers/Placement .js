@@ -13,7 +13,7 @@ function Placement() {
         <h1 className="text-lg font-semibold my-2 mt-5 ">
           Empowering Your Job Search
         </h1>
-        At Genesis , we go beyond crafting exceptional resumes. We provide
+        At GENESIS , we go beyond crafting exceptional resumes. We provide
         comprehensive placement support services designed to help you navigate
         the job market with confidence and secure the position that aligns with
         your career goals. Our tailored approach ensures that you have the tools
@@ -62,7 +62,7 @@ function Placement() {
         professionals, we’ve helped countless individuals achieve their career
         goals. Here are a few of their stories:
         <br />
-        {/* - Anna S.: "Thanks to Genesis , I landed my dream job in marketing
+        {/* - Anna S.: "Thanks to GENESIS , I landed my dream job in marketing
       within a month. Their interview prep and job search strategy were
       invaluable!"
       <br />
@@ -71,18 +71,18 @@ function Placement() {
       fantastic position."
       <br />
       - Jessica M.: "I was nervous about negotiating my salary, but the guidance
-      I received from Genesis  helped me secure a 20% increase over my
+      I received from GENESIS  helped me secure a 20% increase over my
       initial offer."
       <br /> */}
         <h1 className="text-sm font-bold my-2 mt-5 ">Get Started Today</h1>
         Ready to take your job search to the next level? Contact us today to
         learn more about our placement support services and how we can help you
-        achieve your career goals. At Genesis , we’re dedicated to your success
+        achieve your career goals. At GENESIS , we’re dedicated to your success
         and are here to support you every step of the way.
         <h1 className="text-sm font-bold my-2 mt-5 ">Contact Us</h1>
-        Reach out to us at [career@Genesis .ca](mailto:career@Genesis .ca) to to
-        schedule a consultation. Let Genesis be your partner in navigating the
-        job market and securing the perfect role for your future.
+        Reach out to us at [career@GENESIS .ca](mailto:career@Create My Resume
+        .ca) to to schedule a consultation. Let GENESIS be your partner in
+        navigating the job market and securing the perfect role for your future.
       </div>
     </>
   );

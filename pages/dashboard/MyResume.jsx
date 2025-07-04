@@ -7,7 +7,6 @@ import { Download, Edit, Trash, Plus } from "lucide-react";
 import Link from "next/link";
 import { BASE_URL } from "../../components/Constant/constant";
 import { useTranslation } from "react-i18next";
-import UploadResumeBtn from "../../components/resume-builder-steps/uploadresumebtn";
 
 const MyResume = () => {
   const { t } = useTranslation();
@@ -176,12 +175,12 @@ const MyResume = () => {
           {t("myresume.title")}
         </h1>
         <Link href={"/dashboard/resume-builder"}>
-          <button className="flex items-center px-4 py-2 bg-[#00b38d] text-white rounded-lg hover:bg-[#369984] transition-colors duration-200 font-medium shadow-sm">
+          <button className="flex items-center px-4 py-2 bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition-colors duration-200 font-medium shadow-sm">
             <Plus className="w-5 h-5 mr-2" />
             {t("myresume.create_new_resume")}
           </button>
         </Link>
-        <UploadResumeBtn />
+        {/* <UploadResumeBtn /> */}
       </div>
 
       {/* Resume Table */}
@@ -224,7 +223,7 @@ const MyResume = () => {
                         </span>
                         <button
                           onClick={() => handleOpenEditModal(resume)}
-                          className="text-[#00b38d] hover:text-[#369984]"
+                          className="text-teal-700 hover:text-teal-800"
                         >
                           🖍
                         </button>
@@ -243,7 +242,7 @@ const MyResume = () => {
                             className={`px-3 py-1 rounded-full text-lg font-semibold ${
                               resume.resume_strenght_details.resume_strenght >
                               60
-                                ? "bg-green-100 text-[#00b38d]"
+                                ? "bg-green-100 text-teal-700"
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
@@ -258,7 +257,7 @@ const MyResume = () => {
                       <div className="flex items-center space-x-3">
                         <button
                           onClick={() => handleEdit(resume.id)}
-                          className="text-[#00b38d] hover:text-[#369984] transition-colors duration-200"
+                          className="text-teal-700 hover:text-teal-800 transition-colors duration-200"
                         >
                           <Edit className="w-5 h-5" />
                         </button>
@@ -333,7 +332,7 @@ const MyResume = () => {
               </button>
               <button
                 onClick={handleUpdateResumeTitle}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#00b38d] rounded-md hover:bg-[#00b38d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 {t("myresume.save")}
               </button>

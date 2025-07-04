@@ -138,7 +138,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <main className="min-h-screen bg-gradient-to-b from-white to-teal-200 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-8 text-center">
         <h1 className="text-2xl font-bold mb-4">{t("coverLetter.title")}</h1>
         <p className="mb-6 text-gray-600">{t("coverLetter.description")}</p>
@@ -148,7 +148,7 @@ export default function Home() {
         <button
           onClick={handleCreateCvLetter}
           className={`px-6 py-3 text-white font-semibold rounded-lg ${
-            loading ? "bg-gray-400" : "bg-[#00b38d] hover:bg-[#00b38d]"
+            loading ? "bg-gray-400" : "bg-teal-700 hover:bg-teal-800"
           }`}
           disabled={loading}
         >

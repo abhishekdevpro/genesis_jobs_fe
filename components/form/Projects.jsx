@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../Constant/constant";
 import { useTranslation } from "react-i18next";
+import ErrorPopup from "../utility/ErrorPopUp";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const Projects = () => {
@@ -29,23 +30,37 @@ const Projects = () => {
   const [selectedDescriptions, setSelectedDescriptions] = useState([]);
   const [selectedKeyAchievements, setSelectedKeyAchievements] = useState([]);
   const [activeTooltip, setActiveTooltip] = useState(null);
-
+  const [errorPopup, setErrorPopup] = useState({
+    show: false,
+    message: "",
+  });
   const token = localStorage.getItem("token");
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
     "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   const years = Array.from({ length: 40 }, (_, index) => 2000 + index);
+  const formatDateValue = (month, year) => {
+    if (month && year) {
+      return `${month},${year}`;
+    } else if (month) {
+      return month;
+    } else if (year) {
+      return year;
+    } else {
+      return "";
+    }
+  };
   const router = useRouter();
   const { improve } = router.query;
 
@@ -64,15 +79,29 @@ const Projects = () => {
     setResumeData({ ...resumeData, projects: newProjects });
   };
 
+  // const handleKeyAchievement = (e, projectIndex) => {
+  //   // const newProjects = [...resumeData.projects]
+  //   // newProjects[projectIndex].keyAchievements = e.target.value
+  //   // setResumeData({ ...resumeData, projects: newProjects })
+  //   const newProjects = [...resumeData.projects];
+  //   const achievements = e.target.value
+  //     .split("\n")
+  //     .filter((item) => item.trim());
+  //   newProjects[projectIndex].keyAchievements = achievements;
+  //   setResumeData({ ...resumeData, projects: newProjects });
+  // };
   const handleKeyAchievement = (e, projectIndex) => {
-    // const newProjects = [...resumeData.projects]
-    // newProjects[projectIndex].keyAchievements = e.target.value
-    // setResumeData({ ...resumeData, projects: newProjects })
     const newProjects = [...resumeData.projects];
     const achievements = e.target.value
       .split("\n")
-      .filter((item) => item.trim());
+      // .map((item) => item.trim())
+      .filter((item) => item.trim !== "");
+
     newProjects[projectIndex].keyAchievements = achievements;
+
+    // Optional: Track user-modified achievements separately if needed
+    setSelectedKeyAchievements(achievements); // sync with popup logic
+
     setResumeData({ ...resumeData, projects: newProjects });
   };
 
@@ -96,17 +125,66 @@ const Projects = () => {
     });
     setExpandedProjects([...expandedProjects, resumeData.projects.length]);
   };
+  // const handleYearChange = (e, index, field) => {
+  //   const newProjects = [...resumeData.projects];
+  //   const currentDate = newProjects[index][field];
+  //   const [month, _] = currentDate.split(",");
+  //   newProjects[index][field] = `${month || ""},${e.target.value}`;
+  //   setResumeData({ ...resumeData, projects: newProjects });
+  // };
+  // const handleMonthChange = (e, index, field) => {
+  //   const newProjects = [...resumeData.projects];
+  //   const currentDate = newProjects[index][field] || "Jan,2024";
+  //   const [_, year] = currentDate.split(",");
+  //   newProjects[index][field] = `${e.target.value},${year || ""}`;
+  //   setResumeData({ ...resumeData, projects: newProjects });
+  // };
+  const handleMonthChange = (e, index, field) => {
+    const newProjects = [...resumeData.projects];
+    const newMonth = e.target.value;
+    let year = "";
+    if (newProjects[index][field]) {
+      const parts = newProjects[index][field].split(",");
+      if (parts.length > 1) {
+        year = parts[1];
+      } else if (parts.length === 1 && !months.includes(parts[0])) {
+        // If there's only one part and it's not a month, it must be a year
+        year = parts[0];
+      }
+    }
 
-  const removeProjects = (index) => {
-    const newProjects = [...(resumeData.projects || [])];
-    newProjects.splice(index, 1);
+    newProjects[index][field] = formatDateValue(newMonth, year);
     setResumeData({ ...resumeData, projects: newProjects });
-    setExpandedProjects(
-      expandedProjects
-        .filter((i) => i !== index)
-        .map((i) => (i > index ? i - 1 : i))
-    );
   };
+
+  const handleYearChange = (e, index, field) => {
+    const newProjects = [...resumeData.projects];
+    const newYear = e.target.value;
+
+    // Get the current month value
+    let month = "";
+    if (newProjects[index][field]) {
+      const parts = newProjects[index][field].split(",");
+      if (parts.length > 0 && months.includes(parts[0])) {
+        month = parts[0];
+      }
+    }
+
+    // Format the new value
+    newProjects[index][field] = formatDateValue(month, newYear);
+
+    setResumeData({ ...resumeData, projects: newProjects });
+  };
+  // const removeProjects = (index) => {
+  //   const newProjects = [...(resumeData.projects || [])];
+  //   newProjects.splice(index, 1);
+  //   setResumeData({ ...resumeData, projects: newProjects });
+  //   setExpandedProjects(
+  //     expandedProjects
+  //       .filter((i) => i !== index)
+  //       .map((i) => (i > index ? i - 1 : i))
+  //   );
+  // };
 
   const toggleProjectExpansion = (index, e) => {
     e.preventDefault(); // Prevent the default button behavior
@@ -116,6 +194,17 @@ const Projects = () => {
   };
 
   const handleAIAssistKey = async (index) => {
+    if (!resumeData.projects[index].name) {
+      toast.warn("Project name is Required");
+      return;
+    }
+    if (
+      !resumeData.projects[index].startYear ||
+      !resumeData.projects[index].endYear
+    ) {
+      toast.warn("Date is Required");
+      return;
+    }
     setLoadingStates((prev) => ({
       ...prev,
       [`key_${index}`]: true,
@@ -131,9 +220,11 @@ const Projects = () => {
             "Generate professional summary and Checklist of professional experience in manner of content and information",
           content:
             resumeData.projects[index].description || "Project description",
-          company_name: resumeData.projects[index].name || "N/A",
-          job_title: resumeData.projects[index].po || "Project",
+          project_name: resumeData.projects[index].name || "N/A",
+          job_title: resumeData.projects[index].position || "Project",
           link: resumeData.projects[index].link || "N/A",
+          start_date: resumeData.projects[index].startYear,
+          end_date: resumeData.projects[index].endYear,
           lang: language,
         },
         {
@@ -146,11 +237,26 @@ const Projects = () => {
       setKeyAchievements(
         response.data.data.resume_analysis.responsibilities || []
       );
+      const successMessage =
+        response?.data?.message || "Key Achievments generated successfully!";
+      toast.success(successMessage);
       setPopupIndex(index);
       setPopupType("keyAchievements");
       setShowPopup(true);
     } catch (err) {
-      setError(err.message);
+      const apiErrorMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err.message ||
+        "Something went wrong";
+      setErrorPopup({
+        show: true,
+        message:
+          err.response?.data?.message ||
+          "Your API Limit is Exhausted. Please upgrade your plan.",
+      });
+      setError(apiErrorMessage);
+      toast.error(apiErrorMessage);
     } finally {
       setLoadingStates((prev) => ({
         ...prev,
@@ -170,24 +276,53 @@ const Projects = () => {
       );
     }
   };
-
   const handleSaveSelectedSummary = (index, e) => {
     e.preventDefault();
+
     const newProjects = [...resumeData.projects];
 
-    if (popupType === "description") {
-      newProjects[index].description = selectedDescriptions.join(" ");
-    } else {
-      newProjects[index].keyAchievements = selectedKeyAchievements;
+    if (popupType === "keyAchievements") {
+      const currentAchievements = newProjects[index].keyAchievements || [];
+
+      // Avoid duplicates
+      const filteredSelected = selectedKeyAchievements.filter(
+        (item) => !currentAchievements.includes(item)
+      );
+
+      const updatedAchievements = [...currentAchievements, ...filteredSelected];
+
+      newProjects[index].keyAchievements = updatedAchievements;
+
+      setSelectedKeyAchievements([]);
+    } else if (popupType === "description") {
+      if (selectedDescriptions.length > 0) {
+        newProjects[index].description = selectedDescriptions[0]; // 🟢 Select only one description
+        setSelectedDescriptions([]);
+      }
     }
 
-    setResumeData({
-      ...resumeData,
-      projects: newProjects,
-    });
+    setResumeData({ ...resumeData, projects: newProjects });
 
+    // Close popup
     setShowPopup(false);
   };
+  // const handleSaveSelectedSummary = (index, e) => {
+  //   e.preventDefault();
+  //   const newProjects = [...resumeData.projects];
+
+  //   if (popupType === "description") {
+  //     newProjects[index].description = selectedDescriptions.join(" ");
+  //   } else {
+  //     newProjects[index].keyAchievements = selectedKeyAchievements;
+  //   }
+
+  //   setResumeData({
+  //     ...resumeData,
+  //     projects: newProjects,
+  //   });
+
+  //   setShowPopup(false);
+  // };
   const hasErrors = (index, field) => {
     const workStrength = resumeStrength?.project_strenght?.[index];
     return (
@@ -281,6 +416,17 @@ const Projects = () => {
       : [];
   };
   const handleAIAssistDescription = async (projectIndex) => {
+    if (!resumeData.projects[projectIndex].name) {
+      toast.warn("Project name is Required");
+      return;
+    }
+    if (
+      !resumeData.projects[projectIndex].startYear ||
+      !resumeData.projects[projectIndex].endYear
+    ) {
+      toast.warn("Date is Required");
+      return;
+    }
     setLoadingStates((prev) => ({
       ...prev,
       [`description_${projectIndex}`]: true,
@@ -295,9 +441,11 @@ const Projects = () => {
           keyword:
             "Generate multiple professional summaries and descriptions for professional experience",
           content: resumeData?.position || "Project description",
-          company_name: resumeData.projects[projectIndex].name || "N/A",
+          project_name: resumeData.projects[projectIndex].name || "N/A",
           job_title: resumeData?.position || "Project",
           link: resumeData.projects[projectIndex].link || "N/A",
+          start_date: resumeData.projects[projectIndex].startYear,
+          end_date: resumeData.projects[projectIndex].endYear,
           lang: language,
         },
         {
@@ -307,16 +455,33 @@ const Projects = () => {
         }
       );
 
-      // setDescriptions(response.data.data.resume_analysis.project_summaries);
       const projectSummaries =
         response.data.data.resume_analysis.project_summaries || [];
       setDescriptions(projectSummaries);
+
+      // ✅ Show success toast message from API if available
+      const successMessage =
+        response?.data?.message || "Descriptions generated successfully!";
+      toast.success(successMessage);
 
       setPopupIndex(projectIndex);
       setPopupType("description");
       setShowPopup(true);
     } catch (err) {
-      setError(err.message);
+      const apiErrorMessage =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err.message ||
+        setErrorPopup({
+          show: true,
+          message:
+            err.response?.data?.message ||
+            "Your API Limit is Exhausted. Please upgrade your plan.",
+        });
+      ("Something went wrong");
+
+      setError(apiErrorMessage);
+      toast.error(apiErrorMessage);
     } finally {
       setLoadingStates((prev) => ({
         ...prev,
@@ -324,9 +489,70 @@ const Projects = () => {
       }));
     }
   };
+  const removeProjects = (index) => {
+    // Check if this is the last project entry
+    if ((resumeData.projects || []).length <= 1) {
+      toast.warn("At least one project entry is required");
+      // setValidationErrors({
+      //   ...validationErrors,
+      //   general: "At least one project entry is required"
+      // });
 
+      // // Clear the error message after 3 seconds
+      // setTimeout(() => {
+      //   const updatedErrors = {...validationErrors};
+      //   delete updatedErrors.general;
+      //   setValidationErrors(updatedErrors);
+      // }, 3000);
+      return; // Don't remove if it's the last one
+    }
+
+    const newProjects = [...(resumeData.projects || [])];
+    newProjects.splice(index, 1);
+
+    // Clear any errors related to this index
+    // const updatedErrors = {};
+    // Object.keys(validationErrors).forEach(key => {
+    //   if (!key.startsWith(`${index}-`)) {
+    //     updatedErrors[key] = validationErrors[key];
+    //   }
+    // });
+    // setValidationErrors(updatedErrors);
+
+    setResumeData({ ...resumeData, projects: newProjects });
+    setExpandedProjects(
+      expandedProjects
+        .filter((i) => i !== index)
+        .map((i) => (i > index ? i - 1 : i))
+    );
+  };
+  // Parse date string to get month and year
+  const getDatePart = (dateStr, part) => {
+    if (!dateStr) return "";
+    if (dateStr === "Present") return part === "month" ? "" : dateStr;
+
+    const parts = dateStr.split(",");
+
+    // If there's only one part, determine if it's a month or year
+    if (parts.length === 1) {
+      if (months.includes(parts[0]) && part === "month") {
+        return parts[0];
+      } else if (!isNaN(parts[0]) && part === "year") {
+        return parts[0];
+      } else {
+        return "";
+      }
+    }
+
+    // If there are two parts, return the appropriate one
+    if (part === "month") {
+      return parts[0] || "";
+    } else {
+      return parts[1] || "";
+    }
+  };
   return (
-    <div className="flex-col-gap-3 w-full mt-10 px-10">
+    <div className="flex-col-gap-3 w-full mt-10 px-2 max-h-[400px] overflow-y-auto">
       <h2 className="input-title text-black text-3xl">
         {t("resumeStrength.sections.projects")}
       </h2>
@@ -338,7 +564,8 @@ const Projects = () => {
           >
             <div className="flex  justify-between items-center mb-2">
               <h3 className="text-black text-xl font-semibold">
-                {project.name || `Project ${projectIndex + 1}`}
+                {project.name ||
+                  `${t("builder_forms.project.project")} ${projectIndex + 1}`}
               </h3>
               <button
                 onClick={(e) => toggleProjectExpansion(projectIndex, e)}
@@ -357,9 +584,9 @@ const Projects = () => {
                 <div className="relative mb-2">
                   <input
                     type="text"
-                    placeholder="Project Name"
+                    placeholder={t("builder_forms.project.placeholderName")}
                     name="name"
-                    maxLength={150}
+                    maxLength={50}
                     className={`w-full other-input border  ${
                       improve && hasErrors(projectIndex, "name")
                         ? "border-red-500"
@@ -391,7 +618,7 @@ const Projects = () => {
                           <div className="flex items-center space-x-2">
                             <AlertCircle className="w-5 h-5 text-red-400" />
                             <span className="font-medium text-black">
-                              Project Name Suggestion
+                              {t("builder_forms.project.nameSuggestion")}
                             </span>
                           </div>
                           <button
@@ -420,10 +647,12 @@ const Projects = () => {
                 </div>
                 <div className="flex flex-col justify-between mb-2">
                   <div className="relative ">
-                    <label className="text-black">Link </label>
+                    <label className="text-black">
+                      {t("builder_forms.project.placeholderLink")}{" "}
+                    </label>
                     <input
                       type="text"
-                      placeholder="Link"
+                      placeholder={t("builder_forms.project.placeholderLink")}
                       name="link"
                       maxLength={150}
                       className={`w-full other-input border  ${
@@ -437,7 +666,7 @@ const Projects = () => {
                     {improve && hasErrors(projectIndex, "link") && (
                       <button
                         type="button"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
+                        className="absolute right-2 top-12 -translate-y-1/2 text-red-500 hover:text-red-600 transition-colors"
                         onClick={() =>
                           setActiveTooltip(
                             activeTooltip === `link-${projectIndex}`
@@ -456,7 +685,7 @@ const Projects = () => {
                             <div className="flex items-center space-x-2">
                               <AlertCircle className="w-5 h-5 text-red-400" />
                               <span className="font-medium text-black">
-                                Project Link
+                                {t("builder_forms.project.link")}
                               </span>
                             </div>
                             <button
@@ -491,20 +720,20 @@ const Projects = () => {
                     </label>
                     <button
                       type="button"
-                      className="border bg-black text-white px-3 rounded-3xl"
+                      className=" p-2 text-white bg-black rounded-lg text-sm mb-2"
                       onClick={() => handleAIAssistDescription(projectIndex)}
                       disabled={
                         loadingStates[`description_${projectIndex}`] || false
                       }
                     >
                       {loadingStates[`description_${projectIndex}`]
-                        ? "Loading..."
-                        : "+ Smart Assist"}
+                        ? t("loading")
+                        : t("smartAssist")}
                     </button>
                   </div>
 
                   <ReactQuill
-                    placeholder="Description"
+                    placeholder={t("builder_forms.work_experience.description")}
                     value={project.description}
                     // onChange={(value) =>
                     //   handleProjects(
@@ -544,7 +773,7 @@ const Projects = () => {
                   {improve && hasErrors(projectIndex, "description") && (
                     <button
                       type="button"
-                      className="absolute right-2 top-12 text-red-500 hover:text-red-600 transition-colors"
+                      className="absolute right-2 top-14 text-red-500 hover:text-red-600 transition-colors"
                       onClick={() =>
                         setActiveTooltip(
                           activeTooltip === `description-${projectIndex}`
@@ -563,7 +792,9 @@ const Projects = () => {
                           <div className="flex items-center space-x-2">
                             <AlertCircle className="w-5 h-5 text-red-400" />
                             <span className="font-medium text-black">
-                              Description Suggestions
+                              {t(
+                                "builder_forms.work_experience.descriptionSuggestions"
+                              )}
                             </span>
                           </div>
 
@@ -584,8 +815,8 @@ const Projects = () => {
                             }
                           >
                             {loadingStates[`description_${projectIndex}`]
-                              ? "Fixing..."
-                              : "Auto Fix"}
+                              ? t("builder_forms.personal_info.fixing")
+                              : t("builder_forms.personal_info.auto_fix")}
                           </button>
 
                           <button
@@ -612,9 +843,11 @@ const Projects = () => {
                     </div>
                   )}
                 </div>
-                <div className="mt-4">
+
+                <div className="mt-4 relative">
                   <div className="flex justify-between mb-2">
                     <label className="text-black">
+                      {" "}
                       {t("builder_forms.work_experience.key_achievements")}
                     </label>
                     <button
@@ -624,30 +857,98 @@ const Projects = () => {
                       disabled={loadingStates[`key_${projectIndex}`]}
                     >
                       {loadingStates[`key_${projectIndex}`]
-                        ? "Loading..."
-                        : "+ Key Assist"}
+                        ? t("loading")
+                        : t("keyAssist")}
                     </button>
                   </div>
+
                   <textarea
-                    placeholder="Enter key achievements (one per line)"
+                    placeholder={t(
+                      "builder_forms.work_experience.keyAchievementsPlaceholder"
+                    )}
                     className="w-full other-input border-black border "
-                    value={project.keyAchievements}
+                    value={
+                      Array.isArray(project?.keyAchievements)
+                        ? project.keyAchievements.join("\n")
+                        : project?.keyAchievements || ""
+                    }
                     onChange={(e) => handleKeyAchievement(e, projectIndex)}
-                    maxLength={1000}
                   />
+
+                  {improve && hasErrors(projectIndex, "keyAchievements") && (
+                    <button
+                      type="button"
+                      className="absolute right-2 top-12 text-red-500 hover:text-red-600 transition-colors"
+                      onClick={() =>
+                        setActiveTooltip(
+                          activeTooltip === `keyAchievements-${projectIndex}`
+                            ? null
+                            : `keyAchievements-${projectIndex}`
+                        )
+                      }
+                    >
+                      <AlertCircle className="w-5 h-5" />
+                    </button>
+                  )}
+
+                  {activeTooltip === `keyAchievements-${projectIndex}` && (
+                    <div className="absolute z-50 right-0 top-[50px] w-80 bg-white rounded-lg shadow-xl transform transition-all duration-200 ease-in-out border border-gray-700">
+                      <div className="p-4 border-b border-gray-700">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <AlertCircle className="w-5 h-5 text-red-400" />
+                            <span className="font-medium text-black">
+                              {t(
+                                "builder_forms.work_experience.keyAchievementsSuggestions"
+                              )}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => setActiveTooltip(null)}
+                            className="text-black transition-colors"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        {getErrorMessages(projectIndex, "keyAchievements").map(
+                          (msg, i) => (
+                            <div
+                              key={i}
+                              className="flex items-start space-x-3 mb-3 last:mb-0"
+                            >
+                              <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2"></div>
+                              <p className="text-black text-sm">{msg}</p>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="">
-                  <label className="mt-2 text-black">
+                <div className="relative">
+                  {/* Start Date */}
+                  <label className="text-black">
+                    {" "}
                     {t("builder_forms.work_experience.start_date")}
                   </label>
-                  <div className="flex-wrap-gap-2">
+                  <div className="flex flex-wrap gap-2 relative">
                     <select
-                      name="startMonth"
-                      className="other-input border-black border flex-1"
-                      value={project.startMonth}
-                      onChange={(e) => handleProjects(e, projectIndex)}
+                      className={`border other-input flex-1 ${
+                        improve && hasErrors(projectIndex, "startYear")
+                          ? "border-red-500"
+                          : "border-black"
+                      }`}
+                      value={getDatePart(project.startYear, "month")}
+                      onChange={(e) =>
+                        handleMonthChange(e, projectIndex, "startYear")
+                      }
                     >
-                      <option value="">Select Month</option>
+                      <option value="">
+                        {" "}
+                        {t("builder_forms.education.dropdown.month")}
+                      </option>
                       {months.map((month, idx) => (
                         <option key={idx} value={month}>
                           {month}
@@ -655,31 +956,104 @@ const Projects = () => {
                       ))}
                     </select>
                     <select
-                      name="startYear"
-                      className="other-input border-black border flex-1"
-                      value={project.startYear}
-                      onChange={(e) => handleProjects(e, projectIndex)}
+                      className={`border other-input flex-1 ${
+                        improve && hasErrors(projectIndex, "startYear")
+                          ? "border-red-500"
+                          : "border-black"
+                      }`}
+                      value={getDatePart(project.startYear, "year")}
+                      onChange={(e) =>
+                        handleYearChange(e, projectIndex, "startYear")
+                      }
                     >
-                      <option value="">Select Year</option>
+                      <option value="">
+                        {" "}
+                        {t("builder_forms.education.dropdown.year")}
+                      </option>
                       {years.map((year, idx) => (
                         <option key={idx} value={year}>
                           {year}
                         </option>
                       ))}
                     </select>
+
+                    {improve && hasErrors(projectIndex, "startYear") && (
+                      <>
+                        <button
+                          type="button"
+                          className="absolute right-[2px] top-[-1.5rem] text-red-500"
+                          onClick={() =>
+                            setActiveTooltip(
+                              activeTooltip === `startYear-${projectIndex}`
+                                ? null
+                                : `startYear-${projectIndex}`
+                            )
+                          }
+                        >
+                          <AlertCircle className="w-5 h-5" />
+                        </button>
+
+                        {activeTooltip === `startYear-${projectIndex}` && (
+                          <div className="absolute right-0 top-14 w-80 bg-white rounded-lg shadow-xl border border-gray-700 z-50">
+                            <div className="p-4 border-b border-gray-700">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                  <AlertCircle className="w-5 h-5 text-red-400" />
+                                  <span className="font-medium text-black">
+                                    {t(
+                                      "builder_forms.education.tooltips.start_date"
+                                    )}
+                                  </span>
+                                </div>
+                                <button
+                                  onClick={() => setActiveTooltip(null)}
+                                  className="text-black transition-colors"
+                                >
+                                  <X className="w-5 h-5" />
+                                </button>
+                              </div>
+                            </div>
+                            <div className="p-4">
+                              {getErrorMessages(projectIndex, "startYear").map(
+                                (msg, i) => (
+                                  <div
+                                    key={i}
+                                    className="flex items-start space-x-3 mb-3 last:mb-0"
+                                  >
+                                    <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2" />
+                                    <p className="text-black text-sm">{msg}</p>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
-                  <label className="mt-2 text-black">
+
+                  {/* End Date */}
+                  <label className="mt-4 block text-black">
+                    {" "}
                     {t("builder_forms.work_experience.end_date")}
                   </label>
-                  <div className="flex-wrap-gap-2">
+                  <div className="flex flex-wrap gap-2 relative">
                     <select
-                      name="endMonth"
-                      className="other-input border-black border flex-1"
-                      value={project.endMonth}
-                      onChange={(e) => handleProjects(e, projectIndex)}
+                      className={`border other-input flex-1 ${
+                        improve && hasErrors(projectIndex, "endYear")
+                          ? "border-red-500"
+                          : "border-black"
+                      }`}
+                      value={getDatePart(project.endYear, "month")}
+                      onChange={(e) =>
+                        handleMonthChange(e, projectIndex, "endYear")
+                      }
                       disabled={project.endYear === "Present"}
                     >
-                      <option value="">Select Month</option>
+                      <option value="">
+                        {" "}
+                        {t("builder_forms.education.dropdown.month")}
+                      </option>
                       {months.map((month, idx) => (
                         <option key={idx} value={month}>
                           {month}
@@ -687,13 +1061,21 @@ const Projects = () => {
                       ))}
                     </select>
                     <select
-                      name="endYear"
-                      className="other-input border-black border flex-1"
-                      value={project.endYear}
-                      onChange={(e) => handleProjects(e, projectIndex)}
+                      className={`border other-input flex-1 ${
+                        improve && hasErrors(projectIndex, "endYear")
+                          ? "border-red-500"
+                          : "border-black"
+                      }`}
+                      value={getDatePart(project.endYear, "year")}
+                      onChange={(e) =>
+                        handleYearChange(e, projectIndex, "endYear")
+                      }
                       disabled={project.endYear === "Present"}
                     >
-                      <option value="">Select Year</option>
+                      <option value="">
+                        {" "}
+                        {t("builder_forms.education.dropdown.year")}
+                      </option>
                       {years.map((year, idx) => (
                         <option key={idx} value={year}>
                           {year}
@@ -707,8 +1089,62 @@ const Projects = () => {
                         onChange={() => handlePresentToggle(projectIndex)}
                         className="w-6 h-6"
                       />
-                      Present
+                      {t("builder_forms.education.dropdown.present")}
                     </label>
+
+                    {improve && hasErrors(projectIndex, "endYear") && (
+                      <>
+                        <button
+                          type="button"
+                          className="absolute right-[2px] top-[-1.5rem] text-red-500"
+                          onClick={() =>
+                            setActiveTooltip(
+                              activeTooltip === `endYear-${projectIndex}`
+                                ? null
+                                : `endYear-${projectIndex}`
+                            )
+                          }
+                        >
+                          <AlertCircle className="w-5 h-5" />
+                        </button>
+
+                        {activeTooltip === `endYear-${projectIndex}` && (
+                          <div className="absolute right-0 top-14 w-80 bg-white rounded-lg shadow-xl border border-gray-700 z-50">
+                            <div className="p-4 border-b border-gray-700">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                  <AlertCircle className="w-5 h-5 text-red-400" />
+                                  <span className="font-medium text-black">
+                                    {t(
+                                      "builder_forms.education.tooltips.end_date"
+                                    )}
+                                  </span>
+                                </div>
+                                <button
+                                  onClick={() => setActiveTooltip(null)}
+                                  className="text-black transition-colors"
+                                >
+                                  <X className="w-5 h-5" />
+                                </button>
+                              </div>
+                            </div>
+                            <div className="p-4">
+                              {getErrorMessages(projectIndex, "endYear")?.map(
+                                (msg, i) => (
+                                  <div
+                                    key={i}
+                                    className="flex items-start space-x-3 mb-3 last:mb-0"
+                                  >
+                                    <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-400 mt-2" />
+                                    <p className="text-black text-sm">{msg}</p>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
                 <button
@@ -716,16 +1152,14 @@ const Projects = () => {
                   className="bg-red-500 text-white px-4 py-2 rounded mt-4"
                   type="button"
                 >
-                  Remove Project
+                  {t("builder_forms.project.remove")}
                 </button>
               </>
             )}
           </div>
         ))
       ) : (
-        <p className="text-black ">
-          No projects available. Add a new project to get started.
-        </p>
+        <p className="text-black mt-2  mb-4">{t("project.no_project")}</p>
       )}
       {/* <button onClick={addProjects} className="bg-blue-500 text-white px-4 py-2 rounded mt-4" type="button">
         Add Project
@@ -735,119 +1169,110 @@ const Projects = () => {
         add={addProjects}
         remove={removeProjects}
       />
-      {/* {showPopup && (
-      
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[90%] max-w-lg">
-            <h3 className="text-xl font-bold mb-4">
-              {popupType === "description"
-                ? "Select Description"
-                : "Select Key Achievements"}
-            </h3>
-            <div className="space-y-3 max-h-96 overflow-y-auto">
-              {(popupType === "description"
-                ? descriptions
-                : keyAchievements
-              ).map((item, index) => (
-                <div key={index} className="flex items-start gap-3">
-                    {popupType === "description" ? (
-                    <input
-                      type="radio"
-                      name="description" // Ensures only one can be selected
-                      checked={selectedDescriptions.includes(item)}
-                      onChange={() => setSelectedDescriptions([item])} // Only one selection
-                      className="mt-1"
-                    />
-                  ) : (
-                    // Checkbox for key achievements (Multi Select)
-                    <input
-                      type="checkbox"
-                      checked={selectedKeyAchievements.includes(item)}
-                      onChange={() => handleSummarySelect(item)}
-                      className="mt-1"
-                    />
-                  )}
-                  <input
-                    type="checkbox"
-                    checked={
-                      popupType === "description"
-                        ? selectedDescriptions.includes(item)
-                        : selectedKeyAchievements.includes(item)
-                    }
-                    onChange={() => handleSummarySelect(item)}
-                    className="mt-1"
-                  />
-                  <p className="text-gray-800">{item}</p>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2 mt-4">
-              <button
-                onClick={(e) => handleSaveSelectedSummary(popupIndex, e)}
-                className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600"
-              >
-                Save Selection
-              </button>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-300"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )} */}
+
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-[90%] max-w-lg">
             <h3 className="text-xl font-bold mb-4">
               {popupType === "description"
-                ? "Select Description"
-                : "Select Key Achievements"}
+                ? t("builder_forms.project.popup.select_description")
+                : t("builder_forms.project.popup.select_key_achievements")}
             </h3>
+
             <div className="space-y-3 max-h-96 overflow-y-auto">
-              {(popupType === "description"
-                ? descriptions || []
-                : keyAchievements || []
-              ).map((item, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  {/* Radio for description (Single Select) */}
-                  {popupType === "description" ? (
-                    <input
-                      type="radio"
-                      name="description" // Ensures only one can be selected
-                      checked={selectedDescriptions.includes(item)}
-                      onChange={() => setSelectedDescriptions([item])} // Only one selection
-                      className="mt-1"
-                    />
-                  ) : (
-                    // Checkbox for key achievements (Multi Select)
-                    <input
-                      type="checkbox"
-                      checked={selectedKeyAchievements.includes(item)}
-                      onChange={() => handleSummarySelect(item)}
-                      className="mt-1"
-                    />
-                  )}
-                  <p className="text-gray-800">{item}</p>
+              {(popupType === "description" ? descriptions : keyAchievements)
+                ?.length > 0 ? (
+                (popupType === "description"
+                  ? descriptions
+                  : keyAchievements
+                )?.map((item, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    {popupType === "description" ? (
+                      <input
+                        type="radio"
+                        name="description"
+                        checked={selectedDescriptions.includes(item)}
+                        onChange={() => setSelectedDescriptions([item])}
+                        className="mt-1"
+                      />
+                    ) : (
+                      <input
+                        type="checkbox"
+                        checked={selectedKeyAchievements.includes(item)}
+                        onChange={() => handleSummarySelect(item)}
+                        className="mt-1"
+                      />
+                    )}
+                    <p className="text-gray-800">{item}</p>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-gray-500 mb-4">
+                    {popupType === "description"
+                      ? t("builder_forms.project.popup.no_descriptions")
+                      : t("builder_forms.project.popup.no_key_achievements")}
+                  </p>
+                  <button
+                    onClick={() => {
+                      if (popupType === "description") {
+                        handleAIAssistDescription(popupIndex);
+                      } else {
+                        handleAIAssistKey(popupIndex);
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    disabled={
+                      loadingStates[
+                        `${
+                          popupType === "description" ? "description" : "key"
+                        }_${popupIndex}`
+                      ]
+                    }
+                  >
+                    {loadingStates[
+                      `${
+                        popupType === "description" ? "description" : "key"
+                      }_${popupIndex}`
+                    ]
+                      ? t("builder_forms.project.popup.retrying")
+                      : t("builder_forms.project.popup.retry")}
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
+
             <button
               onClick={(e) => handleSaveSelectedSummary(popupIndex, e)}
-              className="mt-4 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600"
+              className={`mt-4 px-4 py-2 rounded text-white ${
+                (popupType === "description" ? descriptions : keyAchievements)
+                  ?.length > 0
+                  ? "bg-gray-800 hover:bg-gray-600"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
+              disabled={
+                (popupType === "description" ? descriptions : keyAchievements)
+                  ?.length === 0
+              }
             >
-              Save Selection
+              {t("builder_forms.project.popup.save_selection")}
             </button>
+
             <button
               onClick={() => setShowPopup(false)}
               className="mt-2 ml-2 bg-gray-400 text-black px-4 py-2 rounded hover:bg-gray-300"
             >
-              Close
+              {t("builder_forms.project.popup.close")}
             </button>
           </div>
         </div>
+      )}
+
+      {errorPopup.show && (
+        <ErrorPopup
+          message={errorPopup.message}
+          onClose={() => setErrorPopup({ show: false, message: "" })}
+        />
       )}
     </div>
   );

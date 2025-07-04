@@ -11,6 +11,7 @@ import {
   Globe2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 const Language = () => {
   const { resumeData, setResumeData, resumeStrength } =
@@ -18,7 +19,6 @@ const Language = () => {
   const skillType = "languages";
   const title = "Languages";
   const { t } = useTranslation();
-
 
   const languageOptions = [
     "English",
@@ -80,7 +80,7 @@ const Language = () => {
         [skillType]: newLanguages,
       });
     } else {
-      alert("At least one language is required.");
+      toast.warn("At least one language is required.");
     }
   };
 
@@ -101,18 +101,19 @@ const Language = () => {
   };
 
   return (
-    <div className="flex-col-gap-3 w-full mt-10 px-10">
+    <div className="flex-col-gap-3 w-full mt-10 px-10 max-h-[400px] overflow-y-auto">
       <div className="flex items-center gap-3 mb-4">
         {/* <Globe2 className="w-8 h-8 text-black" /> */}
-        <h2 className="input-title text-black text-3xl">{t("resumeStrength.sections.languages")}</h2>
+        <h2 className="input-title text-black text-3xl">
+          {t("resumeStrength.sections.languages")}
+        </h2>
       </div>
       <p className="text-gray-600 text-sm mb-6">
-      {t("builder_forms.language.description")}
+        {t("builder_forms.language.description")}
       </p>
 
       {resumeData[skillType]?.length > 0 ? (
         resumeData[skillType].map((skill, index) => (
-         
           <div
             key={index}
             className="bg-white rounded-lg p-2 mb-6 shadow-md border border-gray-300"
@@ -122,7 +123,9 @@ const Language = () => {
               <div className="w-full md:w-1/2">
                 <div className="relative">
                   <label className="block text-sm font-semibold text-gray-800 mb-2">
-                    {index === 0 ?  t("builder_forms.language.firstLanguage") :  t("builder_forms.language.language")}
+                    {index === 0
+                      ? t("builder_forms.language.firstLanguage")
+                      : t("builder_forms.language.language")}
                   </label>
                   <select
                     className={`w-full border rounded-md p-2 transition-all duration-200 focus:ring-2 ${
@@ -134,7 +137,7 @@ const Language = () => {
                     onChange={(e) => handleSkills(e, index, "language")}
                   >
                     <option value="" disabled>
-                    {t("builder_forms.language.selectLanguage")}
+                      {t("builder_forms.language.selectLanguage")}
                     </option>
                     {languageOptions.map((lang, i) => (
                       <option key={i} value={lang}>
@@ -147,7 +150,7 @@ const Language = () => {
                   {improve && hasErrors(index, "language") && (
                     <button
                       type="button"
-                      className="absolute right-3 top-[55%] -translate-y-1/2 text-red-500 hover:text-red-600 transition"
+                      className="absolute right-2 top-[68%] -translate-y-1/2 text-red-500 hover:text-red-600 transition"
                       onClick={() =>
                         setActiveTooltip(
                           activeTooltip === `language-${index}`
@@ -195,7 +198,7 @@ const Language = () => {
               {/* Proficiency Selection */}
               <div className="w-full md:w-1/2">
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
-                {t("builder_forms.language.proficiency")}
+                  {t("builder_forms.language.proficiency")}
                 </label>
                 <select
                   className="w-full border border-gray-400 rounded-md p-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500"
@@ -203,7 +206,7 @@ const Language = () => {
                   onChange={(e) => handleSkills(e, index, "proficiency")}
                 >
                   <option value="" disabled>
-                  {t("builder_forms.language.proficiency")}
+                    {t("builder_forms.language.proficiency")}
                   </option>
                   {/* {index === 0 ? (
                     <option value="Native Speaker">Native Speaker</option>
@@ -215,10 +218,10 @@ const Language = () => {
                     ))
                   )} */}
                   {proficiencyOptions.map((level, i) => (
-                      <option key={i} value={level}>
-                        {level}
-                      </option>
-                    ))}
+                    <option key={i} value={level}>
+                      {level}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -235,8 +238,9 @@ const Language = () => {
           </div>
         ))
       ) : (
-        <p className="text-white text-center py-4 bg-gray-800 rounded-lg">
-          No languages added. Add a new language to get started.
+        <p className="text-white text-center py-4 bg-gray-800 rounded-lg mb-2">
+          {/* No languages added. Add a new language to get started. */}
+          {t("builder_forms.language.noLanguages")}
         </p>
       )}
       <FormButton

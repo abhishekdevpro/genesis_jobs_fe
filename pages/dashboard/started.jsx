@@ -67,7 +67,7 @@ export default function Started() {
               ].map((step, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-lg shadow-md w-full md:w-1/4 hover:bg-[#00b38d] cursor-pointer"
+                  className="bg-white p-4 rounded-lg shadow-md w-full md:w-1/4 hover:bg-teal-700 cursor-pointer"
                   onClick={step.action}
                 >
                   <h3 className="font-semibold">
@@ -121,7 +121,7 @@ export default function Started() {
                   href="mailto:support@finalroundai.com"
                   className="text-blue-600"
                 >
-                  support@genesistech.ca
+                  Email@Genesis.com
                 </a>
               </div>
               <div className="p-4 border rounded-lg shadow-sm">

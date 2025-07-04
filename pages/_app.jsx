@@ -91,7 +91,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ResumeProvider } from "../components/context/ResumeContext";
 import { CoverLetterProvider } from "../components/context/CoverLetterContext";
@@ -100,9 +100,26 @@ import "../components/utils/i18n";
 import axios from "axios";
 import LanguageSelector from "./Navbar/LanguageSelector";
 import CookieConsent from "../components/Pricing/CookieConsent";
+import LandingLoader from "../components/ResumeLoader/LandingLoader";
 
 function App({ Component, pageProps }) {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const handleStart = () => setLoading(true);
+    const handleStop = () => setLoading(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
 
   const googleTranslateElementInit = () => {
     let savedLanguage = localStorage.getItem("selectedLang") || "en"; // Default to French
@@ -169,6 +186,7 @@ function App({ Component, pageProps }) {
 
   return (
     <>
+      {loading && <LandingLoader />}
       <ResumeProvider>
         <CoverLetterProvider>
           {/* <LanguageSelector /> */}

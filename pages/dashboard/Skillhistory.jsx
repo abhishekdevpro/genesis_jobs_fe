@@ -7,17 +7,20 @@ import { ResumeContext } from "../../components/context/ResumeContext";
 function Skillhistory() {
   const { t } = useTranslation();
   const [users, setUsers] = useState([]);
-  const {selectedLang}= useContext(ResumeContext)
+  const { selectedLang } = useContext(ResumeContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     axios
-      .get(`${BASE_URL}/api/user/skill-assessment-history?lang=${selectedLang}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
+      .get(
+        `${BASE_URL}/api/user/skill-assessment-history?lang=${selectedLang}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
       .then((response) => {
         // Ensure response.data.data is an array before setting state
         const data = Array.isArray(response.data.data)
@@ -42,7 +45,7 @@ function Skillhistory() {
           ) : (
             <table className="min-w-full bg-dark text-black rounded-md text-center">
               <thead>
-                <tr className="bg-[#00b38d] text-white">
+                <tr className="bg-teal-700 text-white">
                   <th className="py-2 px-4">{t("skillhistory.date_time")}</th>
                   <th className="py-2 px-4">
                     {t("skillhistory.verification_status")}

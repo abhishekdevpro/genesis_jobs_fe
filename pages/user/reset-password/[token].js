@@ -113,7 +113,7 @@
 
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import logo from "../../forgotpassword/logo.jpeg";
+import logo from "../../forgotpassword/logo.png";
 import Image from "next/image";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -121,6 +121,7 @@ import { BASE_URL } from "../../../components/Constant/constant";
 import Navbar from "../../Navbar/Navbar";
 import { ResumeContext } from "../../../components/context/ResumeContext";
 import axiosInstance from "../../../components/utils/axiosInstance";
+import Link from "next/link";
 
 // function ResetPassword() {
 //   const router = useRouter();
@@ -235,21 +236,66 @@ function ResetPassword() {
     setFormData({ ...formData, [name]: value });
   };
 
+  // const handleResetPassword = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!formData.newPassword || !formData.confirmPassword) {
+  //     toast.error("Both fields are required");
+  //     return;
+  //   }
+
+  //   if (formData.newPassword !== formData.confirmPassword) {
+  //     toast.error("Passwords do not match");
+  //     return;
+  //   }
+
+  //   if (!token) {
+  //     toast.error("Invalid token");
+  //     return;
+  //   }
+
+  //   try {
+  //     const formDataToSend = new FormData();
+  //     formDataToSend.append("token", token);
+  //     formDataToSend.append("new_password", formData.newPassword);
+  //     // formDataToSend.append("email", email);
+
+  //     const response = await axios.post(`${BASE_URL}/api/user/reset-password?lang=${selectedLang}`, formDataToSend);
+
+  //     if (response.status === 200) {
+  //       toast.success("Password reset successfully");
+  //       router.push("/login2");
+  //     } else {
+  //       toast.error("Failed to reset password");
+  //     }
+  //   } catch (error) {
+  //     console.error(error.response?.data || error.message || "An error occurred");
+  //     toast.error(error.response?.data?.message || "An error occurred");
+  //   }
+  // };
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&.]{6,30}$/;
+
     if (!formData.newPassword || !formData.confirmPassword) {
-      toast.error("Both fields are required");
+      toast.error(t("resetpassword.both_fields_required"));
+      return;
+    }
+
+    if (!passwordRegex.test(formData.newPassword)) {
+      toast.error(t("resetpassword.password_strength_error"));
       return;
     }
 
     if (formData.newPassword !== formData.confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(t("resetpassword.passwords_do_not_match"));
       return;
     }
 
     if (!token) {
-      toast.error("Invalid token");
+      toast.error(t("resetpassword.invalid_token"));
       return;
     }
 
@@ -257,7 +303,6 @@ function ResetPassword() {
       const formDataToSend = new FormData();
       formDataToSend.append("token", token);
       formDataToSend.append("new_password", formData.newPassword);
-      // formDataToSend.append("email", email);
 
       const response = await axiosInstance.post(
         `/api/user/reset-password?lang=${selectedLang}`,
@@ -265,16 +310,18 @@ function ResetPassword() {
       );
 
       if (response.status === 200) {
-        toast.success("Password reset successfully");
+        toast.success(t("resetpassword.password_reset_success"));
         router.push("/login2");
       } else {
-        toast.error("Failed to reset password");
+        toast.error(t("resetpassword.failed_to_reset"));
       }
     } catch (error) {
       console.error(
         error.response?.data || error.message || "An error occurred"
       );
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(
+        error.response?.data?.message || t("resetpassword.error_occurred")
+      );
     }
   };
 
@@ -282,7 +329,12 @@ function ResetPassword() {
     <div className="flex justify-center items-center h-screen w-full">
       <div className="p-8 rounded-xl shadow-lg shadow-slate-700 w-full max-w-lg bg-white">
         <div className="flex justify-center mb-6">
-          <Image src={logo} className="w-40 h-10" alt="Logo" />
+          {/* <Image src={logo} className="w-40 h-10" alt="Logo" /> */}
+          <Link href="/">
+            <h1 className="text-black hover:text-teal-600 text-3xl px-3 py-2 rounded-md  font-semibold cursor-pointer">
+              GENESIS
+            </h1>
+          </Link>
         </div>
         <div className="text-2xl text-black text-center font-bold mb-4">
           Reset Password
@@ -301,6 +353,8 @@ function ResetPassword() {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
               placeholder="Enter your new password"
               required
+              minLength={6}
+              maxLength={30}
             />
             <label className="block text-black mb-2 mt-4">
               Confirm Password
@@ -313,6 +367,8 @@ function ResetPassword() {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
               placeholder="Confirm your new password"
               required
+              minLength={6}
+              maxLength={30}
             />
           </div>
           <button

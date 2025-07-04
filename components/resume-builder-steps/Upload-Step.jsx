@@ -42,9 +42,9 @@ export default function UploadStep({ onNext, onBack, onChange, value }) {
     //         onChange("upload");
     //         onNext();
     //       }}
-    //       className="p-6 border-2 rounded-lg text-center hover:border-blue-400"
+    //       className="p-6 border-2 rounded-lg text-center hover:border-gray-400"
     //     >
-    //       <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+    //       <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
     //         <FaUpload className="text-[#00b38d] w-8 h-8" />
     //       </div>
     //       <h3 className="font-bold mb-2">Yes, upload from my resume</h3>
@@ -56,9 +56,9 @@ export default function UploadStep({ onNext, onBack, onChange, value }) {
 
     //     <button
     //       onClick={handleStartFromScratch}
-    //       className="p-6 border-2 rounded-lg text-center hover:border-blue-400"
+    //       className="p-6 border-2 rounded-lg text-center hover:border-gray-400"
     //     >
-    //       <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+    //       <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
     //         <FaFileAlt className="text-[#00b38d] w-8 h-8" />
     //       </div>
     //       <h3 className="font-bold mb-2">No, start from scratch</h3>
@@ -77,12 +77,12 @@ export default function UploadStep({ onNext, onBack, onChange, value }) {
     //     </button>
     //   </div>
     // </div>
-    <div className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-900">
+    <div className="space-y-6 bg-gradient-to-b from-white to-teal-200">
+      <div className="text-center bg-teal-700 pt-4 pb-4 mb-4">
+        <h2 className="text-2xl font-bold text-white">
           {t("uploadStep.title")}
         </h2>
-        <p className="mt-2 text-gray-600">{t("uploadStep.description")}</p>
+        <p className="mt-2 text-white">{t("uploadStep.description")}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -91,9 +91,9 @@ export default function UploadStep({ onNext, onBack, onChange, value }) {
             onChange("upload");
             onNext();
           }}
-          className="p-6 border-2 rounded-lg text-center hover:border-blue-400"
+          className="p-6 border-2 rounded-lg text-center hover:border-teal-400"
         >
-          <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
             <FaUpload className="text-[#00b38d] w-8 h-8" />
           </div>
           <h3 className="font-bold mb-2">{t("uploadStep.yes_upload")}</h3>
@@ -104,9 +104,9 @@ export default function UploadStep({ onNext, onBack, onChange, value }) {
 
         <button
           onClick={handleStartFromScratch}
-          className="p-6 border-2 rounded-lg text-center hover:border-blue-400"
+          className="p-6 border-2 rounded-lg text-center hover:border-teal-400"
         >
-          <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
             <FaFileAlt className="text-[#00b38d] w-8 h-8" />
           </div>
           <h3 className="font-bold mb-2">{t("uploadStep.no_start_scratch")}</h3>
