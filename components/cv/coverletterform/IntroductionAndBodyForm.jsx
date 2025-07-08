@@ -43,7 +43,7 @@ const IntroductionAndBodyForm = () => {
 
     if (index === 0) {
       endpoint =
-        "https://rbgenapi.ultraaura.education/api/user/aisummery-section1-coverletter";
+        "https://api.genesisliveai.com/api/user/aisummery-section1-coverletter";
       payload = {
         name: personalDetails.name,
         target_role: personalDetails.position,
@@ -52,13 +52,13 @@ const IntroductionAndBodyForm = () => {
       };
     } else if (index === 1) {
       endpoint =
-        "https://rbgenapi.ultraaura.education/api/user/aisummery-section2-coverletter";
+        "https://api.genesisliveai.com/api/user/aisummery-section2-coverletter";
       payload = {
         target_role: personalDetails.position,
       };
     } else if (index === 2) {
       endpoint =
-        "https://rbgenapi.ultraaura.education/api/user/aisummery-section3-coverletter";
+        "https://api.genesisliveai.com/api/user/aisummery-section3-coverletter";
       payload = {
         name: personalDetails.name,
         target_role: personalDetails.position,
