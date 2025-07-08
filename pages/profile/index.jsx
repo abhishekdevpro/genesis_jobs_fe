@@ -348,7 +348,7 @@ const ProfileForm = () => {
                   src={
                     formData.uploadPhoto
                       ? URL.createObjectURL(formData.uploadPhoto)
-                      : `https://rbgenapi.ultraaura.education${formData.photo}`
+                      : `https://api.genesisliveai.com${formData.photo}`
                   }
                   alt="Profile"
                   className="w-20 h-20 rounded-full border object-cover"
