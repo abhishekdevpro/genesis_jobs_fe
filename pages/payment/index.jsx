@@ -195,10 +195,10 @@
 //                   Contact our customer support team anytime. You can cancel your
 //                   subscription by email or online by reaching out to us at{" "}
 //                   <a
-//                     href="mailto:Email@Genesis.com"
+//                     href="mailto:Email@Genesis Live AI.com"
 //                     className="text-blue-600 hover:underline"
 //                   >
-//                     Email@Genesis.com
+//                     Email@Genesis Live AI.com
 //                   </a>
 //                   .”
 //                 </p>
@@ -482,10 +482,10 @@ export default function Payment() {
                   Contact our customer support team anytime. You can cancel your
                   subscription by email or online by reaching out to us at{" "}
                   <a
-                    href="mailto:Email@Genesis.com"
+                    href="mailto:Email@Genesis Live AI.com"
                     className="text-blue-600 hover:underline"
                   >
-                    Email@Genesis.com
+                    Email@Genesis Live AI.com
                   </a>
                   .”
                 </p>

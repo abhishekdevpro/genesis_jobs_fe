@@ -116,7 +116,7 @@
 //           of a dynamic, growth-oriented team, we’d love to hear from you. To
 //           apply for a position at GENESIS, please send your resume and a cover
 //           letter to{" "}
-//           <a href="mailto:Email@Genesis.com" className="text-blue-500">
+//           <a href="mailto:Email@Genesis Live AI.com" className="text-blue-500">
 //             career@GENESIS.ca
 //           </a>
 //           .
@@ -223,7 +223,7 @@ function Careers() {
         </h3>
         <p className="text-base sm:text-lg">
           {t("how_to_apply_description")}{" "}
-          <a href="mailto:Email@Genesis.com" className="text-blue-500">
+          <a href="mailto:Email@Genesis Live AI.com" className="text-blue-500">
             {t("apply_email")}
           </a>
           .

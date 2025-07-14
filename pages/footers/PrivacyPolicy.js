@@ -141,10 +141,10 @@ function PrivacyPolicy() {
           <p className="text-gray-700">
             If you have any questions, contact us at:{" "}
             <a
-              href="mailto:Email@Genesis.com"
+              href="mailto:Email@Genesis Live AI.com"
               className="text-blue-600 underline"
             >
-              Email@Genesis.com
+              Email@Genesis Live AI.com
             </a>
           </p>
         </div>
