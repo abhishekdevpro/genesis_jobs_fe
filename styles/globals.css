@@ -4,6 +4,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: #2563eb;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark: #1e40af;
+
+  --color-secondary: #f59e0b;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-text-light: #6b7280;
+  --color-border: #e5e7eb;
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+}
+
+/* Optionally set body theme */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: 'Inter', sans-serif;
+}
+
+
+
+
 @layer base {
   body {
     @apply font-[sans-serif];

@@ -176,8 +176,8 @@
 //           conditions, please contact us at:
 //           <br />
 //           Email:{" "}
-//           <a href="mailto:Email@Genesis.com" className="text-blue-500">
-//             Email@Genesis.com
+//           <a href="mailto:Email@Genesis Live AI.com" className="text-blue-500">
+//             Email@Genesis Live AI.com
 //           </a>
 //         </p>
 
@@ -219,8 +219,8 @@
 //           {t.contact}:
 //           <br />
 //           Email:{" "}
-//           <a href="mailto:Email@Genesis.com" className="text-blue-500">
-//             Email@Genesis.com
+//           <a href="mailto:Email@Genesis Live AI.com" className="text-blue-500">
+//             Email@Genesis Live AI.com
 //           </a>
 //         </p>
 //       </div>
@@ -266,8 +266,8 @@ function TermsandConditions() {
         <p className="text-base sm:text-lg">
           {/* {termsData.contact}: */}
           Email:{" "}
-          <a href="mailto:Email@Genesis.com" className="text-blue-500">
-            Email@Genesis.com
+          <a href="mailto:Email@Genesis Live AI.com" className="text-blue-500">
+            Email@Genesis Live AI.com
           </a>
         </p>
       </div>

@@ -3,7 +3,7 @@ import CoverLetterSection from "../../components/dashboard/CoverLetterSection";
 import InterviewSection from "../../components/dashboard/InterviewSection";
 import ResumeStrength from "../../components/dashboard/ResumeStrength";
 import Sidebar from "../../components/dashboard/Sidebar";
-import Navbar from "../Navbar/Navbar";
+// import Navbar from "../Navbar/Navbar";
 import axios from "axios";
 import MyResume from "./MyResume";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import { BASE_URL } from "../../components/Constant/constant";
 import JobSearch from "../JobSearch";
 import { ResumeContext } from "../../components/context/ResumeContext";
 import PricingSection from "../../components/Pricing/PricingPlan";
+import Navbar from "../../ui/Navbar";
 export default function DashboardPage() {
   const { t } = useTranslation();
   const { selectedLang } = useContext(ResumeContext);

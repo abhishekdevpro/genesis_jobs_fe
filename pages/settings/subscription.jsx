@@ -357,7 +357,7 @@ export default function Subscription() {
                 </p>
                 <p className="mt-4 text-gray-700">
                   {t("subscription.more_info")}{" "}
-                  <a href="mailto:customerEmail@Genesis.com">
+                  <a href="mailto:customerEmail@Genesis Live AI.com">
                     <span className="text-[#00b38d] cursor-pointer">
                       {t("subscription.email")}
                     </span>

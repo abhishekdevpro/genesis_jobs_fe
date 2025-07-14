@@ -121,7 +121,7 @@ export default function Started() {
                   href="mailto:support@finalroundai.com"
                   className="text-blue-600"
                 >
-                  Email@Genesis.com
+                  Email@Genesis Live AI.com
                 </a>
               </div>
               <div className="p-4 border rounded-lg shadow-sm">
