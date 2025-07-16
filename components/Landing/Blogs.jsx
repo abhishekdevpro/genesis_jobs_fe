@@ -46,8 +46,9 @@ export default function ArticleBlogSection() {
         </h1>
         <p className="text-[#2F2A2A] max-w-3xl mx-auto tex-base md:text-[17px] leading-relaxed">
           Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
+          industry. Lorem Ipsum has been the industry&apos;s standard dummy text
+          ever since the 1500s, when an unknown printer took a galley of type
+          and
         </p>
       </div>
 
