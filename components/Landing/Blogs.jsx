@@ -1,5 +1,5 @@
 import { Calendar, User } from "lucide-react";
-import Button from "../../UI/Button";
+import Button from "../../ui/Button";
 
 export default function ArticleBlogSection() {
   const articles = [
